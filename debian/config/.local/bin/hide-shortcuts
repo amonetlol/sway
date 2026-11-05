@@ -1,0 +1,2 @@
+#!/bin/sh
+exec bash "$HOME/debian-setup/sh/modules/hide-shortcuts.sh" "$@"

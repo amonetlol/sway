@@ -1,0 +1,3 @@
+#!/bin/sh
+case "${1:-}" in small) size="900 650";; *) size="1100 740";; esac
+exec swaymsg '[title="^Rice Settings$"] floating enable, resize set' $size ', move position center'

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+agent=$(dpkg-query -L mate-polkit | awk '/\/polkit-mate-authentication-agent-1$/ {print; exit}')
+[[ -x "$agent" ]] || { echo 'Agente PolicyKit não encontrado.' >&2; exit 1; }
+exec "$agent"

@@ -1,0 +1,12 @@
+* {
+ bg: #191919;
+ bg-alt: #242424;
+ fg: #f2f2f2;
+ fg-muted: #aaaaaa;
+ fg-dark: #191919;
+ border-color: #777777;
+ bg-selected: #353535;
+ urgent: #d68080;
+ accent: #dddddd;
+ accent-soft: #353535;
+}

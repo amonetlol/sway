@@ -1,0 +1,3 @@
+#!/bin/sh
+mkdir -p "@@HOME@@/.config/sway/themes/DarkShadow/cache/rice"
+printf '%s toggle\n' "$(date +%s.%N)" > "@@HOME@@/.config/sway/themes/DarkShadow/cache/rice/launcher-open"

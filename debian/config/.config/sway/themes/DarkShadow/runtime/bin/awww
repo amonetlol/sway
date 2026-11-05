@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import pathlib,subprocess,sys,json
+p=pathlib.Path.home()/'.config/sway/themes/DarkShadow/cache/hyprquickpaper-current'
+cmd=sys.argv[1] if len(sys.argv)>1 else 'query'
+if cmd=='query':
+ if p.exists():print('Virtual-1: image: '+p.read_text().strip())
+elif cmd=='img':
+ image=pathlib.Path(sys.argv[2]).resolve(strict=True)
+ result=json.loads(subprocess.check_output(['swaymsg','-r','output * bg '+json.dumps(str(image))+' fill'],text=True))
+ if not all(x.get('success') for x in result):raise SystemExit(1)
+ p.parent.mkdir(parents=True,exist_ok=True);p.write_text(str(image)+'\n')
+else:raise SystemExit('Sway wallpaper bridge: unsupported command '+cmd)

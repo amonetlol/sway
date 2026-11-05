@@ -1,0 +1,3 @@
+#!/bin/sh
+# VMware: avoid the Wayland DMA-BUF import failure.
+exec /usr/bin/kitty -o linux_display_server=x11 "$@"

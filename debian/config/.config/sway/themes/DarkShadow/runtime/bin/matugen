@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/local/bin/matugen --config "$HOME/.config/sway/themes/DarkShadow/config/matugen/config.toml" "$@"

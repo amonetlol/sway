@@ -1,0 +1,43 @@
+# Basic setup
+font=JetBrainsMono Nerd Font
+font-size=24
+daemonize
+hide-keyboard-layout
+ignore-empty-password
+
+# Background color
+color=282828
+
+# Text color
+text-clear-color=b8bb26
+text-color=fabd2f
+text-caps-lock-color=9d0006
+text-ver-color=fabd2f
+text-wrong-color=cc241d
+
+# Highlight segments
+bs-hl-color=ebdbb2
+key-hl-color=ebdbb2
+
+# Highlight segments Sperator
+separator-color=00000000
+
+# Inside the indicator
+inside-color=282828
+inside-ver-color=282828
+inside-wrong-color=282828
+inside-clear-color=282828
+
+# Line between inside and ring
+line-color=3c3836
+line-ver-color=3c3836
+line-clear-color=b8bb26
+line-wrong-color=9d0006
+
+# Indicator ring
+indicator-radius=100
+indicator-thickness=8
+ring-color=665c54
+ring-ver-color=665c54
+ring-wrong-color=9d0006
+ring-clear-color=b8bb26

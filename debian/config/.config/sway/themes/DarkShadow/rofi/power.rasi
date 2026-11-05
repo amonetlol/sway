@@ -1,0 +1,46 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    icon-theme: "2SSk-nord-dark";
+    drun-display-format: "{name}";
+}
+* {
+    font: "Inter 11";
+    background: #2e3440;
+    foreground: #d8dee9;
+    surface: #3b4252;
+    accent: #88c0d0;
+    background-color: transparent;
+    text-color: @foreground;
+}
+window {
+    width: 600px;
+    location: center;
+    anchor: center;
+    padding: 16px;
+    border: 2px;
+    border-color: @accent;
+    border-radius: 8px;
+    background-color: @background;
+}
+mainbox { spacing: 12px; children: [ "inputbar", "listview" ]; }
+inputbar {
+    padding: 12px;
+    border-radius: 6px;
+    background-color: @surface;
+    children: [ "prompt", "entry" ];
+}
+prompt { text-color: @accent; padding: 0px 10px 0px 0px; }
+entry { placeholder: "Pesquisar"; }
+listview { lines: 6; columns: 1; fixed-height: true; dynamic: true; spacing: 5px; scrollbar: false; }
+element { padding: 8px; spacing: 10px; border-radius: 6px; children: [ "element-icon", "element-text" ]; }
+element-icon { size: 24px; }
+element-text { vertical-align: 0.5; background-color: inherit; text-color: inherit; }
+element selected { background-color: @surface; text-color: @accent; }
+
+configuration { show-icons: false; }
+window { width: 380px; }
+mainbox { children: [ "inputbar", "listview" ]; }
+inputbar { children: [ "prompt" ]; }
+listview { lines: 5; dynamic: false; }
+element { children: [ "element-text" ]; }

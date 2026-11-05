@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# =============================================
+# flist5 - Busca interativa de fontes + estilos
+# =============================================
+
+# Verifica se fzf está instalado
+if ! command -v fzf &> /dev/null; then
+    echo "Error: 'fzf' is required for this interactive script."
+    echo "Install it via your package manager (e.g., sudo pacman -S fzf)"
+    exit 1
+fi
+
+#echo "Fetching system fonts... Use ARROWS to navigate, type to filter, ENTER to select."
+
+# Seleciona a família da fonte
+chosen_font=$(fc-list : family | sort -u | fzf --prompt="Search Font: ")
+
+if [ -n "$chosen_font" ]; then
+    echo -e "\n=== Fonte Selecionada ===\n"
+    echo "$chosen_font"
+    echo -e "\n=== Estilos Disponíveis ===\n"
+    
+    # Mostra todos os estilos dessa família
+    fc-list "$chosen_font" | cut -d: -f2 | sort | uniq | sed 's/style=//'
+    
+    #echo -e "\n=== Melhor correspondência ===\n"
+    #fc-match "$chosen_font" -v | head -n 8
+fi

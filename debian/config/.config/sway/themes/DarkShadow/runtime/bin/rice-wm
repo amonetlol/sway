@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""DarkShadow compositor bridge for Sway. No third-party Python modules."""
+import json, subprocess, sys, re
+def query(kind):
+ return json.loads(subprocess.check_output(['swaymsg','-r','-t',kind],text=True))
+def command(cmd):
+ r=json.loads(subprocess.check_output(['swaymsg','-r',cmd],text=True))
+ if not all(x.get('success') for x in r):raise RuntimeError(str(r))
+def nodes(n, workspace=None, floating=False):
+ if n.get('type')=='workspace':workspace=n.get('num')
+ if n.get('app_id') or n.get('window'):
+  yield dict(n,workspace_num=workspace,is_floating=floating)
+ for key in ('nodes','floating_nodes'):
+  for child in n.get(key,[]):yield from nodes(child,workspace,floating or key=='floating_nodes')
+def state():
+ ws=query('get_workspaces');wins=list(nodes(query('get_tree')))
+ f=next((w for w in ws if w.get('focused')), {})
+ win=next((w for w in wins if w.get('focused')),None)
+ for w in ws:w['count']=sum(x['workspace_num']==w['num'] for x in wins)
+ return dict(workspaces=ws,focusedId=f.get('num',1),focusedOutput=f.get('output',''),focusedWindow=({'title':win.get('name',''),'appId':win.get('app_id') or (win.get('window_properties') or {}).get('class',''),'floating':win['is_floating']} if win else None),busy=any(w['workspace_num']==f.get('num') and not w['is_floating'] for w in wins))
+def emit(mode):
+ s=state();print(int(s['busy']) if mode=='busy-watch' else json.dumps(s),flush=True)
+def monitors():
+ ws=query('get_workspaces');focused=next((w.get('output') for w in ws if w.get('focused')),'')
+ out=[]
+ for m in query('get_outputs'):
+  if not m.get('active'):continue
+  r=m['rect'];mode=m.get('current_mode') or {}
+  out.append(dict(name=m['name'],width=r['width'],height=r['height'],x=r['x'],y=r['y'],pw=mode.get('width',r['width']),ph=mode.get('height',r['height']),scale=m.get('scale',1),rate=mode.get('refresh',60000)/1000,focused=m['name']==focused))
+ return out
+def keyboard():return next((i for i in query('get_inputs') if i.get('type')=='keyboard'),{})
+if __name__=='__main__':
+ try:
+  cmd=sys.argv[1] if len(sys.argv)>1 else 'name';a=sys.argv[2:]
+  if cmd in ('name','detect'):print('sway')
+  elif cmd=='label':print('Sway')
+  elif cmd=='version':print(query('get_version')['human_readable'])
+  elif cmd in ('watch','busy-watch'):
+   emit(cmd)
+   with subprocess.Popen(['swaymsg','-m','-r','-t','subscribe','["workspace","window","output","input"]'],stdout=subprocess.PIPE,text=True) as p:
+    for line in p.stdout:
+     if '"success"' not in line:emit(cmd)
+  elif cmd=='workspace-state':print(state()['focusedId'])
+  elif cmd=='state':print(json.dumps(state()))
+  elif cmd=='monitors':print(json.dumps(monitors()))
+  elif cmd in ('workspace','move-to'):
+   w=a[0];w={'e+1':'next','e-1':'prev'}.get(w,w)
+   if not re.fullmatch(r'\d+|next|prev',w):raise ValueError('invalid workspace')
+   command(('workspace ' if cmd=='workspace' else 'move container to workspace ')+w)
+  elif cmd=='dpms':
+   if a[0] not in ('on','off'):raise ValueError('invalid power state')
+   command('output * power '+a[0])
+  elif cmd in ('exit','reload'):command(cmd)
+  elif cmd=='kbd':
+   k=keyboard();print(json.dumps(dict(names=k.get('xkb_layout_names',[]),active=k.get('xkb_active_layout_name',''))))
+  elif cmd=='kbd-next':command('input type:keyboard xkb_switch_layout next')
+  elif cmd=='window':
+   n=next((n for n in nodes(query('get_tree')) if n.get('name')==a[0]),None)
+   if n:
+    r=n['rect'];m=next((m for m in monitors() if m['x']<=r['x']<m['x']+m['width']),{})
+    print(m.get('name',''),r['x']-m.get('x',0),r['y']-m.get('y',0),r['width'],r['height'])
+  else:raise ValueError('unsupported command: '+cmd)
+ except (ValueError,RuntimeError,subprocess.SubprocessError,IndexError) as e:
+  print('DarkShadow Sway:',e,file=sys.stderr);sys.exit(1)

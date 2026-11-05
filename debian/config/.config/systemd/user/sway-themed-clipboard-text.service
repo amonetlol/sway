@@ -1,0 +1,8 @@
+[Unit]
+Description=Sway clipboard history (text)
+PartOf=sway-themed-session.target
+
+[Service]
+ExecStart=/usr/bin/wl-paste --type text --watch cliphist store
+Restart=on-failure
+RestartSec=2

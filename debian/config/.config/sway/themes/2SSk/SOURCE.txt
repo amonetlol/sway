@@ -1,0 +1,3 @@
+https://github.com/2SSK/dot-files
+Commit: 9aef346a994ba5aa6149d72b7d52dcba3d98b929
+Adaptado para temas independentes do Sway; apps e binds comuns preservados.

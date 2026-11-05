@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""CLI compatibility for DarkShadow Settings, backed by native Sway commands."""
+import json, pathlib, subprocess, sys, re, importlib.machinery, xml.etree.ElementTree as ET
+P=pathlib.Path(__file__).resolve().parents[2]
+wm=importlib.machinery.SourceFileLoader('darkshadow_wm',str(P/'runtime/bin/rice-wm')).load_module()
+ST=P/'config/rice/sway.json';OUT=P/'config/sway/settings.conf'
+DEFAULT={'opts':{'general.gaps_in':5,'general.gaps_out':5,'general.border_size':2,'general.layout':'splith','decoration.active_opacity':1,'decoration.inactive_opacity':1,'input.sensitivity':0,'input.natural_scroll':False,'input.touchpad.natural_scroll':False,'input.touchpad.tap-to-click':True,'input.scroll_factor':1,'input.touchpad.scroll_factor':1},'borders':{'mode':'wallpaper','active':'#c9a77e','inactive':'#444444'},'anim':{'enabled':False,'speed':100,'style':'calm'},'shadow_int':0,'binds':[],'autostart':[],'monitors':{},'kbd':{}}
+def load():
+ s=json.loads(json.dumps(DEFAULT))
+ if ST.exists():
+  for k,v in json.loads(ST.read_text()).items():
+   if isinstance(v,dict):s.setdefault(k,{}).update(v)
+   else:s[k]=v
+ return s
+def quoted(s):return json.dumps(str(s))
+def generate(s):
+ o=s['opts'];b=s['borders'];lines=['# DarkShadow native Sway settings',f"gaps inner {o['general.gaps_in']}",f"gaps outer {o['general.gaps_out']}",f"default_border pixel {o['general.border_size']}",f"default_floating_border pixel {o['general.border_size']}"]
+ for role,c in [('focused',b['active']),('unfocused',b['inactive']),('focused_inactive',b['inactive'])]:lines.append(f'client.{role} {c} #202020 #f6f5f4 {c} {c}')
+ k=s['kbd']
+ for key,field in [('layouts','xkb_layout'),('variants','xkb_variant'),('options','xkb_options')]:
+  if key in k:lines.append('input type:keyboard '+field+' '+quoted(k[key]))
+ lines+=['input type:pointer pointer_accel '+str(o['input.sensitivity']),'input type:pointer natural_scroll '+('enabled' if o['input.natural_scroll'] else 'disabled'),'input type:touchpad natural_scroll '+('enabled' if o['input.touchpad.natural_scroll'] else 'disabled'),'input type:touchpad tap '+('enabled' if o['input.touchpad.tap-to-click'] else 'disabled'),'input type:pointer scroll_factor '+str(o['input.scroll_factor']),'input type:touchpad scroll_factor '+str(o['input.touchpad.scroll_factor'])]
+ for b in s['binds']:lines.append('bindsym '+b['keys']+' exec '+b['cmd'])
+ for c in s['autostart']:lines.append('exec '+c)
+ for name,m in s['monitors'].items():lines.append('output '+quoted(name)+' mode '+m['mode']+' scale '+str(m['scale']))
+ return '\n'.join(lines)+'\n'
+def apply(s,reload=False):
+ ST.parent.mkdir(parents=True,exist_ok=True);ST.write_text(json.dumps(s,indent=2)+'\n');OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(generate(s))
+ if reload:wm.command('reload')
+def monitors():
+ out=[]
+ for m in wm.query('get_outputs'):
+  if not m.get('active'):continue
+  mode=m.get('current_mode') or {};r=m['rect'];modes={}
+  for v in m.get('modes',[]):modes.setdefault(f"{v['width']}x{v['height']}",[]).append(str(v['refresh']/1000))
+  out.append(dict(name=m['name'],width=mode.get('width',r['width']),height=mode.get('height',r['height']),rate=str(mode.get('refresh',60000)/1000),scale=m.get('scale',1),x=r['x'],y=r['y'],modes=[dict(res=k,rates=list(dict.fromkeys(v))) for k,v in modes.items()]))
+ return out
+def clean(s):
+ if any(c in s for c in '\n\r;'):raise ValueError('invalid command separator')
+ return s
+def xkb():return ET.parse('/usr/share/X11/xkb/rules/evdev.xml').getroot().find('layoutList')
+if __name__=='__main__':
+ try:
+  cmd=sys.argv[1] if len(sys.argv)>1 else 'state';a=sys.argv[2:];s=load()
+  if cmd=='state':print(json.dumps(s))
+  elif cmd=='set':
+   key,v=a
+   if key not in DEFAULT['opts']:raise ValueError('Unsupported by Sway: '+key)
+   old=DEFAULT['opts'][key]
+   if isinstance(old,bool):v=v.lower() in ('true','on','1')
+   elif key=='general.layout':
+    if v not in ('splith','splitv','tabbed','stacking'):raise ValueError('invalid layout')
+   else:
+    v=float(v);lo,hi=((-1,1) if key=='input.sensitivity' else (0.1,1) if 'opacity' in key else (0.1,10) if 'scroll_factor' in key else (0,80))
+    v=max(lo,min(hi,v));v=int(v) if isinstance(old,int) else v
+   s['opts'][key]=v;apply(s,True)
+   if key=='general.layout':wm.command('layout '+v)
+   if 'opacity' in key:
+    # Sway has no automatic focus opacity rule; explicitly apply current values.
+    for n in wm.nodes(wm.query('get_tree')):wm.command(f"[con_id={n['id']}] opacity "+str(s['opts']['decoration.active_opacity' if n.get('focused') else 'decoration.inactive_opacity']))
+  elif cmd=='apply':apply(s)
+  elif cmd=='reload':apply(s,True)
+  elif cmd=='border-mode':
+   if a[0] not in ('custom','wallpaper'):raise ValueError('invalid mode')
+   s['borders']['mode']=a[0];apply(s,True)
+  elif cmd=='border-color':
+   if a[0] not in ('active','inactive') or not re.fullmatch('#[a-fA-F0-9]{6}',a[1]):raise ValueError('invalid color')
+   s['borders'][a[0]]=a[1];apply(s,True)
+  elif cmd=='binds':
+   config=wm.query('get_config')['config'];print(json.dumps(dict(custom=s['binds'],active=[l.strip() for l in config.splitlines() if l.strip().startswith('bindsym ')][:160])))
+  elif cmd=='bind-add':
+   keys=re.sub(r'\s*\+\s*','+',a[0]).replace('SUPER','Mod4').replace('Super','Mod4')
+   if not re.fullmatch('[A-Za-z0-9_+:-]+',keys):raise ValueError('invalid binding')
+   s['binds'].append(dict(keys=keys,cmd=clean(a[1])));apply(s,True)
+  elif cmd=='bind-del':s['binds'].pop(int(a[0]));apply(s,True)
+  elif cmd=='autostart':print(json.dumps(dict(main=[],custom=s['autostart'])))
+  elif cmd=='autostart-add':s['autostart'].append(clean(a[0]));apply(s)
+  elif cmd=='autostart-del':s['autostart'].pop(int(a[0]));apply(s)
+  elif cmd=='monitors':print(json.dumps(monitors()))
+  elif cmd=='monitor-apply':
+   name,res,rate,scale=a;m=next(m for m in monitors() if m['name']==name)
+   if not re.fullmatch(r'\d+x\d+',res) or not 0.5<=float(scale)<=4:raise ValueError('invalid display mode')
+   prev=P/'cache/rice/monitor-prev.json';prev.parent.mkdir(parents=True,exist_ok=True)
+   if not prev.exists():prev.write_text(json.dumps(dict(name=name,mode=f"{m['width']}x{m['height']}@{m['rate']}Hz",scale=m['scale'])))
+   wm.command('output '+quoted(name)+' mode '+res+'@'+str(float(rate))+'Hz scale '+str(float(scale)))
+  elif cmd in ('monitor-keep','monitor-revert'):
+   prev=P/'cache/rice/monitor-prev.json'
+   if prev.exists():
+    m=json.loads(prev.read_text())
+    if cmd=='monitor-revert':wm.command('output '+quoted(m['name'])+' mode '+m['mode']+' scale '+str(m['scale']))
+    else:
+     n=next(n for n in monitors() if n['name']==m['name']);s['monitors'][m['name']]=dict(mode=f"{n['width']}x{n['height']}@{n['rate']}Hz",scale=n['scale']);apply(s)
+    prev.unlink()
+  elif cmd=='kbd-state':
+   k=wm.keyboard();print(json.dumps(dict(layouts=s['kbd'].get('layouts','br').split(','),active=k.get('xkb_active_layout_name',''),variants=s['kbd'].get('variants','').split(','),options=s['kbd'].get('options',''),all=[dict(id=n.findtext('configItem/name'),name=n.findtext('configItem/description'),n=len(n.findall('variantList/variant'))) for n in xkb()])))
+  elif cmd=='kbd-variants':print(json.dumps([dict(id=n.findtext('configItem/name'),name=n.findtext('configItem/description')) for l in xkb() if l.findtext('configItem/name')==a[0] for n in l.findall('variantList/variant')]))
+  elif cmd=='kbd-set':
+   pairs=[x.partition(':') for x in a[0].split(',')][:4]
+   if not all(re.fullmatch('[a-z]{2,8}',x[0]) and re.fullmatch('[a-zA-Z0-9_-]*',x[2]) for x in pairs):raise ValueError('invalid keyboard')
+   s['kbd'].update(layouts=','.join(x[0] for x in pairs),variants=','.join(x[2] for x in pairs));apply(s,True)
+  elif cmd=='kbd-options':
+   if not re.fullmatch('[a-z0-9_:,]*',a[0]):raise ValueError('invalid options')
+   s['kbd']['options']=a[0];apply(s,True)
+  elif cmd=='kbd-next':wm.command('input type:keyboard xkb_switch_layout next')
+  elif cmd=='reset-all':apply(json.loads(json.dumps(DEFAULT)),True)
+  else:raise ValueError('Unsupported Sway setting: '+cmd)
+ except (ValueError,RuntimeError,subprocess.SubprocessError,IndexError,StopIteration) as e:
+  print('DarkShadow:',e,file=sys.stderr);sys.exit(1)
