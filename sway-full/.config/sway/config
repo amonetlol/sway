@@ -205,7 +205,8 @@ mode "$mode_system" {
 # Waybar is started by sway-session-init via the user service.
 
 # Clipboard manager
-exec wl-paste --type text --watch clipman store
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
 bindsym $mod+v exec ~/.local/bin/clipboard-menu
 
 ### Session integration and daemons

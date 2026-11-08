@@ -11,7 +11,7 @@ sudo pacman -Syu --needed --noconfirm base-devel git curl python jq unzip
 download https://raw.githubusercontent.com/amonetlol/ps/main/arch-pacotes.txt "$RICE_WORK/arch-pacotes.txt"
 mapfile -t requested < <(sed 's/#.*//;s/^[[:space:]]*//;s/[[:space:]]*$//' "$RICE_WORK/arch-pacotes.txt" | sed '/^$/d')
 rice=(sway swaybg waybar rofi awww kitty nautilus firefox firefox-i18n-pt-br pavucontrol
-  mako swayidle swaylock swayosd playerctl wl-clipboard clipman wlogout
+  mako swayidle swaylock swayosd playerctl wl-clipboard cliphist wlogout
   pipewire pipewire-alsa pipewire-pulse wireplumber alsa-utils
   xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk xdg-user-dirs xdg-utils
   polkit-gnome gnome-keyring networkmanager grim slurp libnotify imagemagick
