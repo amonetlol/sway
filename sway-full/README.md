@@ -38,7 +38,8 @@ vírgula para marcar/desmarcar, `t` para todos, `n` para nenhum e Enter para con
 `q` cancela. A instalação só começa após a confirmação. `--all` confirma todos sem o menu.
 
 Inclui bash, bin, btop, fastfetch, fonts, starship, Neovim para usuário e root,
-VMware, random-wallpapers, hide-shortcuts, recovery-shortcuts, Kitty e wallpapers.
+VMware, random-wallpapers, hide-shortcuts, recovery-shortcuts, Kitty, wallpapers
+e sublime-text.
 Snapper é aplicado somente quando a raiz é Btrfs.
 
 - `hide-shortcuts`: omite o bloco de renomeação do Thunar.

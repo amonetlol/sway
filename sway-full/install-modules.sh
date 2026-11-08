@@ -5,8 +5,8 @@ if [[ -f "$RICE_ROOT/scripts/common.sh" ]]; then source "$RICE_ROOT/scripts/comm
   helper="$(mktemp)"; curl -fLsS https://raw.githubusercontent.com/amonetlol/sway/main/sway-full/scripts/common.sh -o "$helper"; source "$helper"; rm -f "$helper"
 fi
 require_user
-names=(bash bin btop fastfetch fonts starship nvim vmware random-wallpapers hide-shortcuts recovery-shortcuts kitty wallpapers snapper)
-paths=(bash.sh bin.sh btop.sh fastfetch.sh fonts.sh starship.sh setup-nvim.sh VMware/vmware.sh random-wallpapers.sh hide-shortcuts.sh recovery-shortcuts.sh kitty.sh wallpapers.sh '')
+names=(bash bin btop fastfetch fonts starship nvim vmware random-wallpapers hide-shortcuts recovery-shortcuts kitty wallpapers sublime-text snapper)
+paths=(bash.sh bin.sh btop.sh fastfetch.sh fonts.sh starship.sh setup-nvim.sh VMware/vmware.sh random-wallpapers.sh hide-shortcuts.sh recovery-shortcuts.sh kitty.sh wallpapers.sh sublime-text.sh '')
 selected=(); for _ in "${names[@]}"; do selected+=(1); done
 if [[ ${1:-} != --all ]]; then
   [[ -r /dev/tty ]] || fail 'A selecao requer um terminal. Use --all para confirmar todos sem o menu.'
