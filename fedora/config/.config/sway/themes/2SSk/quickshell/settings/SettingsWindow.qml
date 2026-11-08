@@ -1,0 +1,247 @@
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import Quickshell
+import Quickshell.Io
+import qs
+import qs.services
+import qs.widgets
+
+// The settings window, written to @@HOME@@/.config/sway/themes/2SSk/config/shell.json. A real window, so i3 floats it (see
+// look.conf) and the keyboard works.
+FloatingWindow {
+	id: root
+
+	property string page: Panel.settingsPage
+
+	readonly property var pages: [
+		{ key: "bar", glyph: Icons.g("app-window"), title: "Bar", flip: Config.position === "top" },
+		{ key: "appearance", glyph: Icons.g("palette"), title: "Appearance" },
+		{ key: "sound", glyph: Icons.g("volume"), title: "Sound" },
+		{ key: "notifications", glyph: Icons.g("bell"), title: "Notifications" },
+		{ key: "levels", glyph: Icons.g("adjustments"), title: "Levels" },
+		{ key: "power", glyph: Icons.g("power"), title: "Power" },
+		{ key: "timeshift", glyph: Icons.g("history"), title: "Timeshift" },
+		{ key: "keys", glyph: Icons.g("keyboard"), title: "Keys" },
+		{ key: "about", glyph: Icons.g("info-circle"), title: "About" }
+	]
+
+
+	// another window taking the focus closes it
+	FocusWatch {
+		title: root.title
+		onFocusLost: Panel.settingsOpen = false
+	}
+
+	title: "Desktop settings"
+	implicitWidth: 920
+	implicitHeight: 640
+	minimumSize: Qt.size(760, 480)
+	color: Theme.bg
+	onVisibleChanged: if (!visible) Panel.settingsOpen = false
+
+	// Escape closes it here when nothing has focus; keys travel up from a field, never to a sibling like this
+	Item {
+		anchors.fill: parent
+		focus: true
+		Keys.onEscapePressed: Panel.settingsOpen = false
+	}
+
+	Rectangle {
+		id: sidebar
+
+		width: 210
+		height: parent.height
+		color: Qt.alpha(Theme.surface, 0.5)
+
+		UiText {
+			x: 22
+			y: 22
+			text: "Settings"
+			font.family: Theme.fontHeading
+			font.pixelSize: Theme.px(20)
+			font.weight: Font.DemiBold
+		}
+
+		Column {
+			x: 12
+			y: 70
+			width: parent.width - 24
+			spacing: 4
+
+			Repeater {
+				model: root.pages
+
+				delegate: Rectangle {
+					id: entry
+
+					required property var modelData
+					readonly property bool on: root.page === modelData.key
+
+					width: parent.width
+					height: 40
+					radius: Theme.radiusCard
+					color: on ? Theme.primary : hover.hovered ? Qt.alpha(Theme.fg, 0.07) : "transparent"
+
+					Row {
+						anchors.left: parent.left
+						anchors.leftMargin: 14
+						anchors.verticalCenter: parent.verticalCenter
+						spacing: 12
+
+						Glyph {
+							width: 20
+							rotation: entry.modelData.flip ? 180 : 0
+							glyph: entry.modelData.glyph
+							font.pixelSize: 16
+							font.weight: Font.Normal
+							color: entry.on ? Theme.primaryText : Theme.fg
+							filled: entry.on
+						}
+
+						UiText {
+							anchors.verticalCenter: parent.verticalCenter
+							text: entry.modelData.title
+							color: entry.on ? Theme.primaryText : Theme.fg
+							font.weight: Font.Medium
+						}
+					}
+
+					HoverHandler {
+						id: hover
+					}
+
+					MouseArea {
+						anchors.fill: parent
+						cursorShape: Qt.PointingHandCursor
+						onClicked: Panel.settingsPage = entry.modelData.key
+					}
+				}
+			}
+		}
+
+		UiText {
+			x: 22
+			anchors.bottom: parent.bottom
+			anchors.bottomMargin: 18
+			width: parent.width - 44
+			wrapMode: Text.Wrap
+			text: "Saved to @@HOME@@/.config/sway/themes/2SSk/config/shell.json"
+			color: Theme.fgMuted
+			font.pixelSize: Theme.textCaption
+		}
+	}
+
+	Column {
+		id: header
+
+		anchors.left: sidebar.right
+		anchors.leftMargin: 32
+		anchors.right: parent.right
+		anchors.rightMargin: 32
+		y: 28
+		spacing: 16
+		Keys.onEscapePressed: Panel.settingsOpen = false
+
+		UiText {
+			text: root.pages.find(p => p.key === root.page)?.title ?? ""
+			font.family: Theme.fontHeading
+			font.pixelSize: Theme.px(22)
+			font.weight: Font.DemiBold
+		}
+
+		TextField {
+			id: keysSearch
+
+			visible: root.page === "keys"
+			width: parent.width
+			placeholder: "Search keys"
+		}
+	}
+
+	Flickable {
+		id: content
+
+		ScrollBoost {}
+
+		anchors.left: sidebar.right
+		anchors.right: parent.right
+		anchors.top: header.bottom
+		anchors.topMargin: 6
+		anchors.bottom: parent.bottom
+		contentHeight: pageColumn.implicitHeight + 60
+		clip: true
+		boundsBehavior: Flickable.StopAtBounds
+		Keys.onEscapePressed: Panel.settingsOpen = false
+
+		Column {
+			id: pageColumn
+
+			x: 32
+			y: 16
+			width: content.width - 64
+			spacing: 24
+
+			// made when picked (Keys stays, to keep its search)
+			Loader {
+				visible: item !== null // none on Keys: no gap above it
+				width: parent.width
+				sourceComponent: ({ bar: bar, appearance: appearance, sound: sound, notifications: popups, levels: levels, power: power, timeshift: timeshift, about: about })[root.page] ?? null
+
+				Component {
+					id: bar
+
+					BarPage {}
+				}
+
+				Component {
+					id: appearance
+
+					AppearancePage {}
+				}
+
+				Component {
+					id: sound
+
+					SoundPage {}
+				}
+
+				Component {
+					id: about
+
+					AboutPage {}
+				}
+
+				Component {
+					id: popups
+
+					PopupsPage {}
+				}
+
+				Component {
+					id: levels
+
+					LevelsPage {}
+				}
+
+				Component {
+					id: power
+
+					PowerPage {}
+				}
+
+				Component {
+					id: timeshift
+
+					TimeshiftPage {}
+				}
+			}
+
+			KeybindsPage {
+				visible: root.page === "keys"
+				width: parent.width
+				query: keysSearch.text
+			}
+		}
+	}
+}

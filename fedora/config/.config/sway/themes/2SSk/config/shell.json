@@ -1,0 +1,73 @@
+{
+    "audio": {
+        "step": 5
+    },
+    "bar": {
+        "capsules": false,
+        "center": [
+            "clock"
+        ],
+        "left": [
+            "workspaces",
+            "scratchpad",
+            "stats"
+        ],
+        "opacity": 0.85,
+        "position": "top",
+        "right": [
+            "tray",
+            "notifications"
+        ],
+        "size": 40,
+        "style": "island"
+    },
+    "brightness": {
+        "step": 5
+    },
+    "calendar": {
+        "lead": 10,
+        "nextUp": 15
+    },
+    "clipboard": {
+        "days": 30,
+        "images": 30,
+        "max": 200,
+        "persist": true
+    },
+    "fonts": {
+        "bar": "JetBrainsMono Nerd Font",
+        "barWeight": 600,
+        "heading": "Inter",
+        "mono": "JetBrainsMono Nerd Font",
+        "sans": "Inter",
+        "scale": 1.15,
+        "weight": 500
+    },
+    "idle": {
+        "dim": 0,
+        "lock": 0,
+        "off": 0
+    },
+    "nightLight": {
+        "from": "19:00",
+        "schedule": false,
+        "temperature": 4000,
+        "to": "07:00"
+    },
+    "notifications": {
+        "timeout": 5000
+    },
+    "osd": {
+        "timeout": 3000
+    },
+    "power": {
+        "batteryLow": 25,
+        "confirm": true
+    },
+    "wallpaper": {
+        "folders": [
+            "@@HOME@@/Imagens/wallpapers"
+        ],
+        "rotate": "off"
+    }
+}

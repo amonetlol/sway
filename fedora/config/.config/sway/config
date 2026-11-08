@@ -1,0 +1,9 @@
+swaynag_command @@HOME@@/.config/sway/scripts/config-errors.sh
+# Sway entry point: common settings -> common binds -> theme -> personal overrides.
+include ~/.config/sway/settings_default.conf
+include ~/.config/sway/binds_default.conf
+include ~/.config/sway/current/sway.conf
+include ~/.config/sway/current/binds.conf
+include ~/.config/sway/theme-generated.conf
+include ~/.config/sway/local.conf
+exec ~/.config/sway/scripts/session-start.sh

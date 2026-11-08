@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+export KITTY_CONFIG_DIRECTORY="$HOME/.config/kitty-tab"
+exec /usr/bin/kitty -o linux_display_server=x11 --config "$KITTY_CONFIG_DIRECTORY/kitty.conf" "$@"

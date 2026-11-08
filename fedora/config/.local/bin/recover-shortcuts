@@ -1,0 +1,2 @@
+#!/bin/sh
+exec bash "$HOME/fedora-setup/sh/modules/recover-shortcuts.sh" "$@"

@@ -1,0 +1,3 @@
+Upstream: https://github.com/Eidolon426/Heart-Rice-Dot-Files
+Commit: c414d8ec31c78dc09b77947c9da12fa2cb4155c8
+Changes: Gruvbox palette, Rofi replacing Wofi, dots replacing hearts, VM hardware modules removed, shared app shortcuts.

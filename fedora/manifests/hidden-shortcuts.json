@@ -1,0 +1,10 @@
+[
+  "org.freedesktop.IBus.Setup.desktop",
+  "display-im*.desktop",
+  "qt5ct.desktop",
+  "qt6ct.desktop",
+  "rofi.desktop",
+  "rofi-theme-selector.desktop",
+  "nvim.desktop",
+  "qps.desktop"
+]

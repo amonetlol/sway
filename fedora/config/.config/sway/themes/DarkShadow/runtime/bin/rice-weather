@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# The weather for the widgets and the lock screen: "condition|temperature|place" (wttr.in).
+# °C or °F follows Settings > Language & region (rice-region).
+unit="m"
+grep -q '"units": *"f"' "$HOME/.config/sway/themes/DarkShadow/config/rice/region.json" 2>/dev/null && unit="u"
+out="$(curl -s -m 10 "wttr.in/Miguelopolis?format=%C|%t|%l&${unit}&lang=pt")" || exit 1
+case "$out" in ""|*Unknown*|*"<"*|*"|"*"|"*"|"*) exit 1 ;; esac
+mkdir -p "$HOME/.config/sway/themes/DarkShadow/cache/rice"
+printf '%s\n' "$out" > "$HOME/.config/sway/themes/DarkShadow/cache/rice/weather.txt"
+printf '%s\n' "$out"

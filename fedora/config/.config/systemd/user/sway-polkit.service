@@ -1,0 +1,6 @@
+[Unit]
+Description=Polkit agent for Sway Waybar theme
+PartOf=sway-themed-session.target
+[Service]
+ExecStart=%h/.local/bin/sway-polkit-agent
+Restart=on-failure

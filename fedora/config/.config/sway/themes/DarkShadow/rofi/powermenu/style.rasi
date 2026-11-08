@@ -1,0 +1,3 @@
+@import "../main.rasi"
+window { height: 350px; }
+listview { lines: 5; }

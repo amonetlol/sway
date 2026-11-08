@@ -1,0 +1,122 @@
+{
+  "widgets": {
+    "weather": {
+      "enabled": false,
+      "x": 725,
+      "y": 274,
+      "scale": 1.0
+    },
+    "media": {
+      "enabled": false,
+      "x": 920,
+      "y": 404,
+      "scale": 1.0
+    },
+    "resources": {
+      "enabled": false,
+      "x": 55,
+      "y": 598,
+      "scale": 1.0
+    },
+    "usercard": {
+      "enabled": false,
+      "x": 1538,
+      "y": 81
+    },
+    "calendar": {
+      "enabled": false,
+      "x": 1488,
+      "y": 607
+    },
+    "visualizer": {
+      "enabled": false,
+      "x": 0,
+      "y": 1040,
+      "w": 1920,
+      "h": 40,
+      "style": "bars",
+      "flip": false
+    },
+    "battery": {
+      "enabled": false,
+      "x": 779,
+      "y": 471,
+      "scale": 0.937,
+      "opacity": 1.0,
+      "bg": 1.0
+    },
+    "todo": {
+      "enabled": false
+    },
+    "focus": {
+      "enabled": false
+    },
+    "notes": {
+      "enabled": false
+    },
+    "gauge": {
+      "enabled": false
+    },
+    "date": {
+      "enabled": false
+    },
+    "sky": {
+      "enabled": false
+    },
+    "nowring": {
+      "enabled": false
+    },
+    "player": {
+      "enabled": false
+    },
+    "playpill": {
+      "enabled": false
+    },
+    "lyrics": {
+      "enabled": false
+    },
+    "storage": {
+      "enabled": false
+    },
+    "trio": {
+      "enabled": false
+    }
+  },
+  "clock": {
+    "enabled": true,
+    "onlyLocked": false,
+    "placement": "draggable",
+    "style": "digital",
+    "font": "default"
+  },
+  "dock": {
+    "enabled": false,
+    "position": "bottom",
+    "background": true,
+    "hover": true,
+    "pinnedStartup": false,
+    "media": true,
+    "nowText": true,
+    "pinButton": true,
+    "appsButton": true,
+    "tint": false,
+    "appMenu": true,
+    "opacity": 0.78,
+    "blur": true,
+    "apps": [
+      "kitty",
+      "org.gnome.Nautilus",
+      "firefox"
+    ]
+  },
+  "lock": {
+    "toolbars": false,
+    "widgets": false,
+    "media": false
+  },
+  "widgetBlur": true,
+  "widgetTheme": "shadow",
+  "widgetAdapt": true,
+  "autoHide": false,
+  "editing": false
+}

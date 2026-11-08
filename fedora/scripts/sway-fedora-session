@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# VMware's DMA-BUF path fails with this Debian/wlroots stack.
+if [[ $(systemd-detect-virt --vm 2>/dev/null || true) == vmware ]]; then
+ export WLR_RENDERER=pixman
+ export XWAYLAND_NO_GLAMOR=1
+ export LIBGL_ALWAYS_SOFTWARE=1
+ export GALLIUM_DRIVER=llvmpipe
+fi
+exec /usr/bin/sway "$@"
