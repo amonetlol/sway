@@ -1,0 +1,10 @@
+[Unit]
+Description=Wallpaper aleatorio para Sway
+Requires=awww.service
+After=awww.service
+PartOf=sway-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/random-wallpaper.sh
+Environment=XDG_RUNTIME_DIR=/run/user/%U

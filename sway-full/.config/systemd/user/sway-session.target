@@ -1,0 +1,5 @@
+[Unit]
+Description=User services for the Sway session
+BindsTo=graphical-session.target
+Wants=awww.service randow-wallpapers.timer
+After=graphical-session-pre.target

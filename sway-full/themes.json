@@ -1,0 +1,28 @@
+{
+  "gtk": {
+    "name": "Colloid-Dark-Catppuccin",
+    "source": "https://github.com/vinceliuice/Colloid-gtk-theme",
+    "options": [
+      "-c",
+      "dark",
+      "--tweaks",
+      "catppuccin",
+      "-l",
+      "fixed"
+    ]
+  },
+  "system_icons": {
+    "name": "Papirus-Dark",
+    "folders": "cat-frappe-blue",
+    "source": "https://github.com/catppuccin/papirus-folders"
+  },
+  "rofi_icons": {
+    "name": "McMuse-circle-dark",
+    "source": "https://github.com/yeyushengfan258/McMuse-circle"
+  },
+  "cursor": {
+    "name": "Vimix-cursors",
+    "size": 24,
+    "source": "https://github.com/vinceliuice/Vimix-cursors"
+  }
+}

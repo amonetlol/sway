@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if swaymsg -r -t get_tree | jq -e '.. | objects | select(.scratchpad_state? == "fresh" or .scratchpad_state? == "changed")' >/dev/null; then
+  exec swaymsg scratchpad show
+fi
+notify-send 'Scratchpad vazio' 'Envie uma janela com Super+Shift+-; use Super+- para exibi-la.'

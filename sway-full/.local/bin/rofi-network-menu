@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+choice=$(nmcli -g NAME connection show | rofi -dmenu -i -p 'Conexão de rede') || exit 0
+[[ -n "$choice" ]] || exit 0
+nmcli connection up id "$choice"

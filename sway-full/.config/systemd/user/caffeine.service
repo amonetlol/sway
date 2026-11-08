@@ -1,0 +1,9 @@
+[Unit]
+Description=Caffeine: impedir inatividade automatica
+PartOf=sway-session.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/systemd-inhibit --what=idle --mode=block --who=Caffeine "--why=Caffeine ativo por padrao" /usr/bin/sleep infinity
+Restart=on-failure
+[Install]
+WantedBy=sway-session.target

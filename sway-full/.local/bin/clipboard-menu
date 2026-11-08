@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+history="${XDG_DATA_HOME:-$HOME/.local/share}/clipman.json"
+if ! python3 - "$history" <<'CHECK'
+import json,sys,pathlib
+try: data=json.loads(pathlib.Path(sys.argv[1]).read_text())
+except (OSError,ValueError): raise SystemExit(1)
+raise SystemExit(0 if data else 1)
+CHECK
+then
+  printf '%s\n' 'Clipboard vazio — copie um texto para criar o histórico.' | rofi -dmenu -i -no-custom -p Clipboard >/dev/null || true
+  exit 0
+fi
+exec clipman pick --tool rofi --tool-args='-p Clipboard'

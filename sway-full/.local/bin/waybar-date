@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+import datetime,json,calendar,html
+n=datetime.datetime.now()
+days=('Seg','Ter','Qua','Qui','Sex','Sáb','Dom')
+text=f'{days[n.weekday()]}, {n.day}/{n.month}/{n:%y} · {n:%H:%M}'
+cal=calendar.LocaleTextCalendar(firstweekday=0,locale='pt_BR.UTF-8').formatmonth(n.year,n.month,w=3).rstrip()
+tooltip=f'<b>{n:%d/%m/%Y · %H:%M}</b>\n\n<tt>{html.escape(cal)}</tt>'
+print(json.dumps({'text':text,'tooltip':tooltip},ensure_ascii=False))

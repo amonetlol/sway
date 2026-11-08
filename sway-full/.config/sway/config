@@ -1,0 +1,240 @@
+swaybg_command -
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+
+### Style
+include "$HOME/.config/sway/colors-sway"
+include "$HOME/.config/sway/colors-swaylock"
+output Virtual-1 mode 1920x1080 position 0,0 scale 1
+input type:keyboard {
+    xkb_layout br
+    xkb_model abnt2
+}
+
+default_border pixel 2
+default_floating_border pixel 2
+client.unfocused #414559 #303446 #a5adce #414559 #414559
+client.focused #8caaee #303446 #c6d0f5 #8caaee #8caaee
+client.focused_inactive #414559 #303446 #a5adce #414559 #414559
+
+
+# SwayFX
+# Rounded corners omitted: standard Sway.
+
+
+gaps inner 6
+gaps outer 6
+
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+set $term ~/.local/bin/kitty-sway
+
+set $menu rofi -show drun
+set $wifi ~/.local/bin/rofi-network-menu
+set $power ~/.config/wlogout/launch.sh
+set $run rofi -show run
+set $lock swaylock -f -c 303446
+set $sleep systemctl suspend
+# Touchpad
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+    dwt enabled
+}
+
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    # Kill focused window
+    bindsym $mod+Shift+q kill
+
+    # Start your launcher
+    bindsym $mod+d exec $menu
+
+    # Run menu
+    bindsym $mod+Shift+d exec $run
+
+    # Open Power menu
+    bindsym $mod+x exec $power
+    bindsym $mod+q kill
+    bindsym $mod+m exec ~/.local/bin/mon
+    bindsym $mod+F10 exec ~/.local/bin/rofi-wallpaper
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym $mod+Shift+r reload
+
+    # Lock
+    bindsym $mod+l exec $lock
+
+    # Suspend
+
+    # Password manager
+    # Password manager can be configured separately.
+
+
+#
+# Media Controls
+#
+    # Audio controls
+    bindsym XF86AudioRaiseVolume exec swayosd-client --output-volume raise 5
+    bindsym XF86AudioLowerVolume exec  swayosd-client --output-volume lower 5
+    bindsym XF86AudioMute exec swayosd-client --output-volume mute-toggle
+    bindsym XF86AudioMicMute exec swayosd-client --input-volume mute-toggle
+
+    # Brightness controls
+    bindsym XF86MonBrightnessUp exec swayosd-client --brightness raise 5
+    bindsym XF86MonBrightnessDown exec swayosd-client --brightness lower 5
+
+    # Capslock
+    bindsym --release Caps_Lock exec swayosd-client --caps-lock
+
+    # Media player controls
+    bindsym XF86AudioPlay exec playerctl play
+    bindsym XF86AudioPause exec playerctl pause
+    bindsym XF86AudioNext exec playerctl next
+    bindsym XF86AudioPrev exec playerctl previous
+
+# Moving around:
+#
+    # Move your focus around
+bindsym $mod+Left exec ~/.local/bin/sway-swap left
+bindsym $mod+Down exec ~/.local/bin/sway-swap down
+bindsym $mod+Up exec ~/.local/bin/sway-swap up
+bindsym $mod+Right exec ~/.local/bin/sway-swap right
+
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.]
+    bindsym $mod+Control+Shift+Right move workspace to output right
+    bindsym $mod+Control+Shift+Left move workspace to output left
+    bindsym $mod+Control+Shift+Down move workspace to output down
+    bindsym $mod+Control+Shift+Up move workspace to output up
+#
+# Layout stuff:
+#
+    # Switch the current container between different layout styles
+    bindsym $mod+w exec firefox
+    bindsym $mod+e exec ~/.local/bin/nautilus-sway
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+Shift+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus exec ~/.local/bin/scratchpad-toggle
+
+#
+# System options:
+#
+set $mode_system Power Options: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
+mode "$mode_system" {
+    bindsym l exec $lock, mode "default"
+    bindsym e exit
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+
+    # return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+
+}
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+# Waybar is started by sway-session-init via the user service.
+
+# Clipboard manager
+exec wl-paste --type text --watch clipman store
+bindsym $mod+v exec ~/.local/bin/clipboard-menu
+
+### Session integration and daemons
+# Start services after Sway exports its actual IPC/display environment.
+exec ~/.local/bin/sway-session-init
+exec /usr/bin/gnome-keyring-daemon --start --components="pkcs11,secrets"
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec /usr/bin/vmware-user-suid-wrapper
+exec mako --background-color '#303446' --text-color '#c6d0f5' --border-color '#ca9ee6' --icons=1
+exec swayosd-server
+exec swayidle -w before-sleep 'swaylock -f -c 303446' lock 'swaylock -f -c 303446'
+exec ~/.local/bin/waybar-player-watch
+
+include ~/.config/sway/config.d/*
+include /etc/sway/config.d/*
+
+# Cursor VMware
+seat * xcursor_theme Vimix-cursors 24
+seat * hide_cursor 0
+seat * hide_cursor when-typing disable
+
+bindsym $mod+F1 exec ~/.local/bin/show-hotkeys
+bindsym $mod+t floating toggle
+bindsym $mod+semicolon exec ~/.local/bin/sway-layout-menu
+
+bindsym Mod1+Tab focus next
+
+bindsym $mod+Tab workspace next_on_output
+
+for_window [app_id="^btop$"] floating enable, resize set 1000 700, move position center
+
+for_window [app_id="^(org\.pulseaudio\.pavucontrol|pavucontrol)$"] floating enable, resize set 1000 700, move position center

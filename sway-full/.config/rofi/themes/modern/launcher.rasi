@@ -1,0 +1,2 @@
+/* Shared launcher style: same as the Waybar selector. */
+@import "../../selectors.rasi"

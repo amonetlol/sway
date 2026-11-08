@@ -1,0 +1,24 @@
+{
+  "label": "lock",
+  "action": "\"$HOME/.config/wlogout/session-action.sh\" lock",
+  "text": "Bloquear",
+  "keybind": "1"
+},
+{
+  "label": "shutdown",
+  "action": "systemctl poweroff",
+  "text": "Desligar",
+  "keybind": "2"
+},
+{
+  "label": "reboot",
+  "action": "systemctl reboot",
+  "text": "Reiniciar",
+  "keybind": "3"
+},
+{
+  "label": "logout",
+  "action": "\"$HOME/.config/wlogout/session-action.sh\" logout",
+  "text": "Sair",
+  "keybind": "4"
+}

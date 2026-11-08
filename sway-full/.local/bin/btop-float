@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if swaymsg -r -t get_tree | jq -e '.. | objects | select(.app_id? == "btop")' >/dev/null; then
+  exec swaymsg '[app_id="^btop$"] focus'
+fi
+exec "$HOME/.local/bin/kitty-sway" --class btop --title btop /usr/bin/btop

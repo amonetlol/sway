@@ -1,0 +1,43 @@
+/* Catppuccin Frappe — Blue */
+@define-color base #303446;
+@define-color surface0 #414559;
+@define-color surface1 #51576d;
+@define-color text #c6d0f5;
+@define-color blue #8caaee;
+@define-color red #e78284;
+* {
+  font-family: "CodeNewRoman Nerd Font", "Font Awesome 7 Free", "Font Awesome 7 Brands";
+  font-size: 14px;
+  font-weight: bold;
+  min-height: 0;
+  border: none;
+  box-shadow: none;
+}
+window#waybar { background: transparent; color: @text; }
+.modules-left, .modules-center, .modules-right {
+  background: @surface0;
+  color: @blue;
+  border-radius: 16px;
+  padding: 0 6px;
+  margin: 2px 0;
+}
+#workspaces button {
+  background: transparent;
+  color: @blue;
+  border-radius: 12px;
+  padding: 0 6px;
+  margin: 0;
+}
+#workspaces button.focused { background: @blue; color: @base; }
+#workspaces button:hover { background: @surface1; color: @text; }
+#workspaces button.urgent { background: @red; color: @base; }
+#custom-playerctl, #memory, #cpu, #pulseaudio, #bluetooth, #network {
+  color: @blue;
+  background: transparent;
+  padding: 0 5px;
+  margin: 0;
+}
+#custom-date { color: @blue; padding: 0 6px; }
+#pulseaudio.muted { color: #737994; }
+#network.disconnected { color: @red; }
+tooltip { background: @base; color: @text; border: 1px solid @blue; border-radius: 8px; }

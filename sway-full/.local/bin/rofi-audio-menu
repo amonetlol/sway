@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+kind=${1:-sinks}
+[[ "$kind" == sinks || "$kind" == sources ]] || exit 2
+data=$(pactl --format=json list "$kind")
+choice=$(jq -r '.[].description' <<< "$data" | rofi -dmenu -i -format i -p 'Áudio') || exit 0
+[[ "$choice" =~ ^[0-9]+$ ]] || exit 0
+name=$(jq -r --argjson i "$choice" '.[$i].name' <<< "$data")
+if [[ "$kind" == sinks ]]; then
+  pactl set-default-sink "$name"
+  while read -r id rest; do pactl move-sink-input "$id" "$name"; done < <(pactl list short sink-inputs)
+else
+  pactl set-default-source "$name"
+fi

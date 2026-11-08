@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+choice=$(printf 'Abas\nEmpilhado\nHorizontal\nVertical\n' | rofi -dmenu -i -no-custom -p Layout) || exit 0
+case "$choice" in
+  Abas) layout=tabbed ;;
+  Empilhado) layout=stacking ;;
+  Horizontal) layout=splith ;;
+  Vertical) layout=splitv ;;
+  *) exit 0 ;;
+esac
+swaymsg layout "$layout"
