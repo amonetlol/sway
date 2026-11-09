@@ -17,7 +17,7 @@ sudo apt-get update
 sudo apt-get install -y --solver=internal --no-install-recommends \
   sway swaybg waybar rofi kitty nautilus firefox-esr firefox-esr-l10n-pt-br pavucontrol \
   mako-notifier swayidle swaylock playerctl wl-clipboard wlogout \
-  pipewire pipewire-alsa pipewire-pulse wireplumber alsa-utils \
+  pipewire pipewire-alsa pipewire-pulse wireplumber pulseaudio-utils alsa-utils \
   xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
   gnome-keyring network-manager \
   grim slurp libnotify-bin imagemagick xwayland \

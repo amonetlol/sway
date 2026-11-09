@@ -32,8 +32,9 @@ for item in "${modules[@]}"; do
   rel=${item%%|*}; name=${item#*|}
   if [[ -e $HOME/$rel ]]; then ok "modulo $name: $rel"; else bad "modulo $name ($rel)"; fi
 done
-if [[ -d $HOME/Imagens/wallpapers ]] && find "$HOME/Imagens/wallpapers" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | grep -q .; then
-  ok "wallpapers com imagens"
+wall_count=$(find "$HOME/Imagens/wallpapers" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -printf . 2>/dev/null | wc -c)
+if [[ ${wall_count:-0} -gt 0 ]]; then
+  ok "wallpapers com imagens ($wall_count)"
 else
   bad "pasta de wallpapers vazia"
 fi
@@ -48,11 +49,11 @@ for row in rows:
     args = shlex.split(row["action"])
     if not Path(args[0]).is_file():
         missing.append(row["label"] + " sem executavel " + args[0])
-    elif args[0].endswith("loginctl"):
+    elif Path(args[0]).name in {"loginctl", "systemctl"}:
         import subprocess
-        help_text = subprocess.check_output(["loginctl", "--help"], text=True, stderr=subprocess.STDOUT)
+        help_text = subprocess.check_output([args[0], "--help"], text=True, stderr=subprocess.STDOUT)
         if args[1] not in help_text:
-            missing.append(row["label"] + " comando loginctl invalido " + args[1])
+            missing.append(row["label"] + " comando invalido " + args[1])
     print("OK wlogout " + row["label"] + ": " + row["action"])
 if missing:
     raise SystemExit("\n".join(missing))

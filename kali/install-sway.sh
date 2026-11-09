@@ -28,5 +28,20 @@ for name in ['display-im7.q16.desktop', 'org.freedesktop.IBus.Setup.desktop']:
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(text.replace('[Desktop Entry]', '[Desktop Entry]\nNoDisplay=true', 1))
 PY_POLKIT
+python3 - <<'PY_WLOGOUT'
+from pathlib import Path
+import subprocess
+layout = Path.home()/'.config/wlogout/layout'
+text = layout.read_text()
+help_text = subprocess.run(['loginctl', '--help'], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout
+changed = text
+if 'poweroff' not in help_text:
+    changed = changed.replace('/usr/bin/loginctl poweroff', '/usr/bin/systemctl poweroff')
+if 'reboot' not in help_text:
+    changed = changed.replace('/usr/bin/loginctl reboot', '/usr/bin/systemctl reboot')
+if changed != text:
+    layout.write_text(changed)
+    print('[OK] wlogout usa systemctl para desligar e reiniciar.')
+PY_WLOGOUT
 update-desktop-database "$HOME/.local/share/applications" || true
 if [[ -f "$HOME/.cache/rofi3.druncache" ]]; then rm -f "$HOME/.cache/rofi3.druncache"; fi
