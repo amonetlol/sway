@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+from pathlib import Path
+from PIL import Image, ImageOps
+import hashlib, sys
+folder=Path.home()/'Imagens/wallpapers'; cache=Path.home()/'.cache/sway-mocaccino/thumbnails'; cache.mkdir(parents=True,exist_ok=True)
+images=sorted(p for p in folder.rglob('*') if p.is_file() and p.suffix.lower() in ('.png','.jpg','.jpeg','.webp') and '\n' not in str(p))
+for image in images:
+ try:
+  key=hashlib.sha256((str(image.resolve())+str(image.stat().st_mtime_ns)+str(image.stat().st_size)).encode()).hexdigest(); dst=cache/(key+'.png')
+  if dst.is_file(): continue
+  with Image.open(image) as src:
+   if src.width*src.height > 50000000: continue
+   src.draft('RGB',(320,180)); thumb=ImageOps.exif_transpose(src).convert('RGB'); thumb.thumbnail((320,180),Image.Resampling.LANCZOS)
+   tmp=cache/(key+'.tmp.png'); thumb.save(tmp,'PNG',compress_level=3); tmp.replace(dst)
+ except (OSError,ValueError,Image.DecompressionBombError): continue
