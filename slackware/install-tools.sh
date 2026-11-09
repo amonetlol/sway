@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")/common.sh"
+mkdir -p "$cache/sources" "$cache/tools"
+download https://github.com/junegunn/fzf/releases/download/v0.75.0/fzf-0.75.0-linux_amd64.tar.gz "$cache/sources/fzf.tar.gz"
+download https://github.com/sharkdp/fd/releases/download/v10.5.2/fd-v10.5.2-x86_64-unknown-linux-musl.tar.gz "$cache/sources/fd.tar.gz"
+tar -xf "$cache/sources/fzf.tar.gz" -C "$cache/tools"
+tar -xf "$cache/sources/fd.tar.gz" -C "$cache/tools"
+install -m755 "$cache/tools/fzf" "$HOME/.local/bin/fzf"
+install -m755 "$cache/tools/fd-v10.5.2-x86_64-unknown-linux-musl/fd" "$HOME/.local/bin/fd"
+download https://raw.githubusercontent.com/junegunn/fzf/v0.75.0/bin/fzf-tmux "$cache/tools/fzf-tmux"
+install -m755 "$cache/tools/fzf-tmux" "$HOME/.local/bin/fzf-tmux"
+download https://github.com/muesli/duf/releases/download/v0.9.1/duf_0.9.1_linux_x86_64.tar.gz "$cache/sources/duf.tar.gz"
+mkdir -p "$cache/tools/duf"
+tar -xf "$cache/sources/duf.tar.gz" -C "$cache/tools/duf"
+install -m755 "$cache/tools/duf/duf" "$HOME/.local/bin/duf"
+install -m755 "$here/slackpkg-size" "$HOME/.local/bin/slackpkg-size"
+log 'Ferramentas do shell: fd, fzf, fzf-tmux e duf instalados sem compilacao.'
