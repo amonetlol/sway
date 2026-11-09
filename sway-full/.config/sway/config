@@ -77,6 +77,7 @@ input type:touchpad {
 
     # Reload the configuration file
     bindsym $mod+Shift+r reload
+    bindsym $mod+F12 exec pkill -USR2 -x waybar
 
     # Lock
     bindsym $mod+l exec $lock
