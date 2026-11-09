@@ -19,6 +19,9 @@ EOF
   sudo 66 enable "$name"
 }
 sudo install -d /usr/share/66/service
+if [[ -x /usr/libexec/elogind ]]; then
+  write_66 elogind /usr/libexec/elogind
+fi
 write_66 sddm /usr/bin/sddm
 if [[ -x /usr/bin/vmtoolsd ]]; then
   write_66 vmtoolsd /usr/bin/vmtoolsd
