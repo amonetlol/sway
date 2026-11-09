@@ -4,7 +4,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export XDG_CURRENT_DESKTOP=sway XDG_SESSION_DESKTOP=sway XDG_SESSION_TYPE=wayland
 export XCURSOR_THEME=Vimix-cursors XCURSOR_SIZE=24
 export LANG=pt_BR.UTF-8
-if [[ $(systemd-detect-virt 2>/dev/null || true) == vmware ]]; then
+if [[ $(systemd-detect-virt 2>/dev/null || true) == vmware ]] || grep -qi vmware /sys/class/dmi/id/sys_vendor 2>/dev/null; then
   export WLR_NO_HARDWARE_CURSORS=1
 fi
 cleanup() { systemctl --user stop sway-session.target 2>/dev/null || true; }

@@ -32,7 +32,9 @@ install -m644 "$RICE_SOURCE/.config/systemd/user/waybar.service.d/sway.conf" "$H
 if user_systemd_available; then
   systemctl --user daemon-reload
 fi
-systemctl --user --no-reload enable waybar.service pipewire.socket pipewire-pulse.socket wireplumber.service
+if user_systemd_available; then
+  systemctl --user --no-reload enable waybar.service pipewire.socket pipewire-pulse.socket wireplumber.service
+fi
 python3 "$RICE_SOURCE/scripts/setup-desktop.py" "$RICE_BACKUP"
 bash "$RICE_SOURCE/scripts/install-themes.sh"
 log "Configs instaladas. Backups: $RICE_BACKUP"

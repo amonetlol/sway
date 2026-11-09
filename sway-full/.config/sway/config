@@ -11,7 +11,8 @@ include "$HOME/.config/sway/colors-swaylock"
 output Virtual-1 mode 1920x1080 position 0,0 scale 1
 input type:keyboard {
     xkb_layout br
-    xkb_model abnt2
+    xkb_variant abnt2
+    xkb_model pc105
 }
 
 default_border pixel 2
@@ -213,7 +214,7 @@ bindsym $mod+v exec ~/.local/bin/clipboard-menu
 # Start services after Sway exports its actual IPC/display environment.
 exec ~/.local/bin/sway-session-init
 exec /usr/bin/gnome-keyring-daemon --start --components="pkcs11,secrets"
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec sh -c 'exec /usr/libexec/polkit-gnome-authentication-agent-1 || exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1'
 exec /usr/bin/vmware-user-suid-wrapper
 exec mako --background-color '#303446' --text-color '#c6d0f5' --border-color '#ca9ee6' --icons=1
 exec swayosd-server
@@ -223,9 +224,8 @@ exec ~/.local/bin/waybar-player-watch
 include ~/.config/sway/config.d/*
 include /etc/sway/config.d/*
 
-# Cursor VMware
+# Cursor VMware. hide_cursor 0 esconde o ponteiro imediatamente.
 seat * xcursor_theme Vimix-cursors 24
-seat * hide_cursor 0
 seat * hide_cursor when-typing disable
 
 bindsym $mod+F1 exec ~/.local/bin/show-hotkeys

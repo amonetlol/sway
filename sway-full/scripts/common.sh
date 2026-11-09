@@ -58,6 +58,8 @@ install_wallpaper_units() {
   if user_systemd_available; then
     systemctl --user daemon-reload
   fi
-  systemctl --user --no-reload enable randow-wallpapers.timer caffeine.service
+  if user_systemd_available; then
+    systemctl --user --no-reload enable randow-wallpapers.timer caffeine.service
+  fi
   # Os servicos graficos somente iniciam quando o Sway importar o display real.
 }
