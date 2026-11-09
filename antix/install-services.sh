@@ -13,7 +13,7 @@ Description = "$name"
 User = ( root )
 
 [Start]
-Execute = ( $exec_line )
+Execute = ( execl-cmdline -s { $exec_line } )
 EOF
   sudo 66 parse "$name"
   sudo 66 enable "$name"
