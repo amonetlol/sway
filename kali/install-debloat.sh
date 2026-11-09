@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 [[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
-sudo -v
+sudo -n true
 targets=(
   foot malcontent malcontent-gui im-config
   gdm3 gnome-session gnome-session-bin gnome-session-common

@@ -3,7 +3,7 @@ set -euo pipefail
 [[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
 log() { printf '[*] %s\n' "$*"; }
 warn() { printf '[AVISO] %s\n' "$*"; }
-sudo -v
+sudo -n true
 # O Kali mínimo usa ifupdown em eth0. Este arquivo precisa existir antes do
 # NetworkManager subir, para o serviço não tomar a interface no meio do SSH.
 if [[ -f /etc/network/interfaces ]] && grep -qE '^[[:space:]]*iface[[:space:]]+eth0[[:space:]]' /etc/network/interfaces; then

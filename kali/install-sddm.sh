@@ -2,7 +2,7 @@
 set -euo pipefail
 [[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
 log() { printf '[*] %s\n' "$*"; }
-sudo -v
+sudo -n true
 backup="/var/backups/sway-kali-sddm-$(date +%Y%m%d-%H%M%S)-$$"
 backup_path() {
   if sudo test -e "$1"; then

@@ -15,9 +15,13 @@ step() { printf '\n[*] %s\n' "$*"; }
 if ! sudo -n true 2>/dev/null; then
   [[ -n ${INSTALL_SUDO_PASSWORD:-} ]] || { echo "sudo pede senha. Exporte INSTALL_SUDO_PASSWORD ou rode em um terminal." >&2; exit 1; }
   user="$(id -un)"
-  { printf '%s\n' "$INSTALL_SUDO_PASSWORD"; printf '%s ALL=(ALL) NOPASSWD:ALL\n' "$user"; } | sudo -S -p '' tee /etc/sudoers.d/kali-pio >/dev/null
+  rule="$(mktemp)"
+  printf '%s ALL=(ALL) NOPASSWD:ALL\n' "$user" > "$rule"
+  printf '%s\n' "$INSTALL_SUDO_PASSWORD" | sudo -S -p '' cp "$rule" /etc/sudoers.d/kali-pio
+  rm -f "$rule"
   printf '%s\n' "$INSTALL_SUDO_PASSWORD" | sudo -S -p '' chmod 440 /etc/sudoers.d/kali-pio
   printf '%s\n' "$INSTALL_SUDO_PASSWORD" | sudo -S -p '' visudo -cf /etc/sudoers.d/kali-pio >/dev/null
+  sudo -n true
 fi
 step "Pacotes Kali"
 bash "$here/install-pacotes.sh"

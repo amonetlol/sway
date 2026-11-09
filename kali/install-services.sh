@@ -2,7 +2,7 @@
 set -euo pipefail
 [[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
 log() { printf '[*] %s\n' "$*"; }
-sudo -v
+sudo -n true
 sudo systemctl enable sddm.service
 sudo systemctl set-default graphical.target
 if systemctl cat NetworkManager.service >/dev/null 2>&1; then
