@@ -39,6 +39,7 @@ s=s.replace('  export WLR_NO_HARDWARE_CURSORS=1', '  export WLR_NO_HARDWARE_CURS
 launcher.write_text(s)
 init=home/'.local/bin/sway-session-init'
 s=init.read_text();s=s.replace('  systemctl --user restart awww.service || true\n','')
+s=s.replace('WAYLAND_DISPLAY SWAYSOCK', 'DISPLAY WAYLAND_DISPLAY SWAYSOCK')
 init.write_text(s)
 unit=home/'.config/systemd/user/sway-session.target'
 unit.write_text(unit.read_text().replace('Wants=awww.service randow-wallpapers.timer','Wants=randow-wallpapers.timer'))
