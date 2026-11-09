@@ -184,10 +184,21 @@ wall() { "$HOME/.local/bin/random-wallpaper.sh" "$@"; }
 write(bashrc, current)
 write(config / 'wlogout/session-action.sh', '''#!/usr/bin/env bash
 set -euo pipefail
+uid=$(id -u)
+runtime="${XDG_RUNTIME_DIR:-/run/user/$uid}"
+export XDG_RUNTIME_DIR="$runtime"
+if [[ -z ${SWAYSOCK:-} ]]; then
+  sock=$(ls "$runtime"/sway-ipc.* 2>/dev/null | head -n 1 || true)
+  [[ -n "$sock" ]] && export SWAYSOCK="$sock"
+fi
+if [[ -z ${WAYLAND_DISPLAY:-} ]]; then
+  export WAYLAND_DISPLAY=wayland-1
+fi
 case "${1:-}" in
-  lock) exec /usr/bin/swaylock -f -c 303446 ;;
+  lock) exec /usr/bin/swaylock -f -c '#303446' ;;
   logout) exec /usr/bin/swaymsg exit ;;
-  poweroff|reboot) exec /usr/bin/loginctl "$1" ;;
+  poweroff) exec /usr/bin/loginctl poweroff ;;
+  reboot) exec /usr/bin/loginctl reboot ;;
   *) echo 'Uso: session-action.sh lock|logout|poweroff|reboot' >&2; exit 2 ;;
 esac
 ''')
