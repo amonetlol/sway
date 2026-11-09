@@ -7,4 +7,6 @@ sudo rpm-ostree override remove \
   gnome-session gnome-session-wayland-session gnome-shell gnome-shell-common \
   gnome-shell-extension-apps-menu gnome-shell-extension-background-logo \
   gnome-shell-extension-common gnome-shell-extension-launch-new-instance \
-  gnome-shell-extension-places-menu gnome-shell-extension-window-list "$@"
+  gnome-shell-extension-places-menu gnome-shell-extension-window-list \
+  malcontent-control gnome-disk-utility gnome-system-monitor \
+  gnome-software gnome-software-rpm-ostree ptyxis gnome-color-manager rygel "$@"

@@ -30,12 +30,27 @@ python3 - "$HOME/.config/sway/config" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
-s=s.replace('swayosd-client --output-volume raise 5','pactl set-sink-volume @DEFAULT_SINK@ +5%').replace('swayosd-client --output-volume lower 5','pactl set-sink-volume @DEFAULT_SINK@ -5%').replace('swayosd-client --output-volume mute-toggle','pactl set-sink-mute @DEFAULT_SINK@ toggle').replace('swayosd-client --input-volume mute-toggle','pactl set-source-mute @DEFAULT_SOURCE@ toggle').replace('swayosd-client --brightness raise 5','brightnessctl set +5%').replace('swayosd-client --brightness lower 5','brightnessctl set 5%-').replace('    bindsym --release Caps_Lock exec swayosd-client --caps-lock','').replace('exec swayosd-server','')
+s=s.replace('swayosd-client --output-volume raise 5','pactl set-sink-volume @DEFAULT_SINK@ +5%').replace('swayosd-client --output-volume lower 5','pactl set-sink-volume @DEFAULT_SINK@ -5%').replace('swayosd-client --output-volume mute-toggle','pactl set-sink-mute @DEFAULT_SINK@ toggle').replace('swayosd-client --input-volume mute-toggle','pactl set-source-mute @DEFAULT_SOURCE@ toggle').replace('swayosd-client --brightness raise 5','brightnessctl set +5%').replace('swayosd-client --brightness lower 5','brightnessctl set 5%-').replace('    bindsym --release Caps_Lock exec swayosd-client --caps-lock','').replace('exec swayosd-server','').replace('swaybg_command -\n','')
 p.write_text(s)
 PY
 sed -i 's/Wants=awww.service randow-wallpapers.timer/Wants=randow-wallpapers.timer/' "$HOME/.config/systemd/user/sway-session.target"
 sed -i '/^Requires=awww.service$/d; /^After=awww.service$/d' "$HOME/.config/systemd/user/randow-wallpapers.service"
 sed -i '/systemctl --user restart awww.service/d' "$HOME/.local/bin/sway-session-init"
+python3 - "$HOME/.local/bin/sway-session-init" <<'PY'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+s = p.read_text()
+head, sep, tail = s.partition("else\n")
+if sep and "random-wallpaper.sh" not in head:
+    old = "  systemctl --user restart waybar.service || true\n"
+    new = old + "  if [[ -x \"$HOME/.local/bin/random-wallpaper.sh\" ]]; then\n    \"$HOME/.local/bin/random-wallpaper.sh\" >/dev/null 2>&1 &\n  fi\n"
+    if old not in head:
+        raise SystemExit("session init pattern missing")
+    s = head.replace(old, new, 1) + sep + tail
+    p.write_text(s)
+PY
 install -m755 "$here/random-wallpaper.sh" "$HOME/.local/bin/random-wallpaper.sh"
+chmod 755 "$HOME/.config/rofi-wallpaper/launch.sh" 2>/dev/null || true
 if user_systemd_available; then systemctl --user daemon-reload; fi
 log "Configuracao instalada; backups em $RICE_BACKUP."
