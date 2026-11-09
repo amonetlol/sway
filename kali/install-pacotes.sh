@@ -15,7 +15,7 @@ EOF
 fi
 sudo apt-get update
 sudo apt-get install -y --solver=internal --no-install-recommends \
-  sway swaybg waybar rofi kitty nautilus firefox-esr firefox-esr-l10n-pt-br pavucontrol \
+  sway swaybg waybar rofi kitty nautilus pavucontrol \
   mako-notifier swayidle swaylock playerctl wl-clipboard wlogout \
   pipewire pipewire-alsa pipewire-pulse wireplumber pulseaudio-utils alsa-utils \
   xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
@@ -50,9 +50,7 @@ for pair in bat:batcat fd:fdfind 7z:7zz unrar:unrar-free; do
     [[ -e "$HOME/.local/bin/$name" || -L "$HOME/.local/bin/$name" ]] || ln -s "$(command -v "$target")" "$HOME/.local/bin/$name"
   fi
 done
-if [[ ! -x /usr/bin/firefox && ! -e /usr/local/bin/firefox ]]; then
-  sudo ln -s /usr/bin/firefox-esr /usr/local/bin/firefox
-fi
+bash "$(dirname "${BASH_SOURCE[0]}")/install-firefox.sh"
 if ! command -v prettier >/dev/null; then npm install --global --prefix "$HOME/.local" prettier; fi
 bash "$(dirname "${BASH_SOURCE[0]}")/install-awww.sh"
 if [[ $(getent passwd "$USER" | cut -d: -f7) != */bash ]]; then
@@ -64,5 +62,6 @@ sudo timedatectl set-timezone America/Sao_Paulo || true
 sudo sed -i 's/^# *\(pt_BR.UTF-8 UTF-8\)/\1/' /etc/locale.gen
 sudo locale-gen
 sudo localectl set-locale LANG=pt_BR.UTF-8 || true
-sudo localectl set-x11-keymap br abnt2 || true
+sudo localectl set-keymap br-abnt2 || true
+sudo localectl set-x11-keymap br pc105 abnt2 || true
 log "Pacotes Kali instalados. Terminal: kitty. Editor: neovim. Clipboard: cliphist."

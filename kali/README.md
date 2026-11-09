@@ -25,7 +25,7 @@ Se o sudo pedir senha em uma sessão sem terminal, exporte `INSTALL_SUDO_PASSWOR
 
 ## Pacotes
 
-Kali Rolling acompanha o Debian testing. Kitty e Neovim vêm do APT. O navegador do repositório é o Firefox ESR; o comando `firefox` aponta para ele. `swayosd` não está no repositório; o Sway sobe sem o OSD de volume. Se `awww` não existir no APT, install-awww.sh compila a versão oficial 0.12.1.
+Kali Rolling acompanha o Debian testing. Kitty e Neovim vêm do APT. O navegador é o Firefox em deb, do repositório da Mozilla, no lugar do Firefox ESR. `swayosd` não está no repositório; o Sway sobe sem o OSD de volume. Se `awww` não existir no APT, install-awww.sh compila a versão oficial 0.12.1.
 
 Numa instalação mínima, a rede permanece no ifupdown. NetworkManager é instalado com `eth0` não gerenciado, para não derrubar o SSH.
 

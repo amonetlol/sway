@@ -3,7 +3,7 @@ set -euo pipefail
 [[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
 sudo -n true
 targets=(
-  foot malcontent malcontent-gui im-config
+  firefox-esr firefox-esr-l10n-pt-br foot malcontent malcontent-gui im-config
   gdm3 gnome-session gnome-session-bin gnome-session-common
   gnome-shell gnome-shell-common gnome-control-center gnome-control-center-data
   gnome-settings-daemon gnome-settings-daemon-common xdg-desktop-portal-gnome
@@ -19,7 +19,7 @@ if ((${#installed[@]})); then
   trap 'rm -f -- "$plan"' EXIT
   sudo apt-get -s --solver=internal --no-install-recommends purge "${installed[@]}" > "$plan"
   if grep -q '^Inst ' "$plan" ||
-     grep -Eq '^(Remv|Purg) (sway|sddm|nautilus|gnome-keyring|network-manager|pipewire|kali-defaults)(:[^ ]+)? ' "$plan"; then
+     grep -Eq '^(Remv|Purg) (sway|sddm|nautilus|gnome-keyring|network-manager|pipewire|kali-defaults|firefox)(:[^ ]+)? ' "$plan"; then
     cat "$plan"
     echo "Plano de remoção altera componentes preservados do rice." >&2
     exit 1

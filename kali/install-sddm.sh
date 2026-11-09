@@ -67,11 +67,22 @@ Section "Device"
     Option "AccelMethod" "none"
 EndSection
 EOF
+  # QT_QUICK_BACKEND=software desenha o greeter, mas o Qt deixa de entregar teclas.
   sudo tee /etc/sddm.conf.d/95-vmware-software.conf >/dev/null <<'EOF'
 [General]
-GreeterEnvironment=QT_QUICK_BACKEND=software,LIBGL_ALWAYS_SOFTWARE=1
+GreeterEnvironment=LIBGL_ALWAYS_SOFTWARE=1,LANG=pt_BR.UTF-8,LC_ALL=pt_BR.UTF-8
 EOF
 fi
+sudo mkdir -p /etc/X11/xorg.conf.d
+sudo tee /etc/X11/xorg.conf.d/00-keyboard.conf >/dev/null <<'EOF'
+Section "InputClass"
+    Identifier "keyboard-br"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "br"
+    Option "XkbVariant" "abnt2"
+    Option "XkbModel" "pc105"
+EndSection
+EOF
 printf 'sddm shared/default-x-display-manager select sddm\n' | sudo debconf-set-selections
 printf '/usr/bin/sddm\n' | sudo tee /etc/X11/default-display-manager >/dev/null
 sudo chmod 755 /usr/local/bin/sway-full-session
