@@ -28,7 +28,9 @@ sudo mkdir -p /boot/EFI/aarambh
 sudo cp "$work/aarambh/build/aarambh.efi" /boot/EFI/aarambh/aarambh.efi
 sudo cp "$work/aarambh/assets/distros.conf" /boot/EFI/aarambh/distros.conf
 sudo rm -rf /boot/EFI/aarambh/fonts /boot/EFI/aarambh/logos /boot/EFI/aarambh/backgrounds
-sudo cp -a "$work/aarambh/assets/fonts" "$work/aarambh/assets/logos" "$work/aarambh/assets/backgrounds" /boot/EFI/aarambh/
+sudo cp -r "$work/aarambh/assets/fonts" /boot/EFI/aarambh/fonts
+sudo cp -r "$work/aarambh/assets/logos" /boot/EFI/aarambh/logos
+sudo cp -r "$work/aarambh/assets/backgrounds" /boot/EFI/aarambh/backgrounds
 sudo tee /boot/EFI/aarambh/aarambh.conf >/dev/null <<EOF
 theme picker-wheel
 timeout 10
