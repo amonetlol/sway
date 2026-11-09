@@ -28,3 +28,5 @@ Ou `sudo bash fedora/install.sh --user "$USER"`.
 Backups em `/var/backups/sway-fedora/` e `~/.local/state/sway-fedora/backups/`. Nao reinicia nem encerra a sessao atual. Faca novo login para carregar o desktop.
 
 [Instalacao](docs/INSTALACAO.md) ? [Validacao](docs/VALIDACAO.md)
+
+`install-pacotes.sh` tambem executa `install-cli.sh` como usuario de destino. Essa etapa instala as ferramentas CLI e baixa o modulo atual `pacotes_fedora.sh`, adaptando os nomes RPM antigos do Fedora 45. Pipenv fica em um venv do usuario. Para executar apenas essa etapa: `bash fedora/install-cli.sh` (usuario comum com sudo).

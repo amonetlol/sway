@@ -1,13 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
-source "$(dirname -- "${BASH_SOURCE[0]}")/scripts/install-common.sh"
-require_root
-python3 "$base/scripts/optimize-dnf.py"
-mapfile -t packages < <(sed '/^#/d;/^$/d' "$base/manifests/packages.txt")
-dnf install -y --setopt=install_weak_deps=False "${packages[@]}"
-usermod -aG wheel "$target"
-visudo -c
-bash "$base/scripts/install-firefox.sh"
-bash "$base/scripts/install-tools.sh"
-bash "$base/scripts/install-matugen.sh"
-echo 'Pacotes Fedora instalados.'
+[[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
+log() { printf '[*] %s\n' "$*"; }
+warn() { printf '[AVISO] %s\n' "$*"; }
+sudo -v
+sudo dnf install -y \
+  sway swaybg waybar rofi kitty nautilus firefox pavucontrol \
+  mako swayidle swaylock playerctl wl-clipboard wlogout \
+  pipewire pipewire-pulseaudio wireplumber \
+  xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
+  gnome-keyring NetworkManager \
+  grim slurp libnotify ImageMagick xorg-x11-server-Xwayland \
+  tmux neovim btop papirus-icon-theme sassc adwaita-icon-theme \
+  fontawesome-fonts-all sddm xorg-x11-server-Xorg xorg-x11-xauth qt6-qtsvg qt6-qtdeclarative qt6-qt5compat \
+  unzip git curl python3 jq \
+  grub2-efi-x64 grub2-tools glibc-langpack-pt
+for pkg in gnome-themes-extra cliphist nwg-look swayosd awww; do
+  if sudo dnf install -y "$pkg"; then
+    log "Instalado: $pkg"
+  else
+    warn "Pacote ausente no dnf: $pkg"
+  fi
+done
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/install-cli.sh"
+sudo timedatectl set-timezone America/Sao_Paulo || true
+sudo localectl set-locale LANG=pt_BR.UTF-8 || true
+sudo localectl set-x11-keymap br abnt2 || true
+log "Pacotes Fedora instalados. Clipboard: cliphist. GTK: nwg-look."
