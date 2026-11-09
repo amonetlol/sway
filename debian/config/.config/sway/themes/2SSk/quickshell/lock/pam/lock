@@ -1,2 +1,0 @@
-# The lock screen's password check: your own password, through pam_unix (unix_chkpwd: no root)
-auth required pam_unix.so

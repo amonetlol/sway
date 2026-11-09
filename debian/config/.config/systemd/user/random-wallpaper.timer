@@ -1,9 +1,0 @@
-[Unit]
-Description=Timer wallpaper aleatório (90 segundos)
-
-[Timer]
-OnStartupSec=15s
-OnUnitActiveSec=90s
-
-[Install]
-WantedBy=timers.target

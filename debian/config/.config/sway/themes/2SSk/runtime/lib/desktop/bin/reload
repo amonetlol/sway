@@ -1,7 +1,0 @@
-#!/bin/sh
-set -eu
-profile="$HOME/.config/sway/themes/2SSk"
-if [ "$(qs -p "$profile/quickshell" ipc call lock locked 2>/dev/null || :)" = true ]; then
- echo "Desbloqueie a tela antes de recarregar." >&2; exit 1
-fi
-exec systemctl --user restart sway-themed-quickshell.service

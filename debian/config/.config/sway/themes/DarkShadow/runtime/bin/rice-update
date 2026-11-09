@@ -1,2 +1,0 @@
-#!/bin/sh
-case "${1:-}" in state|check|status) printf '%s\n' '{"available":false,"checking":false,"current":"Sway port","message":"Atualize pelo repositorio sway/debian"}';; watch|stop) exit 0;; *) echo 'DarkShadow para Sway: atualize pelo repositorio sway/debian.' >&2; exit 1;; esac

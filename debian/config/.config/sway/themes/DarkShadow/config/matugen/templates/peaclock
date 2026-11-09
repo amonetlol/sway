@@ -1,4 +1,0 @@
-style active-bg {{colors.primary.default.hex}}
-style inactive-bg clear
-style colon-bg {{colors.primary.default.hex}}
-style date {{colors.on_surface.default.hex}}

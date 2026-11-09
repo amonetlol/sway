@@ -1,7 +1,0 @@
-[Unit]
-Description=Restore desktop preferences when Sway exits
-PartOf=sway-themed-session.target
-
-[Service]
-Type=simple
-ExecStart=%h/.config/sway/scripts/session-watch.py

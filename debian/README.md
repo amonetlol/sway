@@ -1,30 +1,66 @@
-# Debian + Sway
+# Debian Sid + Sway
 
-Configurações e instaladores para Debian 13 / Sid (amd64), com os temas DarkShadow, 2SSk e Gruvbox.
+Instaladores na raiz, no mesmo padrao de nixos e void. As configuracoes do rice
+ficam somente em sway-full, compartilhadas entre as distribuicoes.
 
-Execute na raiz do repositório, nesta ordem:
+O destino e Debian Sid, x86_64 com UEFI. O instalador nao migra uma instalacao
+stable para Sid automaticamente.
 
-```bash
-sudo bash debian/install-pacotes.sh --user "$USER"
-sudo bash debian/install-sway_configs.sh --user "$USER"
-sudo bash debian/install-personal_configs.sh --user "$USER"
-```
+## Instalacao
 
-Ou execute as três etapas com `sudo bash debian/install.sh --user "$USER"`.
+Como usuario comum, com sudo, por TTY ou SSH:
 
-| Caminho | Conteúdo |
-| --- | --- |
-| `install-pacotes.sh` | Pacotes e ferramentas do sistema |
-| `install-sway_configs.sh` | Sway, temas, serviços, SDDM e GRUB |
-| `install-personal_configs.sh` | Configurações pessoais atualizadas dos repositórios amonetlol |
-| `config/` | Configurações replicáveis; `@@HOME@@` é substituído durante a instalação |
-| `scripts/` | Implementação e auxiliares dos instaladores |
-| `manifests/` | Pacotes, debloat, atalhos ocultos, permissões e links simbólicos |
-| `assets/` | Arquivos compactados, checksums e tema GRUB Leaf |
-| `compat/` | Ajustes para VMware e versões anteriores do Qt |
-| `upstream/modules/` | Cópias de referência dos módulos; o instalador pessoal busca as versões atuais online |
-| `docs/` | Instruções detalhadas, adaptação DarkShadow e registros de validação |
+    bash debian/install.sh
 
-[Instalação e detalhes](docs/INSTALACAO.md) · [DarkShadow](docs/DARKSHADOW.md) · [Validação](docs/VALIDACAO.md)
+Ou, com git instalado:
 
-As três entradas de instalação mantêm seus nomes e caminhos. Nenhum instalador altera o Debian para Sid automaticamente.
+    bash <(curl -fsSL https://raw.githubusercontent.com/amonetlol/sway/main/debian/install.sh)
+
+## Ordem
+
+1. install-pacotes.sh: pacotes APT, ferramentas CLI, dependencias do Neovim,
+   nomes de comandos dos aliases, locale pt-BR e awww.
+2. install-grub.sh: preserva o GRUB EFI Debian existente e atualiza o menu.
+3. install-sddm.sh: tema Catppuccin Frappe Blue e uma unica sessao chamada Sway.
+4. install-debloat.sh: remove o desktop GNOME, GDM, Firefox ESR, foot,
+   controle parental e im-config, preservando Nautilus, chaveiro, IBus e GTK.
+5. install-modules.sh: baixa os modulos atuais de amonetlol/sh e os executa.
+6. install-sway.sh: aplica sway-full, adapta o agente Polkit e oculta atalhos.
+   Os temas GTK sao aplicados nesta etapa, sem repetir a instalacao.
+7. install-services.sh: habilita SDDM e servicos systemd do usuario.
+
+install-session.sh mantem o barramento do usuario disponivel durante o fluxo
+por SSH e restaura o estado anterior de linger ao terminar.
+install-themes.sh permite reaplicar apenas os temas GTK, icones e cursor.
+
+## Modulos
+
+Bash, bin, btop, fastfetch, fonts, starship, Neovim, VMware, random-wallpapers,
+hide-shortcuts, recovery-shortcuts, Kitty, wallpapers e Sublime Text.
+Todos sao baixados novamente em cada execucao. Sem argumentos, o seletor
+comeca com todos marcados; --all confirma todos sem o menu.
+
+install-sublime.sh adapta o modulo ao Flatpak com.sublimehq.SublimeText e aplica
+as preferencias na pasta do sandbox: Catppuccin Frappe, Adaptive e CodeNewRoman.
+LocalizedMenu configura os menus em pt-BR; a traducao e parcial e comunitaria.
+Preferencias existentes sao preservadas em backup. Reabra o editor apos instalar.
+
+## Resultado
+
+- Firefox regular e idioma pt-BR em DEB, pelo APT do Sid.
+- Pacotes sem recomendacoes automaticas que tragam outro desktop.
+- Remocao do GNOME com o solver interno do APT, sem substituir por Cinnamon
+  e sem executar autoremove geral.
+- SDDM registrado como padrao antes de remover GDM.
+- Em VMware, Xorg usa modesetting sem aceleracao e o greeter usa renderizacao
+  por software, conforme a correcao aplicada na VM Sid.
+- Se awww nao existir no APT, install-awww.sh compila a versao oficial 0.12.1
+  e configura o daemon de /usr/local/bin.
+- ImageMagick e preferencias do IBus ocultos no menu.
+- Agente Polkit MATE independente do desktop GNOME.
+
+Os instaladores usam diretorios temporarios fora da home. Backups de preferencias
+ficam em ~/.local/state/sway-full/backups; configuracoes anteriores do SDDM
+ficam em /var/backups/sway-debian-sddm-*.
+A sessao grafica e a maquina nao sao reiniciadas automaticamente. Ao terminar,
+entre em Sway no SDDM; atualizacoes de kernel ou driver podem exigir reinicializacao.

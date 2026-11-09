@@ -1,3 +1,0 @@
-#!/bin/sh
-# Sway workspaces are followed by Wm.qml through rice-wm watch.
-exit 0
