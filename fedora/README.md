@@ -1,32 +1,54 @@
 # Fedora + Sway
 
-Port das configuracoes Debian para Fedora x86_64, aplicado no Fedora 45: DarkShadow, 2SSk, Gruvbox, SDDM e GRUB Leaf.
+Instaladores na raiz, no mesmo padrao de nixos, void e debian. As configuracoes
+do rice ficam somente em sway-full, compartilhadas entre as distribuicoes.
 
-Na raiz do repositorio:
+## Instalacao
 
-```bash
-sudo bash fedora/install-pacotes.sh --user "$USER"
-sudo bash fedora/install-sway_configs.sh --user "$USER"
-sudo bash fedora/install-personal_configs.sh --user "$USER"
-```
+Execute como usuario comum, com sudo, a partir da raiz do repositorio:
 
-Ou `sudo bash fedora/install.sh --user "$USER"`.
+    bash fedora/install.sh
 
-| Caminho | Conteudo |
-| --- | --- |
-| `install-pacotes.sh` | DNF, pacotes Fedora e ferramentas |
-| `install-sway_configs.sh` | Sway, temas, servicos, SDDM Wayland e GRUB2 |
-| `install-personal_configs.sh` | Configuracoes atuais dos repositorios amonetlol |
-| `config/` | Dotfiles com `@@HOME@@` substituido na instalacao |
-| `scripts/` | Implementacao e auxiliares |
-| `manifests/` | Pacotes, permissoes, links e atalhos |
-| `assets/` | Temas, fontes, icones e checksums preservados do Debian |
-| `compat/` | Compatibilidade Qt e referencia Xorg Debian |
-| `upstream/modules/` | Referencias; a instalacao pessoal busca as versoes atuais |
-| `docs/` | Instalacao, adaptacoes e validacao Fedora |
+Ou, com git instalado:
 
-Backups em `/var/backups/sway-fedora/` e `~/.local/state/sway-fedora/backups/`. Nao reinicia nem encerra a sessao atual. Faca novo login para carregar o desktop.
+    bash <(curl -fsSL https://raw.githubusercontent.com/amonetlol/sway/main/fedora/install.sh)
 
-[Instalacao](docs/INSTALACAO.md) ? [Validacao](docs/VALIDACAO.md)
+## Ordem
 
-`install-pacotes.sh` tambem executa `install-cli.sh` como usuario de destino. Essa etapa instala as ferramentas CLI e baixa o modulo atual `pacotes_fedora.sh`, adaptando os nomes RPM antigos do Fedora 45. Pipenv fica em um venv do usuario. Para executar apenas essa etapa: `bash fedora/install-cli.sh` (usuario comum com sudo).
+1. install-pacotes.sh: pacotes DNF, locale pt-BR, teclado ABNT2 e fuso de Sao Paulo.
+   Tambem chama install-cli.sh para instalar as ferramentas pessoais.
+2. install-grub.sh: atualiza /boot/grub2/grub.cfg e preserva a entrada EFI existente.
+3. install-sddm.sh: configura SDDM com Catppuccin Frappe Blue e a sessao Sway.
+4. install-modules.sh: baixa os modulos atuais de amonetlol/sh e os executa.
+5. install-sway.sh: aplica as configuracoes compartilhadas de sway-full, incluindo
+   os temas GTK, icones e cursor.
+6. install-services.sh: habilita SDDM e os servicos systemd do usuario.
+
+install-themes.sh permite reaplicar somente Colloid, Papirus e Vimix, sem
+reinstalar o restante do rice.
+
+## Modulos
+
+Bash, bin, btop, fastfetch, fonts, starship, Neovim, VMware, random-wallpapers,
+hide-shortcuts, recovery-shortcuts, Kitty, wallpapers e sublime-text.
+Nao ha copia congelada: cada execucao baixa novamente os modulos do GitHub.
+O seletor inicia com todos marcados; --all confirma todos sem abrir o menu.
+
+## Ferramentas CLI
+
+install-cli.sh instala as ferramentas e executa o modulo atual pacotes_fedora.sh,
+adaptando os nomes RPM antigos para os usados no Fedora. Pipenv fica em um
+ambiente virtual do usuario, sem alterar o Python do sistema.
+
+Para executar somente essa etapa:
+
+    bash fedora/install-cli.sh
+
+## Configuracoes compartilhadas
+
+Mudancas em sway-full sao usadas na proxima instalacao. Esta pasta nao mantem
+copias proprias de dotfiles, temas, fontes ou modulos upstream.
+Os temas sao aplicados uma unica vez pelo fluxo principal.
+
+O instalador nao reinicia a maquina nem encerra a sessao atual.
+Ao terminar, entre na sessao Sway no SDDM.

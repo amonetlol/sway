@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-while true; do
-  peaclock --config-dir "$HOME/.config/sway/themes/DarkShadow/config/peaclock" "$@"
-  [ $? -eq 138 ] || break
-done

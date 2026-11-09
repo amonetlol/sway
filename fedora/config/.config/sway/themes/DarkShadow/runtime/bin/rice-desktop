@@ -1,2 +1,0 @@
-#!/bin/sh
-case "$1" in status) echo running;; start|ensure) exit 0;; restart) exec systemctl --user restart sway-themed-quickshell.service;; esac

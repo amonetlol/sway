@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-# The VMware DMA-BUF import path also affects the login screen.
-if [ "$(systemd-detect-virt --vm 2>/dev/null || true)" = vmware ]; then
-    export WLR_RENDERER=pixman
-    export LIBGL_ALWAYS_SOFTWARE=1
-    export GALLIUM_DRIVER=llvmpipe
-fi
-exec /usr/libexec/sddm-compositor-sway "$@"

@@ -1,3 +1,0 @@
-[Unit]
-Description=Theme services for the Sway session only
-Wants=sway-themed-quickshell.service sway-themed-waybar.service sway-themed-notifications.service sway-themed-watch.service sway-themed-clipboard-text.service sway-themed-clipboard-image.service xdg-desktop-portal-wlr.service

@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-exec /usr/bin/kitty -o linux_display_server=x11 "$@"
