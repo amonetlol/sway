@@ -9,7 +9,14 @@ if sudo apt-get install -y --solver=internal --no-install-recommends awww; then
 fi
 
 echo '[*] awww ausente no apt; compilando a versão oficial v0.12.1.'
-sudo apt-get install -y --solver=internal --no-install-recommends build-essential cargo rustc pkg-config liblz4-dev libwayland-dev wayland-protocols
+sudo apt-get install -y --solver=internal --no-install-recommends build-essential pkg-config liblz4-dev libwayland-dev wayland-protocols
+rust_minor=0
+if command -v rustc >/dev/null; then rust_minor=$(rustc --version | awk '{split($2,v,"."); print v[2]}'); fi
+if (( rust_minor < 89 )); then
+  curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal
+fi
+# shellcheck disable=SC1091
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 work="$(mktemp -d)"
 trap 'rm -rf -- "$work"' EXIT
 git clone --depth 1 --branch v0.12.1 https://codeberg.org/LGFae/awww.git "$work/awww"
