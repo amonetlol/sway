@@ -1,6 +1,0 @@
-* text=auto eol=lf
-*.gz -text
-*.png -text
-*.jpg -text
-*.jpeg -text
-*.pf2 -text
