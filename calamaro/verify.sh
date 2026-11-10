@@ -20,7 +20,7 @@ systemctl is-enabled sddm
 sessions=$(find /usr/share/wayland-sessions /usr/share/xsessions -maxdepth 1 -name '*.desktop' 2>/dev/null)
 [[ $(echo "$sessions" | grep -c .) -eq 1 ]]
 grep -q '^Name=Sway$' /usr/share/wayland-sessions/sway.desktop
-grep -q '^Current=calamaroos' /etc/sddm.conf.d/10-session.conf 2>/dev/null || grep -q '^Current=calamaroos' /etc/sddm.conf
+grep -q '^Current=catppuccin-frappe-blue' /etc/sddm.conf.d/90-sway-full.conf
 systemctl get-default | grep -q graphical
 cat "$HOME/.local/state/sway-calamaro/modules.tsv"
 log 'Verificacao concluida; desligamento e reinicio nao foram executados.'
