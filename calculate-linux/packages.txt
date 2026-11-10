@@ -51,3 +51,9 @@ gui-apps/wlogout
 gui-apps/swayosd
 dev-util/wayland-scanner
 app-portage/mirrorselect
+# Ferramentas opcionais ativadas pelo .aliases-calculate (ls/df/cat/ps/man).
+sys-apps/eza
+sys-fs/duf
+sys-apps/bat
+sys-process/procs
+app-misc/tldr
