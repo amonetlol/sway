@@ -8,7 +8,7 @@ log '================================================================'
 log 'term-hub sera instalado em ~/.local/bin e carregado no .bashrc'
 log 'Acompanhe em tempo real: tail -f /tmp/distro-install.log'
 log '================================================================'
-for stage in pacotes modules sway sddm services; do
+for stage in pacotes modules sway sddm services cli; do
   log "Etapa: $stage"
   bash "$here/install-$stage.sh"
 done
