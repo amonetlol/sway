@@ -73,7 +73,7 @@
         ]
     },
     "network": {
-        "interface": "en*",
+        "interface": "e*",
         "format-ethernet": "",
         "format-linked": "",
         "format-disconnected": "",
