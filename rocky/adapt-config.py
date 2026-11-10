@@ -95,23 +95,9 @@ executable(home/'.local/bin/sway-session-init', """#!/usr/bin/env bash
 export XDG_CURRENT_DESKTOP=sway GSK_RENDERER=cairo GDK_DISABLE=dmabuf
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 dbus-update-activation-environment WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP GSK_RENDERER GDK_DISABLE || true
-start_audio() {
-  pgrep -u "$(id -u)" -x pipewire >/dev/null || pipewire >/dev/null 2>&1 &
-  pgrep -u "$(id -u)" -x pipewire-pulse >/dev/null || pipewire-pulse >/dev/null 2>&1 &
-  pgrep -u "$(id -u)" -x wireplumber >/dev/null || wireplumber >/dev/null 2>&1 &
-}
-start_audio
-# O modulo de volume some se o Pulse nao responder quando a waybar sobe.
-for _ in 1 2 3 4 5 6 7 8 9 10; do
-  timeout 1 pactl info >/dev/null 2>&1 && break
-  sleep 0.3
-done
+# O modulo de volume some se o socket do Pulse nao responder.
 if ! timeout 1 pactl info >/dev/null 2>&1; then
-  pkill -u "$(id -u)" -x pipewire-pulse || true
-  pkill -u "$(id -u)" -x wireplumber || true
-  pkill -u "$(id -u)" -x pipewire || true
-  sleep 0.4
-  start_audio
+  systemctl --user restart pipewire.socket pipewire-pulse.socket wireplumber.service pipewire.service pipewire-pulse.service 2>/dev/null || true
   for _ in 1 2 3 4 5 6 7 8 9 10; do
     timeout 1 pactl info >/dev/null 2>&1 && break
     sleep 0.3
