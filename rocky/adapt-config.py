@@ -63,6 +63,10 @@ bright5=f4b8e4
 bright6=81c8be
 bright7=a5adce
 """)
+# O layer-shell deste wlogout pede o teclado em modo exclusivo e o Sway
+# deixa de entregar o clique. Como janela normal, os botoes executam.
+launch = home/'.config/wlogout/launch.sh'
+launch.write_text(launch.read_text().replace('protocol=layer-shell', 'protocol=xdg'))
 # wlogout do rice ja usa swaylock/swaymsg/loginctl; apenas normaliza o JSON.
 layout = home/'.config/wlogout/layout'
 actions = json.loads('['+layout.read_text()+']')

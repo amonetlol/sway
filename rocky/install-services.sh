@@ -16,4 +16,17 @@ else
   log 'Unidade do backend SwayOSD nao encontrada; seguindo sem o backend de libinput.'
 fi
 getent group audio >/dev/null && sudo usermod -aG audio "$USER" || true
+# Desligar e reiniciar pelo wlogout nao podem ficar esperando senha.
+sudo mkdir -p /etc/polkit-1/rules.d
+sudo tee /etc/polkit-1/rules.d/49-sway-power.rules >/dev/null <<'EOF'
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.login1.power-off" ||
+         action.id == "org.freedesktop.login1.reboot" ||
+         action.id == "org.freedesktop.login1.suspend" ||
+         action.id == "org.freedesktop.login1.hibernate") &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
 xdg-user-dirs-update
