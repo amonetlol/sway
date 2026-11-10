@@ -28,11 +28,18 @@ for name in bash btop fastfetch fonts starship wallpapers; do
     mkdir -p "$HOME/.local/share/fonts/CodeNewRoman"
     cp -a "$DOT_CACHE/dotfiles/fonts/.fonts/CodeNewRoman/." "$HOME/.local/share/fonts/CodeNewRoman/"
     fc-cache -f
-    if ! fc-list : family | grep -qx 'Symbols Nerd Font Mono'; then
-      curl -fL --retry 3 -o "$work/symbols.zip" https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip
-      mkdir -p "$HOME/.local/share/fonts/SymbolsNerdFont"
-      unzip -oq "$work/symbols.zip" -d "$HOME/.local/share/fonts/SymbolsNerdFont"
-      fc-cache -f "$HOME/.local/share/fonts/SymbolsNerdFont"
+    # A 3.x nao tem os icones da waybar (F538, F7CA e os outros). A 2.3.3 tem.
+    command -v hb-shape >/dev/null || sudo dnf install -y harfbuzz-devel
+    if ! python3 -c 'import subprocess,sys; from pathlib import Path
+p=next(Path.home().joinpath(".local/share/fonts/SymbolsNerdFont").glob("*Mono.ttf"), None)
+sys.exit(0 if p and ".notdef" not in subprocess.check_output(["hb-shape","--font-file",str(p),"--text",chr(0xF538)], text=True) else 1)'; then
+      curl -fL --retry 3 -o "$work/symbols.zip" https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/NerdFontsSymbolsOnly.zip
+      dest="$HOME/.local/share/fonts/SymbolsNerdFont"
+      rm -rf "$dest"
+      mkdir -p "$dest" "$work/out"
+      unzip -oq "$work/symbols.zip" -d "$work/out"
+      cp "$work/out/Symbols-2048-em Nerd Font Complete Mono.ttf" "$work/out/Symbols-2048-em Nerd Font Complete.ttf" "$dest/"
+      fc-cache -f "$dest"
     fi
     printf 'fonts\tinstalled\n' >> "$HOME/.local/state/sway-rocky/modules.tsv"
     continue
