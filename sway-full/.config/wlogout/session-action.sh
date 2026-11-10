@@ -14,11 +14,11 @@ power() {
   if [[ -d /run/systemd/system ]] && command -v systemctl >/dev/null 2>&1; then
     exec systemctl "$verb"
   fi
+  if [[ -x /usr/bin/66 ]]; then
+    exec sudo -n /usr/bin/66 "$verb"
+  fi
   if command -v loginctl >/dev/null 2>&1; then
     exec loginctl "$verb"
-  fi
-  if command -v 66 >/dev/null 2>&1; then
-    exec sudo -n 66 "$verb"
   fi
   echo "Não há comando para $verb" >&2
   exit 1
