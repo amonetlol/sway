@@ -56,4 +56,4 @@ sys-apps/eza
 sys-fs/duf
 sys-apps/bat
 sys-process/procs
-app-misc/tldr
+app-misc/tealdeer
