@@ -15,4 +15,5 @@ elif [[ -f /usr/lib/systemd/user/swayosd-libinput-backend.service ]]; then
 else
   log 'Unidade do backend SwayOSD nao encontrada; seguindo sem o backend de libinput.'
 fi
+getent group audio >/dev/null && sudo usermod -aG audio "$USER" || true
 xdg-user-dirs-update
