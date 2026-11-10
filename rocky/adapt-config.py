@@ -84,7 +84,7 @@ if 'SWAYSOCK_LIVE' not in launch_text:
         1)
 launch.write_text(launch_text)
 launch.chmod(0o755)
-# Mesmos comandos que funcionam na outra maquina EL10.
+# Neste systemd o loginctl nao tem poweroff/reboot; o systemctl tem.
 layout = home/'.config/wlogout/layout'
 layout.write_text('''{
   "label": "lock",
@@ -94,13 +94,13 @@ layout.write_text('''{
 },
 {
   "label": "shutdown",
-  "action": "loginctl poweroff",
+  "action": "/usr/bin/systemctl poweroff",
   "text": "Desligar",
   "keybind": "2"
 },
 {
   "label": "reboot",
-  "action": "loginctl reboot",
+  "action": "/usr/bin/systemctl reboot",
   "text": "Reiniciar",
   "keybind": "3"
 },

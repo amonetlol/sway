@@ -8,7 +8,7 @@ python3 - <<'PY_VERIFY'
 from pathlib import Path
 import json,shlex,shutil
 h=Path.home(); actions=json.loads('['+(h/'.config/wlogout/layout').read_text()+']')
-expected={'lock':['/usr/bin/swaylock','-f','-c','303446'],'logout':['/usr/bin/swaymsg','exit'],'shutdown':['loginctl','poweroff'],'reboot':['loginctl','reboot']}
+expected={'lock':['/usr/bin/swaylock','-f','-c','303446'],'logout':['/usr/bin/swaymsg','exit'],'shutdown':['/usr/bin/systemctl','poweroff'],'reboot':['/usr/bin/systemctl','reboot']}
 assert {a['label']:shlex.split(a['action']) for a in actions}==expected
 for cmd in expected.values():
     assert shutil.which(cmd[0]) or Path(cmd[0]).is_file(), cmd
