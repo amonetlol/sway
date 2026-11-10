@@ -28,6 +28,12 @@ for name in bash btop fastfetch fonts starship wallpapers; do
     mkdir -p "$HOME/.local/share/fonts/CodeNewRoman"
     cp -a "$DOT_CACHE/dotfiles/fonts/.fonts/CodeNewRoman/." "$HOME/.local/share/fonts/CodeNewRoman/"
     fc-cache -f
+    if ! fc-list : family | grep -qx 'Symbols Nerd Font Mono'; then
+      curl -fL --retry 3 -o "$work/symbols.zip" https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip
+      mkdir -p "$HOME/.local/share/fonts/SymbolsNerdFont"
+      unzip -oq "$work/symbols.zip" -d "$HOME/.local/share/fonts/SymbolsNerdFont"
+      fc-cache -f "$HOME/.local/share/fonts/SymbolsNerdFont"
+    fi
     printf 'fonts\tinstalled\n' >> "$HOME/.local/state/sway-rocky/modules.tsv"
     continue
   fi

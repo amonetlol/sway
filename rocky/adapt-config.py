@@ -43,7 +43,7 @@ foot = home/'.config/foot/foot.ini'; foot.parent.mkdir(parents=True, exist_ok=Tr
 foot.write_text("""[main]
 font=CodeNewRoman Nerd Font Mono:size=12
 pad=12x12
-[colors]
+[colors-dark]
 foreground=c6d0f5
 background=303446
 regular0=51576d
@@ -107,7 +107,7 @@ with (home/'.bashrc').open('a') as f:
     f.write("\nalias swall='~/.local/bin/random-wallpaper.sh'\nalias swall2='~/.local/bin/rofi-wallpaper'\n")
 style = home/'.config/waybar/style.css'
 text = style.read_text()
-text = re.sub(r'(?m)^  font-family:.*$', '  font-family: "CodeNewRoman Nerd Font Mono", "Symbols Nerd Font Mono", "Font Awesome 6 Free", "Font Awesome 6 Brands";', text, count=1)
+text = re.sub(r'(?m)^  font-family:.*$', '  font-family: "CodeNewRoman Nerd Font", "Symbols Nerd Font Mono", "Symbols Nerd Font";', text, count=1)
 style.write_text(text)
 start = home/'.local/bin/start-sway-full'
 text = start.read_text().replace("cleanup() { systemctl --user stop sway-session.target 2>/dev/null || true; }", "cleanup() { :; }")
