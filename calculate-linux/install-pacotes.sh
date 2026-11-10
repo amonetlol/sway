@@ -20,7 +20,7 @@ if ! portageq get_repo_path / guru >/dev/null 2>&1; then
   printf '[guru]\nlocation = /var/calculate/repos/guru-sway\nsync-type = git\nsync-uri = https://github.com/gentoo-mirror/guru.git\n' | sudo tee /etc/portage/repos.conf/guru.conf >/dev/null
 fi
 sudo install -d /etc/portage/package.use /etc/portage/package.accept_keywords
-printf 'gui-apps/wlogout ~amd64\ngui-apps/swayosd ~amd64\n' | sudo tee /etc/portage/package.accept_keywords/sway-calculate >/dev/null
+printf 'gui-apps/wlogout ~amd64\ngui-apps/swayosd ~amd64\napp-misc/tealdeer ~amd64\n' | sudo tee /etc/portage/package.accept_keywords/sway-calculate >/dev/null
 printf 'gui-apps/waybar network tray mpris\ngui-apps/swaybg gdk-pixbuf\nvirtual/notification-daemon -kde -gnome\n' | sudo tee /etc/portage/package.use/sway-calculate >/dev/null
 sudo emerge --getbinpkg --usepkg --noreplace dev-util/wayland-scanner
 mapfile -t packages < <(sed 's/#.*//;/^[[:space:]]*$/d' "$HERE/packages.txt")
