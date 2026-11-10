@@ -6,6 +6,62 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 sudo install -d /usr/lib64/qt6/qml/org/kde/plasma/private/keyboardindicator
 printf '%s\n' 'module org.kde.plasma.private.keyboardindicator' 'KeyState 1.0 KeyState.qml' | sudo tee /usr/lib64/qt6/qml/org/kde/plasma/private/keyboardindicator/qmldir >/dev/null
 printf '%s\n' 'import QtQuick' 'QtObject {' '    property int key: 0' '    readonly property bool locked: false' '}' | sudo tee /usr/lib64/qt6/qml/org/kde/plasma/private/keyboardindicator/KeyState.qml >/dev/null
+# Relogio e bateria do tema: tipos pequenos, sem o plasma-workspace.
+sudo install -d /usr/lib64/qt6/qml/org/kde/plasma/clock \
+  /usr/lib64/qt6/qml/org/kde/plasma/private/battery \
+  /usr/lib64/qt6/qml/org/kde/plasma/workspace/components \
+  /usr/lib64/qt6/qml/org/kde/plasma/workspace/keyboardlayout
+printf '%s\n' 'module org.kde.plasma.clock' 'Clock 1.0 Clock.qml' | sudo tee /usr/lib64/qt6/qml/org/kde/plasma/clock/qmldir >/dev/null
+sudo tee /usr/lib64/qt6/qml/org/kde/plasma/clock/Clock.qml >/dev/null <<'EOF'
+import QtQuick
+QtObject {
+    id: root
+    property bool trackSeconds: false
+    property var timeZone: null
+    property bool isSystemTimeZone: true
+    property string timeZoneCode: ""
+    property string timeZoneName: ""
+    property string timeZoneOffset: ""
+    property bool valid: true
+    property date dateTime: new Date()
+    Timer {
+        interval: root.trackSeconds ? 1000 : 1000
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: root.dateTime = new Date()
+    }
+}
+EOF
+printf '%s\n' 'module org.kde.plasma.private.battery' 'BatteryControlModel 1.0 BatteryControlModel.qml' | sudo tee /usr/lib64/qt6/qml/org/kde/plasma/private/battery/qmldir >/dev/null
+sudo tee /usr/lib64/qt6/qml/org/kde/plasma/private/battery/BatteryControlModel.qml >/dev/null <<'EOF'
+import QtQuick
+QtObject {
+    property bool hasInternalBatteries: false
+    property bool hasCumulative: false
+    property bool pluggedIn: false
+    property int percent: 0
+}
+EOF
+printf '%s\n' 'module org.kde.plasma.workspace.components' 'BatteryIcon 1.0 BatteryIcon.qml' | sudo tee /usr/lib64/qt6/qml/org/kde/plasma/workspace/components/qmldir >/dev/null
+sudo tee /usr/lib64/qt6/qml/org/kde/plasma/workspace/components/BatteryIcon.qml >/dev/null <<'EOF'
+import QtQuick
+Item {
+    property bool pluggedIn: false
+    property bool hasBattery: false
+    property int percent: 0
+}
+EOF
+printf '%s\n' 'module org.kde.plasma.workspace.keyboardlayout' 'singleton KWinVirtualKeyboard 1.0 KWinVirtualKeyboard.qml' | sudo tee /usr/lib64/qt6/qml/org/kde/plasma/workspace/keyboardlayout/qmldir >/dev/null
+sudo tee /usr/lib64/qt6/qml/org/kde/plasma/workspace/keyboardlayout/KWinVirtualKeyboard.qml >/dev/null <<'EOF'
+pragma Singleton
+import QtQuick
+QtObject {
+    property bool visible: false
+    property bool enabled: false
+    property bool active: false
+}
+EOF
 # org.kde.breeze.components e QML puro do plasma-workspace (o pacote breeze nao o instala).
 if [[ ! -f /usr/lib64/qt6/qml/org/kde/breeze/components/Clock.qml ]]; then
   breeze_work=$(mktemp -d)
@@ -36,6 +92,15 @@ RejectPasswordPathAnimation 1.0 animation/RejectPasswordPathAnimation.qml
 EOF
   rm -rf "$breeze_work"
 fi
+# O teclado virtual do tema pede QtQuick.VirtualKeyboard, que nao esta instalado.
+sudo tee /usr/lib64/qt6/qml/org/kde/breeze/components/EmptyKeyboard.qml >/dev/null <<'EOF'
+import QtQuick
+Item {
+    property bool active: false
+    property bool activated: false
+}
+EOF
+sudo sed -i 's#Qt.resolvedUrl("./VirtualKeyboard.qml")#Qt.resolvedUrl("./EmptyKeyboard.qml")#; s#Qt.resolvedUrl("./VirtualKeyboard_wayland.qml")#Qt.resolvedUrl("./EmptyKeyboard.qml")#' /usr/lib64/qt6/qml/org/kde/breeze/components/VirtualKeyboardLoader.qml
 # O tema atual do SDDM (calamaroos) e preservado; apenas a sessao muda.
 grep -q '^Current=calamaroos$' /etc/sddm.conf.d/10-session.conf 2>/dev/null || grep -q '^Current=calamaroos$' /etc/sddm.conf 2>/dev/null || log 'AVISO: tema calamaroos nao encontrado na configuracao do SDDM.'
 sudo install -d /usr/local/bin /var/backups/sddm-sessions
