@@ -46,11 +46,14 @@ layout = Path(sys.argv[1])
 rows = json.loads("[" + layout.read_text(encoding="utf-8") + "]")
 missing = []
 for row in rows:
-    args = shlex.split(row["action"])
-    if not Path(args[0]).is_file():
+    import os, shutil, subprocess
+    args = shlex.split(os.path.expandvars(row["action"]))
+    if len(args) >= 3 and Path(args[0]).name == "bash" and args[2] in {"lock", "logout", "shutdown", "reboot"}:
+        if not Path(args[1]).is_file():
+            missing.append(row["label"] + " sem script " + args[1])
+    elif not Path(args[0]).is_file() and shutil.which(args[0]) is None:
         missing.append(row["label"] + " sem executavel " + args[0])
     elif Path(args[0]).name in {"loginctl", "systemctl", "66"}:
-        import subprocess
         help_text = subprocess.check_output([args[0], "--help"], text=True, stderr=subprocess.STDOUT)
         if args[1] not in help_text:
             missing.append(row["label"] + " comando invalido " + args[1])

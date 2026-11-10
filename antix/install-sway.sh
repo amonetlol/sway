@@ -44,7 +44,14 @@ if Path('/usr/bin/loginctl').is_file():
 else:
     poweroff = '/usr/bin/66 poweroff'
     reboot = '/usr/bin/66 reboot'
-changed = text.replace('/usr/bin/loginctl poweroff', poweroff).replace('/usr/bin/loginctl reboot', reboot)
+script = '$HOME/.config/wlogout/session-action.sh'
+changed = text
+changed = changed.replace('/usr/bin/swaylock -f -c 303446', 'bash "' + script + '" lock')
+changed = changed.replace('/usr/bin/swaymsg exit', 'bash "' + script + '" logout')
+changed = changed.replace('/usr/bin/loginctl poweroff', 'bash "' + script + '" shutdown')
+changed = changed.replace('/usr/bin/loginctl reboot', 'bash "' + script + '" reboot')
+changed = changed.replace(poweroff, 'bash "' + script + '" shutdown')
+changed = changed.replace(reboot, 'bash "' + script + '" reboot')
 session = Path.home()/'.local/bin/sway-session-init'
 if session.is_file() and 'pipewire' not in session.read_text():
     body = session.read_text()
@@ -57,5 +64,17 @@ if changed != text:
     layout.write_text(changed)
     print('[OK] wlogout desliga com ' + poweroff)
 PY_WLOGOUT
+sudo mkdir -p /etc/polkit-1/rules.d
+sudo tee /etc/polkit-1/rules.d/49-antix-power.rules >/dev/null <<'EOF'
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.login1.power-off" ||
+         action.id == "org.freedesktop.login1.power-off-multiple-sessions" ||
+         action.id == "org.freedesktop.login1.reboot" ||
+         action.id == "org.freedesktop.login1.reboot-multiple-sessions") &&
+        (subject.isInGroup("users") || subject.isInGroup("sudo"))) {
+        return polkit.Result.YES;
+    }
+});
+EOF
 update-desktop-database "$HOME/.local/share/applications" || true
 if [[ -f "$HOME/.cache/rofi3.druncache" ]]; then rm -f "$HOME/.cache/rofi3.druncache"; fi
