@@ -8,9 +8,10 @@ python3 - <<'PY_VERIFY'
 from pathlib import Path
 import json,shlex,shutil
 h=Path.home(); actions=json.loads('['+(h/'.config/wlogout/layout').read_text()+']')
-expected={'lock':['/usr/bin/swaylock','-f','-c','303446'],'logout':['/usr/bin/swaymsg','exit'],'shutdown':['/usr/bin/loginctl','poweroff'],'reboot':['/usr/bin/loginctl','reboot']}
+expected={'lock':['/usr/bin/swaylock','-f','-c','303446'],'logout':['/usr/bin/swaymsg','exit'],'shutdown':['loginctl','poweroff'],'reboot':['loginctl','reboot']}
 assert {a['label']:shlex.split(a['action']) for a in actions}==expected
-for cmd in expected.values(): assert Path(cmd[0]).is_file(),cmd
+for cmd in expected.values():
+    assert shutil.which(cmd[0]) or Path(cmd[0]).is_file(), cmd
 for p in ['.config/sway/config','.config/foot/foot.ini','.config/starship-nord.toml','.config/fastfetch/config.jsonc','.local/bin/random-wallpaper.sh','.bin','.aliases-distro']:
  assert (h/p).exists(),p
 print('wlogout: quatro comandos conferidos; configuracoes presentes')

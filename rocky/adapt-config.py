@@ -66,14 +66,51 @@ bright7=a5adce
 # O layer-shell deste wlogout pede o teclado em modo exclusivo e o Sway
 # deixa de entregar o clique. Como janela normal, os botoes executam.
 launch = home/'.config/wlogout/launch.sh'
-launch.write_text(launch.read_text().replace('protocol=layer-shell', 'protocol=xdg'))
-# wlogout do rice ja usa swaylock/swaymsg/loginctl; apenas normaliza o JSON.
+launch_text = launch.read_text().replace('protocol=layer-shell', 'protocol=xdg')
+if 'SWAYSOCK_LIVE' not in launch_text:
+    launch_text = launch_text.replace(
+        'exec /usr/bin/wlogout',
+        '# SWAYSOCK_LIVE: swaylock e swaymsg precisam do compositor desta sessao.\n'
+        'export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"\n'
+        'live=""\n'
+        'for sock in "$XDG_RUNTIME_DIR"/sway-ipc.*.sock; do\n'
+        '  [[ -S "$sock" ]] || continue\n'
+        '  pid="${sock##*.}"; pid="${pid%.sock}"\n'
+        '  [[ -d "/proc/$pid" ]] && live="$sock"\n'
+        'done\n'
+        '[[ -n "$live" ]] && export SWAYSOCK="$live"\n'
+        '[[ -z "${WAYLAND_DISPLAY:-}" && -S "$XDG_RUNTIME_DIR/wayland-1" ]] && export WAYLAND_DISPLAY=wayland-1\n'
+        'exec /usr/bin/wlogout',
+        1)
+launch.write_text(launch_text)
+launch.chmod(0o755)
+# Mesmos comandos que funcionam na outra maquina EL10.
 layout = home/'.config/wlogout/layout'
-actions = json.loads('['+layout.read_text()+']')
-for action in actions:
-    if action['label'] == 'shutdown': action['action'] = '/usr/bin/loginctl poweroff'
-    if action['label'] == 'reboot': action['action'] = '/usr/bin/loginctl reboot'
-layout.write_text(',\n'.join(json.dumps(a, ensure_ascii=False, indent=2) for a in actions)+'\n')
+layout.write_text('''{
+  "label": "lock",
+  "action": "/usr/bin/swaylock -f -c 303446",
+  "text": "Bloquear",
+  "keybind": "1"
+},
+{
+  "label": "shutdown",
+  "action": "loginctl poweroff",
+  "text": "Desligar",
+  "keybind": "2"
+},
+{
+  "label": "reboot",
+  "action": "loginctl reboot",
+  "text": "Reiniciar",
+  "keybind": "3"
+},
+{
+  "label": "logout",
+  "action": "/usr/bin/swaymsg exit",
+  "text": "Sair",
+  "keybind": "4"
+}
+''')
 executable(home/'.local/bin/rofi-network-menu', """#!/usr/bin/env bash
 set -euo pipefail
 nmcli device status | rofi -dmenu -i -p 'Rede (IPv4 fixo)' >/dev/null || true
