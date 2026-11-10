@@ -63,12 +63,16 @@ bright5=f4b8e4
 bright6=81c8be
 bright7=a5adce
 """)
-# wlogout do rice ja usa swaylock/swaymsg/loginctl; apenas normaliza o JSON.
+# No layer-shell do EL10 o clique cai no fundo e o wlogout fecha sem rodar a acao.
+launch = home/'.config/wlogout/launch.sh'
+launch_text = launch.read_text().replace('protocol=layer-shell', 'protocol=xdg', 1)
+launch.write_text(launch_text)
+launch.chmod(0o755)
+session = home/'.config/wlogout/session-action.sh'
 layout = home/'.config/wlogout/layout'
 actions = json.loads('['+layout.read_text()+']')
 for action in actions:
-    if action['label'] == 'shutdown': action['action'] = '/usr/bin/loginctl poweroff'
-    if action['label'] == 'reboot': action['action'] = '/usr/bin/loginctl reboot'
+    action['action'] = str(session) + ' ' + action['label']
 layout.write_text(',\n'.join(json.dumps(a, ensure_ascii=False, indent=2) for a in actions)+'\n')
 executable(home/'.local/bin/rofi-network-menu', """#!/usr/bin/env bash
 set -euo pipefail
