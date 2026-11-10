@@ -15,7 +15,7 @@ rice=(sway swaybg waybar rofi awww kitty nautilus firefox firefox-i18n-pt-br pav
   pipewire pipewire-alsa pipewire-pulse wireplumber alsa-utils
   xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk xdg-user-dirs xdg-utils
   polkit-gnome gnome-keyring networkmanager grim slurp libnotify imagemagick
-  xorg-xwayland xorg-server xorg-xauth desktop-file-utils tmux neovim
+  xorg-xwayland xorg-server xorg-xauth desktop-file-utils tmux neovim micro
   papirus-icon-theme sassc gnome-themes-extra adwaita-cursors cantarell-fonts
   ttf-firacode-nerd otf-font-awesome fontconfig sddm qt6-svg qt6-declarative qt6-5compat)
 if [[ $(findmnt -no FSTYPE /) == btrfs ]]; then rice+=(btrfs-progs snapper snap-pac grub-btrfs inotify-tools); fi
