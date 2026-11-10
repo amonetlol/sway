@@ -14,6 +14,7 @@ for base in [home/'.local/bin',home/'.config/sway',home/'.config/rofi',home/'.co
         if p.name=='recovery-shortcuts':
             new=new.replace('alacritty.desktop Alacritty.desktop kitty.desktop','foot.desktop footclient.desktop foot-server.desktop micro.desktop')
         if p==home/'.config/sway/config':
+            new=new.replace('bindsym $mod+w exec firefox', 'bindsym $mod+w exec /usr/bin/firefox-bin')
             new=new.replace('    xkb_variant abnt2\n','').replace('xkb_model pc105','xkb_model abnt2').replace('swaybg_command -\n','')
             new=re.sub(r'(swayosd-client --(?:output-volume|brightness) (?:raise|lower)) 5',r'\1',new)
         if p.name=='start-sway-full':
@@ -25,7 +26,7 @@ def executable(path,text):
     path.write_text(text);path.chmod(0o755)
 
 executable(home/'.local/bin/foot-sway','#!/bin/sh\nexec /usr/bin/foot "$@"\n')
-if not shutil.which('firefox') and shutil.which('firefox-bin'):
+if not shutil.which('firefox') and Path('/usr/bin/firefox-bin').is_file():
     executable(home/'.local/bin/firefox','#!/bin/sh\nexec /usr/bin/firefox-bin "$@"\n')
 # Compatibilidade com scripts do modulo bin que chamam o nome antigo.
 executable(home/'.local/bin/kitty-sway','#!/bin/sh\nexec "$HOME/.local/bin/foot-sway" "$@"\n')

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
-for cmd in sway swaymsg foot micro waybar rofi swaybg swayidle swaylock mako wl-copy wl-paste playerctl grim slurp btop fastfetch starship cliphist wlogout swayosd-client swayosd-server vmware-user-suid-wrapper nautilus firefox pactl wpctl; do
+for cmd in sway swaymsg foot micro waybar rofi swaybg swayidle swaylock mako wl-copy wl-paste playerctl grim slurp btop fastfetch starship cliphist wlogout swayosd-client swayosd-server vmware-user-suid-wrapper nautilus firefox pactl wpctl nwg-look loupe eza duf rg bat procs; do
   command -v "$cmd" >/dev/null || { echo "Comando ausente: $cmd" >&2; exit 1; }
 done
 python3 - <<'PY'

@@ -94,7 +94,7 @@ for name in btop "foot client" "foot server" "Hardware Locality lstopo" \
 done
 
 for f in btop.desktop footclient.desktop foot-server.desktop avahi-discover.desktop \
-  bvnc.desktop bssh.desktop nvim.desktop vim.desktop rofi.desktop rofi-theme-selector.desktop \
+  bvnc.desktop bssh.desktop cups.desktop nvim.desktop vim.desktop rofi.desktop rofi-theme-selector.desktop \
   micro.desktop Alacritty.desktop alacritty.desktop lstopo.desktop qv4l2.desktop qvidcap.desktop \
   xgps.desktop xgpsspeed.desktop thunar-settings.desktop qt6ct.desktop qt5ct.desktop \
   org.cachyos.scx-manager.desktop xfce4-about.desktop htop.desktop cmake-gui.desktop \
@@ -102,6 +102,8 @@ for f in btop.desktop footclient.desktop foot-server.desktop avahi-discover.desk
   qdbusviewer.desktop assistant.desktop; do
   hide_desktop_by_filename "$f"
 done
+
+rename_desktop_by_name "Mozilla Firefox \(bin\)" "Firefox"
 
 log "Atualizando cache de atalhos"
 update-desktop-database "$APP_DIR_LOCAL" 2>/dev/null || true

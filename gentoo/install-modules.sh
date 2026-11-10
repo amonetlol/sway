@@ -70,14 +70,14 @@ command -v tldr >/dev/null || unalias man 2>/dev/null || true
 alias nv=micro v=micro tx=micro
 alias aln='micro ~/.config/micro/settings.json'
 alias alw='micro ~/.config/waybar/config ~/.config/waybar/style.css'
-alias al2='micro ~/.bashrc ~/.aliases ~/.functions'
+alias al2='edit_aliases_distro'
 alias gfont2='fc-list : family | sort -u'
 ''')
 PY
 # Snapper: apenas limpeza automatica, sem substituir o GRUB instalado.
 if [[ $(findmnt -no FSTYPE /) == btrfs ]]; then
   if ! sudo snapper -c root get-config >/dev/null 2>&1; then sudo snapper -c root create-config /; fi
-  for key in NUMBER_LIMIT NUMBER_LIMIT_IMPORTANT; do sudo snapper -c root set-config "$key=6"; done
+  for key in NUMBER_LIMIT NUMBER_LIMIT_IMPORTANT; do sudo snapper -c root set-config "$key=4"; done
   sudo snapper -c root set-config TIMELINE_CREATE=no
   sudo systemctl enable --now snapper-cleanup.timer
   printf 'snapper\tinstalled\n' >> "$HOME/.local/state/sway-gentoo/modules.tsv"

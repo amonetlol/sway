@@ -17,6 +17,6 @@ if [[ ! -d /var/db/repos/guru/.git ]]; then
 fi
 sudo install -d /etc/portage/repos.conf
 printf '[guru]\nlocation = /var/db/repos/guru\nsync-type = git\nsync-uri = https://github.com/gentoo/guru.git\n' | sudo tee /etc/portage/repos.conf/guru.conf >/dev/null
-printf 'gui-apps/wlogout ~amd64\ngui-apps/swayosd ~amd64\n' | sudo tee /etc/portage/package.accept_keywords/sway-rice >/dev/null
-sudo emerge --getbinpkg --usepkg --with-bdeps=n --update --changed-use gui-apps/wlogout gui-apps/swayosd
+printf 'gui-apps/wlogout ~amd64\ngui-apps/swayosd ~amd64\napp-misc/nwg-look ~amd64\nx11-apps/xcur2png ~amd64\nmedia-gfx/loupe ~amd64\n' | sudo tee /etc/portage/package.accept_keywords/sway-rice >/dev/null
+sudo emerge --getbinpkg --usepkg --with-bdeps=n --update --changed-use gui-apps/wlogout gui-apps/swayosd app-misc/nwg-look media-gfx/loupe
 log 'Pacotes instalados. O Portage usa binarios compativeis e compila somente o que faltar.'
