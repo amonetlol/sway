@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Adapta somente a copia instalada do sway-full para CalamaroOS/Foot/Micro."""
 from pathlib import Path
-import glob, re
+import glob, re, subprocess
 
 def polkit_agent():
     for pattern in ['/usr/bin/lxqt-policykit-agent', '/usr/lib*/exec/*polkit*kde*', '/usr/lib*/polkit*/polkit-*-authentication-agent-1']:
@@ -28,8 +28,8 @@ for base in [home/'.local/bin', home/'.config/sway', home/'.config/rofi', home/'
             # Agente de autenticacao presente no CalamaroOS.
             new = re.sub(r"exec sh -c 'exec /usr/libexec/polkit-gnome-authentication-agent-1 \|\| exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1'",
                          'exec ' + polkit_agent(), new)
-            # firefox-bin nao cria o atalho firefox.
-            new = new.replace('exec firefox', 'exec firefox-bin')
+            # firefox-bin nao cria o atalho firefox. A troca e idempotente.
+            new = re.sub(r'\bexec firefox(?:-bin)*\b', 'exec firefox-bin', new)
         if new != text or p.read_bytes().startswith(b'#!'): p.write_text(new)
 
 def executable(path, text):
@@ -67,5 +67,20 @@ style = home/'.config/waybar/style.css'
 text = style.read_text()
 text = re.sub(r'(?m)^  font-family:.*$', '  font-family: "CodeNewRoman Nerd Font Mono", "Symbols Nerd Font Mono", "Font Awesome 6 Free", "Font Awesome 6 Brands";', text, count=1)
 style.write_text(text)
-with (home/'.bashrc').open('a') as f:
-    f.write("\nalias swall='~/.local/bin/random-wallpaper.sh'\nalias swall2='~/.local/bin/rofi-wallpaper'\n")
+bashrc = home/'.bashrc'
+text = bashrc.read_text()
+if 'alias swall=' not in text:
+    bashrc.write_text(text + "\nalias swall='~/.local/bin/random-wallpaper.sh'\nalias swall2='~/.local/bin/rofi-wallpaper'\n")
+apps = home/'.local/share/applications'
+apps.mkdir(parents=True, exist_ok=True)
+firefox = Path('/usr/share/applications/firefox-bin.desktop')
+if firefox.is_file():
+    text = re.sub(r'(?m)^Name=Mozilla Firefox \(bin\)$', 'Name=Firefox', firefox.read_text(), count=1)
+    (apps/'firefox-bin.desktop').write_text(text)
+cups = Path('/usr/share/applications/cups.desktop')
+if cups.is_file():
+    text = cups.read_text()
+    text = re.sub(r'(?m)^NoDisplay=.*\n', '', text)
+    text = text.replace('[Desktop Entry]', '[Desktop Entry]\nNoDisplay=true', 1)
+    (apps/'cups.desktop').write_text(text)
+subprocess.run(['update-desktop-database', str(apps)], check=False)

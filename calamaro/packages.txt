@@ -37,3 +37,7 @@ gui-apps/sddm
 gui-apps/sddm-gentoo-config
 x11-misc/xdg-user-dirs
 x11-misc/xdg-user-dirs-gtk
+# QML do tema calamaroos do SDDM (sem o Plasma).
+kde-frameworks/kirigami
+kde-plasma/libplasma
+kde-plasma/breeze

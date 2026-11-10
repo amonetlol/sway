@@ -23,7 +23,18 @@ if [[ "$current_profile" != */desktop/systemd ]]; then
   log 'Ajustando perfil para desktop/systemd...'
   sudo eselect profile set default/linux/amd64/23.0/desktop/systemd
 fi
+# GParted sai; o wpa_gui sai com o USE gui desligado (o wpa_supplicant permanece).
+if qlist -I | grep -qx sys-block/gparted; then
+  sudo emerge --deselect sys-block/gparted || true
+  sudo emerge --unmerge sys-block/gparted
+fi
+sudo mkdir -p /etc/portage/package.use
+printf 'net-wireless/wpa_supplicant -gui\n' | sudo tee /etc/portage/package.use/90-calamaro-wpa >/dev/null
+if [[ -x /usr/bin/wpa_gui ]]; then
+  sudo emerge --newuse net-wireless/wpa_supplicant
+fi
 # Remoção do KDE: manter somente sddm (gui-apps) e o tema calamaroos.
+# breeze e libplasma voltam no packages.txt, so para o QML do tema.
 kde_pkgs=$(qlist -I | grep -E '^(kde-plasma|kde-apps)/' || true)
 if [[ -n "$kde_pkgs" ]]; then
   log 'Removendo KDE (sddm e tema calamaroos permanecem)...'
