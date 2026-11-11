@@ -13,6 +13,11 @@ for src in "$RICE_SOURCE/.config/"*; do
 done
 for src in "$RICE_SOURCE/.local/bin/"*; do
   name="$(basename "$src")"; saved="$RICE_WORK/$name.ssh.conf"
+  # Os hubs instalados separadamente podem ser mais recentes e manter sessoes ativas.
+  case "$name" in
+    ssh-hub|ssh-hub.d|term-hub|term-hub.d)
+      [[ ! -e "$HOME/.local/bin/$name" && ! -L "$HOME/.local/bin/$name" ]] || continue ;;
+  esac
   # Conservar credenciais locais; o pacote distribuido possui somente campos vazios.
   if [[ -d "$src" && -f "$HOME/.local/bin/$name/ssh.conf" ]]; then cp "$HOME/.local/bin/$name/ssh.conf" "$saved"; fi
   deploy_path "$src" "$HOME/.local/bin/$name"

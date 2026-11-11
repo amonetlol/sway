@@ -36,10 +36,25 @@ trap 'rm -rf -- "$work"' EXIT
 for i in "${!names[@]}"; do
   [[ ${selected[i]} == 1 ]] || continue
   name="${names[i]}"
+  if [[ $name == vmware ]] && command -v vmtoolsd >/dev/null 2>&1 && [[ $(systemd-detect-virt --vm 2>/dev/null || true) == vmware ]]; then
+    sudo systemctl enable --now vmtoolsd.service
+    log "VMware Tools instalado e habilitado."
+    continue
+  fi
   script="$work/$name.sh"
   log "Baixando módulo atualizado: $name"
   curl -fL --retry 3 -o "$script" "$base/${paths[i]}"
   sed -i 's/\r$//' "$script"
-  bash "$script"
+  if [[ $name == sublime-text ]]; then
+    sudo zypper --non-interactive install --no-recommends flatpak
+    sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    sudo flatpak install --system -y --noninteractive flathub com.sublimehq.SublimeText
+    bash "$script"
+    target="$HOME/.var/app/com.sublimehq.SublimeText/config/sublime-text"
+    mkdir -p "$target"
+    cp -a "$HOME/.config/sublime-text/." "$target/"
+  else
+    bash "$script"
+  fi
 done
 log "Módulos concluídos a partir do GitHub."

@@ -3,7 +3,7 @@ set -euo pipefail
 [[ $EUID -ne 0 ]] || { echo "Execute como usuário comum, com sudo." >&2; exit 1; }
 log() { printf '[*] %s\n' "$*"; }
 sudo -v
-sudo systemctl enable sddm.service
+sudo systemctl enable --force sddm.service
 sudo systemctl set-default graphical.target
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 if [[ -S $XDG_RUNTIME_DIR/bus ]]; then

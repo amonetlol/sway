@@ -6,13 +6,13 @@
 },
 {
   "label": "shutdown",
-  "action": "/usr/bin/loginctl poweroff",
+  "action": "/usr/bin/systemctl poweroff",
   "text": "Desligar",
   "keybind": "2"
 },
 {
   "label": "reboot",
-  "action": "/usr/bin/loginctl reboot",
+  "action": "/usr/bin/systemctl reboot",
   "text": "Reiniciar",
   "keybind": "3"
 },

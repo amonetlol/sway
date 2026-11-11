@@ -40,6 +40,16 @@ for i in "${!names[@]}"; do
   log "Baixando módulo atualizado: $name"
   curl -fL --retry 3 -o "$script" "$base/${paths[i]}"
   sed -i 's/\r$//' "$script"
-  bash "$script"
+  if [[ $name == sublime-text ]]; then
+    sudo dnf install -y flatpak
+    sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    sudo flatpak install --system -y --noninteractive flathub com.sublimehq.SublimeText
+    bash "$script"
+    target="$HOME/.var/app/com.sublimehq.SublimeText/config/sublime-text"
+    mkdir -p "$target"
+    cp -a "$HOME/.config/sublime-text/." "$target/"
+  else
+    bash "$script"
+  fi
 done
 log "Módulos concluídos a partir do GitHub."

@@ -13,7 +13,7 @@ sudo dnf install -y \
   grim slurp libnotify ImageMagick xorg-x11-server-Xwayland \
   tmux neovim btop papirus-icon-theme sassc adwaita-icon-theme \
   fontawesome-fonts-all sddm xorg-x11-server-Xorg xorg-x11-xauth qt6-qtsvg qt6-qtdeclarative qt6-qt5compat \
-  unzip git curl python3 jq \
+  unzip git curl python3 jq fuse selinux-policy-targeted policycoreutils \
   grub2-efi-x64 grub2-tools glibc-langpack-pt
 for pkg in gnome-themes-extra cliphist nwg-look swayosd awww; do
   if sudo dnf install -y "$pkg"; then
@@ -22,7 +22,9 @@ for pkg in gnome-themes-extra cliphist nwg-look swayosd awww; do
     warn "Pacote ausente no dnf: $pkg"
   fi
 done
-bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/install-cli.sh"
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+bash "$here/install-awww.sh"
+bash "$here/install-cli.sh"
 sudo timedatectl set-timezone America/Sao_Paulo || true
 sudo localectl set-locale LANG=pt_BR.UTF-8 || true
 sudo localectl set-x11-keymap br abnt2 || true

@@ -16,7 +16,7 @@ if [[ -z "${WAYLAND_DISPLAY:-}" ]]; then
   done
 fi
 [[ -n "${WAYLAND_DISPLAY:-}" && -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]] || { echo 'Sessao Wayland indisponivel' >&2; exit 1; }
-wallpaper=${1:-$(find "$HOME/Imagens/wallpapers" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | shuf -n 1)}
+wallpaper=${1:-$(find -L "$HOME/Imagens/wallpapers" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | shuf -n 1)}
 [[ -f "$wallpaper" ]] || { echo 'Wallpaper nao encontrado' >&2; exit 1; }
 if ! command -v systemctl >/dev/null 2>&1 || ! systemctl --user start awww.service 2>/dev/null; then
   if ! awww query >/dev/null 2>&1; then

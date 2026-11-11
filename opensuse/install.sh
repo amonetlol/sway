@@ -24,7 +24,5 @@ step "Configuração do Sway"
 bash "$here/install-sway.sh"
 step "Serviços systemd"
 bash "$here/install-systemd.sh"
-step "Temas GTK, ícones e cursor"
-bash "$here/install-themes.sh"
 printf '\n[OK] Rice openSUSE aplicado. Entre na sessão Sway Full no SDDM.\n'
 

@@ -10,7 +10,10 @@ curl -fL --retry 3 -o "$work/theme.zip" https://github.com/catppuccin/sddm/relea
 unzip -oq "$work/theme.zip" -d "$work/theme"
 [[ -f "$work/theme/$theme/Main.qml" ]] || { echo "Tema SDDM sem Main.qml." >&2; exit 1; }
 sudo mkdir -p /usr/share/sddm/themes /etc/sddm.conf.d /usr/local/bin /usr/share/wayland-sessions
-if [[ -e /usr/share/sddm/themes/$theme ]]; then sudo rm -rf "/usr/share/sddm/themes/$theme"; fi
+if [[ -e /usr/share/sddm/themes/$theme ]]; then
+  sudo mkdir -p /var/backups/sway-opensuse-sddm
+  sudo mv "/usr/share/sddm/themes/$theme" "/var/backups/sway-opensuse-sddm/$theme-$(date +%Y%m%d-%H%M%S)-$$"
+fi
 sudo cp -a "$work/theme/$theme" /usr/share/sddm/themes/
 sudo tee /etc/sddm.conf.d/90-sway-full.conf >/dev/null <<'EOF'
 [General]
@@ -33,16 +36,24 @@ exec /usr/bin/sway "$@"
 EOF
 sudo tee /usr/share/wayland-sessions/sway-full.desktop >/dev/null <<'EOF'
 [Desktop Entry]
-Name=Sway Full
+Name=Sway
 Comment=Sway com Catppuccin Frappe Blue
 Exec=/usr/local/bin/sway-full-session
 Type=Application
 DesktopNames=sway;wlroots;
 EOF
+sudo mkdir -p /usr/local/share/sddm/sway-sessions /usr/local/share/sddm/empty-xsessions
+sudo cp /usr/share/wayland-sessions/sway-full.desktop /usr/local/share/sddm/sway-sessions/sway.desktop
+sudo tee /etc/sddm.conf.d/96-sway-session.conf >/dev/null <<'EOF'
+[Wayland]
+SessionDir=/usr/local/share/sddm/sway-sessions
+[X11]
+SessionDir=/usr/local/share/sddm/empty-xsessions
+EOF
 sudo chmod 755 /usr/local/bin/sway-full-session
 for dm in gdm gdm3 lightdm lxdm; do
   if systemctl is-enabled "$dm.service" >/dev/null 2>&1; then sudo systemctl disable "$dm.service"; fi
 done
-sudo systemctl enable sddm.service
+sudo systemctl enable --force sddm.service
 sudo systemctl set-default graphical.target
 log "SDDM habilitado com Catppuccin Frappe Blue."

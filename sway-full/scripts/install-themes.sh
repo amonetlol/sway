@@ -9,15 +9,36 @@ backup="$HOME/.local/state/sway-full/backups/themes-$(date +%Y%m%d-%H%M%S)-$$"
 mkdir -p "$backup" "$HOME/.local/share/icons" "$HOME/.local/share/fonts"
 for name in gtk-3.0 gtk-4.0; do [[ ! -e "$HOME/.config/$name" ]] || cp -a "$HOME/.config/$name" "$backup/"; done
 git clone --depth 1 https://github.com/vinceliuice/Colloid-gtk-theme.git "$theme_work/colloid"
-(cd "$theme_work/colloid" && bash install.sh -c dark --tweaks catppuccin -l fixed)
-git clone --depth 1 https://github.com/yeyushengfan258/McMuse-circle.git "$theme_work/mcmuse"
-for name in McMuse-circle McMuse-circle-dark; do
-  [[ ! -e "$HOME/.local/share/icons/$name" ]] || mv "$HOME/.local/share/icons/$name" "$backup/$name"
-done
-(cd "$theme_work/mcmuse" && bash install.sh)
-git clone --depth 1 https://github.com/vinceliuice/Vimix-cursors.git "$theme_work/vimix"
-[[ ! -e "$HOME/.local/share/icons/Vimix-cursors" ]] || mv "$HOME/.local/share/icons/Vimix-cursors" "$backup/Vimix-cursors"
-cp -a "$theme_work/vimix/dist" "$HOME/.local/share/icons/Vimix-cursors"
+if [[ -L "$HOME/.themes" ]]; then
+  # O instalador upstream limpa o outro diretorio de temas; isolar HOME evita
+  # remover arquivos compartilhados com outras distros.
+  staged_home="$theme_work/colloid-home"
+  mkdir -p "$staged_home/.local/share" "$staged_home/.config" "$HOME/.themes" "$HOME/.config/gtk-4.0"
+  (cd "$theme_work/colloid" && HOME="$staged_home" XDG_DATA_HOME="$staged_home/.local/share" bash install.sh -c dark --tweaks catppuccin -l fixed)
+  for theme in "$staged_home"/.local/share/themes/Colloid-Dark-Catppuccin*; do
+    [[ -d "$theme" ]] || continue
+    [[ -e "$HOME/.themes/$(basename "$theme")" ]] || cp -r "$theme" "$HOME/.themes/"
+  done
+  cp -r "$staged_home/.config/gtk-4.0/." "$HOME/.config/gtk-4.0/"
+else
+  (cd "$theme_work/colloid" && bash install.sh -c dark --tweaks catppuccin -l fixed)
+fi
+if [[ -L "$HOME/.local/share/icons" && -d "$HOME/.local/share/icons/McMuse-circle" && -d "$HOME/.local/share/icons/McMuse-circle-dark" ]]; then
+  echo 'Icones McMuse compartilhados ja disponiveis.'
+else
+  git clone --depth 1 https://github.com/yeyushengfan258/McMuse-circle.git "$theme_work/mcmuse"
+  for name in McMuse-circle McMuse-circle-dark; do
+    [[ ! -e "$HOME/.local/share/icons/$name" ]] || mv "$HOME/.local/share/icons/$name" "$backup/$name"
+  done
+  (cd "$theme_work/mcmuse" && bash install.sh)
+fi
+if [[ -L "$HOME/.local/share/icons" && -d "$HOME/.local/share/icons/Vimix-cursors" ]]; then
+  echo 'Cursor Vimix compartilhado ja disponivel.'
+else
+  git clone --depth 1 https://github.com/vinceliuice/Vimix-cursors.git "$theme_work/vimix"
+  [[ ! -e "$HOME/.local/share/icons/Vimix-cursors" ]] || mv "$HOME/.local/share/icons/Vimix-cursors" "$backup/Vimix-cursors"
+  cp -a "$theme_work/vimix/dist" "$HOME/.local/share/icons/Vimix-cursors"
+fi
 mkdir -p "$HOME/.local/share/icons/default"
 [[ ! -e "$HOME/.local/share/icons/default/index.theme" ]] || cp -a "$HOME/.local/share/icons/default/index.theme" "$backup/default-index.theme"
 printf '[Icon Theme]\nInherits=Vimix-cursors\n' > "$HOME/.local/share/icons/default/index.theme"
