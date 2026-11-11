@@ -1,0 +1,2 @@
+#!/bin/sh
+while :; do "$HOME/.local/bin/random-wallpaper.sh"; sleep 90; done

@@ -1,0 +1,4 @@
+#!/bin/sh
+choice=$(printf 'MonadTall\nFloating\nMax\nMonadWide\nPlasma\nColumns\nTile\nZoomy\n' | rofi -dmenu -i -p Layout) || exit 0
+[ -n "$choice" ] || exit 0
+qtile cmd-obj -o group -f setlayout -a "$(printf %s "$choice" | tr '[:upper:]' '[:lower:]')"
