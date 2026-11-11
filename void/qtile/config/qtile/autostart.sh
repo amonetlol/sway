@@ -8,4 +8,3 @@ pulseaudio --start
 "$HOME/.config/polybar/launch.sh" &
 
 xsettingsd &
-
