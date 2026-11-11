@@ -4,8 +4,8 @@ setxkbmap -layout br -variant abnt2
 /usr/libexec/polkit-mate-authentication-agent-1 &
 "$HOME/.local/bin/void-wallpaper-timer" &
 
+pulseaudio --start
 "$HOME/.config/polybar/launch.sh" &
 
 xsettingsd &
 
-pulseaudio --start &
