@@ -7,3 +7,5 @@ setxkbmap -layout br -variant abnt2
 "$HOME/.config/polybar/launch.sh" &
 
 xsettingsd &
+
+pulseaudio --start &
