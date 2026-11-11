@@ -1,0 +1,43 @@
+# Rice e ferramentas via portage (::gentoo + GURU); sem a cadeia do Neovim.
+# micro e instalado como binario oficial pelo install-modules.sh.
+gui-wm/sway
+gui-apps/foot
+gui-apps/waybar
+x11-misc/rofi
+gui-apps/swaybg
+gui-apps/swayidle
+gui-apps/swaylock
+gui-apps/mako
+gui-apps/wl-clipboard
+media-sound/playerctl
+app-misc/brightnessctl
+gui-apps/grim
+gui-apps/slurp
+gui-apps/wlogout
+gui-apps/awww
+app-misc/cliphist
+gui-apps/swayosd
+app-shells/starship
+app-misc/tmux
+app-misc/jq
+media-sound/pavucontrol
+lxqt-base/lxqt-policykit
+gnome-base/gnome-keyring
+gnome-base/nautilus
+dev-lang/sassc
+media-fonts/fontawesome
+x11-libs/libnotify
+sys-apps/fd
+app-shells/fzf
+gnome-extra/nm-applet
+sys-apps/xdg-desktop-portal
+sys-apps/xdg-desktop-portal-gtk
+gui-libs/xdg-desktop-portal-wlr
+gui-apps/sddm
+gui-apps/sddm-gentoo-config
+x11-misc/xdg-user-dirs
+x11-misc/xdg-user-dirs-gtk
+# QML do tema calamaroos do SDDM (sem o Plasma).
+kde-frameworks/kirigami
+kde-plasma/libplasma
+kde-plasma/breeze
