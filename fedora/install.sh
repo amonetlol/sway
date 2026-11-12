@@ -8,7 +8,7 @@ if [[ ! -f "$here/install-pacotes.sh" ]]; then
   command -v git >/dev/null || { echo "git é necessário para baixar o rice." >&2; exit 1; }
   dest="${TMPDIR:-/tmp}/sway-fedora-$$"
   git clone --depth 1 --filter=blob:none --sparse https://github.com/amonetlol/sway.git "$dest"
-  git -C "$dest" sparse-checkout set fedora sway-full
+  git -C "$dest" sparse-checkout set fedora sway-full bsol
   exec bash "$dest/fedora/install.sh" "$@"
 fi
 step() { printf '\n[*] %s\n' "$*"; }

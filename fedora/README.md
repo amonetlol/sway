@@ -44,6 +44,14 @@ Para executar somente essa etapa:
 
     bash fedora/install-cli.sh
 
+## Fixes v3
+
+fixes-v3.sh remove blackbox-terminal, ulauncher e foot, instala o langpack
+pt-BR para o Nautilus, cria as pastas padrão em pt-BR e atualiza o term-hub.
+Pode ser executado de novo sem efeito extra:
+
+    bash fedora/fixes-v3.sh
+
 ## Configuracoes compartilhadas
 
 Mudancas em sway-full sao usadas na proxima instalacao. Esta pasta nao mantem
