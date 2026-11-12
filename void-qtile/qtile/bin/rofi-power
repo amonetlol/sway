@@ -1,0 +1,9 @@
+#!/bin/sh
+choice=$(printf '%s  Bloquear\n%s  Sair\n%s  Suspender\n%s  Reiniciar\n%s  Desligar\n' '󰌾' '󰍃' '󰒲' '󰜉' '󰐥' | rofi -dmenu -i -p Energia) || exit 0
+case "$choice" in
+ *Bloquear) i3lock -c 363646 ;;
+ *Sair) qtile cmd-obj -o root -f shutdown ;;
+ *Suspender) loginctl suspend ;;
+ *Reiniciar) loginctl reboot ;;
+ *Desligar) loginctl poweroff ;;
+esac

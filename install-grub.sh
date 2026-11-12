@@ -12,7 +12,7 @@ log() { printf '[*] %s\n' "$*"; }
 sudo -v
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-local_theme="$here/../bsol"
+local_theme="$here/bsol"
 
 [[ -d /sys/firmware/efi ]] || { echo "Sistema não está em UEFI." >&2; exit 1; }
 

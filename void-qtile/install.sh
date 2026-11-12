@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Void — mesmo rice do sway-full, com xbps e runit.
-#   bash void/install.sh
-#   bash <(curl -fsSL https://raw.githubusercontent.com/amonetlol/sway/main/void/install.sh)
+#   bash void-qtile/install.sh
+#   bash <(curl -fsSL https://raw.githubusercontent.com/amonetlol/sway/main/void-qtile/install.sh)
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ ! -f "$here/install-pacotes.sh" ]]; then
   command -v git >/dev/null || { echo "git é necessário para baixar o rice." >&2; exit 1; }
   dest="${TMPDIR:-/tmp}/sway-void-$$"
   git clone --depth 1 --filter=blob:none --sparse https://github.com/amonetlol/sway.git "$dest"
-  git -C "$dest" sparse-checkout set void sway-full
-  exec bash "$dest/void/install.sh" "$@"
+  git -C "$dest" sparse-checkout set void-qtile sway-full bsol
+  exec bash "$dest/void-qtile/install.sh" "$@"
 fi
 step() { printf '\n[*] %s\n' "$*"; }
 step "Pacotes Void"

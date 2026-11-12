@@ -5,6 +5,7 @@ setxkbmap -layout br -variant abnt2
 "$HOME/.local/bin/void-wallpaper-timer" &
 
 pulseaudio --start
+clipmenud &
 "$HOME/.config/polybar/launch.sh" &
 
 xsettingsd &

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Guia de atalhos do Qtile (Super+F1). Usa o mesmo tema do sway-full: ~/.config/rofi/hotkeys.rasi.
+THEME_FILE="$HOME/.config/rofi/hotkeys.rasi"
+# Toggle apenas deste menu.
+if pgrep -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi' >/dev/null; then
+    pkill -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi'
+    exit 0
+fi
+HOTKEYS_DATA=$(cat <<'KEYS'
+Super + F1                   │ Guia de atalhos                    │ Ajuda
+Super + Enter                │ Kitty                              │ Aplicativos
+Super + W                    │ Firefox                            │ Aplicativos
+Super + E                    │ Nautilus                           │ Aplicativos
+Super + D                    │ Rofi                               │ Aplicativos
+Super + Shift + D            │ Executar comando                   │ Aplicativos
+Super + X                    │ Menu de energia                    │ Sessão
+Super + Alt + T              │ Monitor do sistema (btop)          │ Sistema
+Super + F10                  │ Seletor de wallpapers              │ Wallpaper
+Super + M                    │ Alternar resolução do monitor      │ Monitor
+Super + Shift + P            │ Desligar monitores                 │ Monitor
+Super + V                    │ Clipboard                          │ Clipboard
+Super + Q                    │ Fechar janela                      │ Janelas
+Super + F                    │ Alternar tela cheia                │ Janelas
+Super + T                    │ Alternar janela flutuante          │ Janelas
+Super + ;                    │ Escolher layout                    │ Janelas
+Super + H J K L              │ Foco entre janelas                 │ Navegação
+Super + Shift + H J K L      │ Mover janela de posição            │ Navegação
+Super + 1…9 / 0              │ Área de trabalho 1…10              │ Áreas
+Super + Shift + 1…9 / 0      │ Mover janela para área 1…10        │ Áreas
+Super + Shift + R            │ Recarregar configuração Qtile      │ Sistema
+Volume + / − / Mudo          │ Ajustar volume                     │ Áudio
+KEYS
+)
+selected=$(printf '%s\n' "$HOTKEYS_DATA" | rofi -dmenu -i -no-custom -p 'Atalhos Qtile' -theme "$THEME_FILE") || exit 0
+case "$selected" in
+  'Super + Enter '* ) exec kitty ;;
+  'Super + W '* ) exec firefox ;;
+  'Super + E '* ) exec nautilus ;;
+  'Super + D '* ) exec rofi -show drun ;;
+  'Super + Shift + D '* ) exec rofi -show run ;;
+  'Super + X '* ) exec "$HOME/.local/bin/rofi-power" ;;
+  'Super + Alt + T '* ) exec kitty -e btop ;;
+  'Super + F10 '* ) exec "$HOME/.local/bin/rofi-wallpaper" ;;
+  'Super + M '* ) exec "$HOME/.local/bin/mon" --qtile ;;
+  'Super + V '* ) exec env CM_LAUNCHER=rofi clipmenu ;;
+  'Super + ; '* ) exec "$HOME/.local/bin/rofi-layout" ;;
+esac
