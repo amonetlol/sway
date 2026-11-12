@@ -1,0 +1,25 @@
+Super + /                     │ Guia de atalhos                     │ Ajuda
+Ctrl + Shift + T              │ Nova aba                            │ Abas
+Alt + N / P                   │ Próxima aba / aba anterior          │ Abas
+Alt + Esquerda / Direita      │ Aba anterior / próxima aba          │ Abas
+Alt + Cima                    │ Nova aba                            │ Abas
+Alt + Baixo / Alt + Q         │ Fechar aba                          │ Abas
+Alt + 1…9                     │ Selecionar aba                      │ Abas
+Alt + R                       │ Renomear aba                        │ Abas
+Alt + H                       │ Dividir painel horizontalmente      │ Painéis
+Alt + V                       │ Dividir painel verticalmente        │ Painéis
+Ctrl + Alt + Setas            │ Redimensionar painel                │ Painéis
+Alt + C                       │ Fechar painel                       │ Painéis
+Alt + F                       │ Ampliar / restaurar painel          │ Painéis
+Alt + K                       │ Selecionar painel por letra         │ Painéis
+Ctrl + C                      │ Copiar seleção / interromper        │ Texto
+Ctrl + Shift + C              │ Copiar seleção                      │ Texto
+Ctrl + Shift + V              │ Colar                               │ Texto
+Ctrl + F                      │ Pesquisar no terminal               │ Busca
+F3 / Shift + F3               │ Resultado anterior / próximo        │ Busca
+Page Up / Page Down           │ Rolar histórico                     │ Histórico
+Ctrl + + / Ctrl + =           │ Aumentar fonte                      │ Fonte
+Ctrl + -                      │ Diminuir fonte                      │ Fonte
+Ctrl + 0                      │ Restaurar tamanho da fonte          │ Fonte
+Ctrl + Shift + N              │ Nova janela                         │ Janelas
+Esc                           │ Fechar este guia                    │ Ajuda
