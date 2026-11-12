@@ -61,3 +61,10 @@ fonte CodeNewRoman.
 - No VMware o `awww` não reinicia em loop; o fundo usa uma imagem de `~/Imagens/wallpapers` com `swaybg`
 
 Entre em **sway** no SDDM depois da instalação. O instalador não reinicia a máquina.
+
+## Fixes v3
+
+- ixes-v3.sh: term-hub atualizado, launcher oculto/renomeado (default-remove_and_hide).
+- Fonte CodeNewRoman em `configuration.nix` (`nerd-fonts.code-new-roman`). O tema GRUB bsol foi testado e revertido para o padrão do NixOS.
+erd-fonts.code-new-roman).
+- Registro da máquina em PROGRESSO.md.

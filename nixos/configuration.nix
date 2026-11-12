@@ -38,7 +38,7 @@ let
 
   swaySession = pkgs.writeTextDir "share/wayland-sessions/sway.desktop" ''
     [Desktop Entry]
-    Name=sway
+    Name=Sway
     Comment=Sway
     Exec=${swaySessionScript}
     Type=Application
@@ -100,7 +100,7 @@ in
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.systemd-boot.enable = false;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.timeout = 5;
   boot.loader.grub = {
     enable = true;
@@ -272,8 +272,8 @@ in
       TIMELINE_CLEANUP = false;
       NUMBER_CLEANUP = true;
       NUMBER_MIN_AGE = 0;
-      NUMBER_LIMIT = "6";
-      NUMBER_LIMIT_IMPORTANT = "6";
+      NUMBER_LIMIT = "4";
+      NUMBER_LIMIT_IMPORTANT = "4";
     };
   };
   system.activationScripts.snapperSnapshotsSubvol.text = ''
@@ -306,6 +306,7 @@ in
   fonts.fontconfig.enable = true;
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
+    nerd-fonts.code-new-roman
     nerd-fonts.geist-mono
     nerd-fonts._0xproto
     nerd-fonts.terminess-ttf
@@ -339,14 +340,14 @@ in
     tree-sitter
     prettier
 
-    swaybg waybar rofi awww kitty nautilus sublime4 nwg-look
+    swaybg waybar rofi awww kitty nautilus nwg-look
     glib gsettings-desktop-schemas
     pavucontrol mako swayidle swaylock swayosd playerctl wlogout
     grim slurp libnotify imagemagick
     xdg-utils xdg-user-dirs
-    polkit_gnome gnome-keyring herdr
+    polkit_gnome gnome-keyring
     papirus-icon-theme
-    sassc gnome-themes-extra inkscape optipng
+    sassc gnome-themes-extra optipng
     xorg.xsetroot xorg.xauth
     tmux
     mesa
