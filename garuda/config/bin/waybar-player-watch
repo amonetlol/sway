@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+playerctl -a metadata --format '{{status}} {{title}}' --follow 2>/dev/null | while IFS= read -r line; do pkill -RTMIN+5 -x waybar || true; done

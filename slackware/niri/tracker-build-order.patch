@@ -1,0 +1,11 @@
+--- tracker.SlackBuild
++++ tracker.SlackBuild
+@@ -94,6 +94,8 @@
+     --sysconfdir=/etc \
+     -Dsystemd_user_services=false \
+     -Dstrip=true
++  # FF tracker: build runtime modules before introspection.
++  ninja src/libtracker-sparql/libtracker-remote-soup2.so src/libtracker-sparql/libtracker-remote-soup3.so
+   "${NINJA:=ninja}"
+   DESTDIR=$PKG $NINJA install
+ cd ..

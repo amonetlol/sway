@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Lista de atalhos do niri (binds.kdl). Formato: "Atalho │ Acao │ Categoria|||comando"
+# Linhas sem comando apenas mostram o atalho.
+THEME_FILE="$HOME/.config/rofi/hotkeys/hotkeys.rasi"
+# Toggle apenas deste menu
+if pgrep -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi' >/dev/null; then
+    pkill -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi'
+    exit 0
+fi
+DATA=$(cat <<'KEYS'
+Super + F1 │ Guia de atalhos │ Ajuda|||
+Super + Enter │ Kitty │ Aplicativos|||kitty
+Super + W │ Firefox │ Aplicativos|||firefox
+Super + E │ Nautilus │ Aplicativos|||nautilus
+Super + D │ Launcher │ Aplicativos|||$HOME/.config/rofi/launchers/type-2/launcher.sh
+Super + Alt + T │ Monitor (btop) │ Sistema|||kitty -e btop
+Super + X │ Menu de energia │ Sessão|||$HOME/.config/rofi/powermenu/type-1/powermenu.sh
+Super + Shift + L │ Bloquear tela │ Sessão|||swaylock
+Ctrl + Alt + Delete │ Sair do niri │ Sessão|||
+Super + F10 │ Seletor de wallpapers │ Wallpaper|||bash $HOME/.config/rofi/wallpaper/launch.sh
+Super + V │ Clipboard │ Clipboard|||bash $HOME/.config/rofi/clipboard/launch.sh
+Super + M │ Alternar resolução do monitor │ Monitor|||$HOME/.local/bin/mon --niri
+Super + Shift + P │ Desligar monitores │ Monitor|||niri msg action power-off-monitors
+Print │ Captura de região │ Captura|||niri msg action screenshot
+Ctrl + Print │ Captura da tela inteira │ Captura|||niri msg action screenshot-screen
+Alt + Print │ Captura da janela │ Captura|||niri msg action screenshot-window
+Super + Q │ Fechar janela │ Janelas|||niri msg action close-window
+Super + F │ Maximizar coluna │ Janelas|||niri msg action maximize-column
+Super + Shift + F │ Tela cheia │ Janelas|||niri msg action fullscreen-window
+Super + T │ Alternar janela flutuante │ Janelas|||niri msg action toggle-window-floating
+Super + Shift + V │ Alternar foco flutuante/ladrilho │ Janelas|||niri msg action switch-focus-between-floating-and-tiling
+Super + C │ Centralizar coluna │ Janelas|||niri msg action center-column
+Super + Ctrl + C │ Centralizar colunas visíveis │ Janelas|||niri msg action center-visible-columns
+Super + Ctrl + R │ Resetar altura da janela │ Janelas|||niri msg action reset-window-height
+Super + - / = │ Diminuir / aumentar largura da coluna │ Janelas|||
+Super + Shift + - / = │ Diminuir / aumentar altura da janela │ Janelas|||
+Super + Tab │ Visão geral │ Navegação|||niri msg action toggle-overview
+Super + Setas ou J / K │ Foco entre colunas e janelas │ Navegação|||
+Super + Shift + Setas ou J / K │ Mover coluna / janela │ Navegação|||
+Super + Roda do mouse │ Trocar de workspace │ Navegação|||
+Super + U / I │ Workspace abaixo / acima │ Áreas|||
+Super + 1…9 / 0 │ Ir para workspace 1…10 │ Áreas|||
+Super + Shift + 1…9 / 0 │ Mover coluna para workspace 1…10 │ Áreas|||
+Super + Ctrl + Setas ou U / I │ Mover coluna para outro workspace │ Áreas|||
+Volume + / − / Mudo │ Ajustar volume │ Áudio|||
+KEYS
+)
+# Mostra so a parte visivel; o comando fica depois de |||
+selected=$(printf '%s\n' "$DATA" | sed 's/|||.*$//' | rofi -dmenu -i -no-custom -p 'Atalhos Niri' -theme "$THEME_FILE") || exit 0
+[[ -n "$selected" ]] || exit 0
+cmd=$(printf '%s\n' "$DATA" | grep -F -- "$selected|||" | head -n1 | sed 's/^.*|||//')
+[[ -n "$cmd" ]] || exit 0
+setsid -f bash -c "$cmd" >/dev/null 2>&1

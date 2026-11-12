@@ -1,0 +1,6 @@
+@import "rose-pine.css";
+* { font-family: sans-serif; font-size: 12px; }
+window#waybar { background: @base; color: @text; }
+#workspaces button { color: @text; padding: 0 8px; }
+#workspaces button.active { background: @iris; color: @base; }
+#clock, #pulseaudio, #network, #cpu, #memory, #tray { padding: 0 9px; }

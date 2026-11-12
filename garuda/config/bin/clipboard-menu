@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if ! cliphist list | grep -q .; then
+  printf '%s\n' 'Clipboard vazio — copie um texto para criar o histórico.' | rofi -dmenu -i -no-custom -p Clipboard >/dev/null || true
+  exit 0
+fi
+selection=$(cliphist list | rofi -dmenu -i -p Clipboard) || exit 0
+[ -n "$selection" ] || exit 0
+printf '%s\n' "$selection" | cliphist decode | wl-copy

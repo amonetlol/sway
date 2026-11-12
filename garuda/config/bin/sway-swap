@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+import json,subprocess,sys
+
+direction=sys.argv[1]
+if direction not in ('left','right','up','down'): raise SystemExit(2)
+tree=json.loads(subprocess.check_output(['swaymsg','-r','-t','get_tree']))
+workspace=None
+focused=None
+parent=None
+
+def find(node,ws=None,par=None):
+    global workspace,focused,parent
+    if node.get('type')=='workspace': ws=node
+    if node.get('focused'):
+        workspace,focused,parent=ws,node,par
+    for child in node.get('nodes',[])+node.get('floating_nodes',[]): find(child,ws,node)
+find(tree)
+if not workspace or not focused: raise SystemExit(0)
+
+def windows(node):
+    if node.get('app_id') or node.get('window') is not None: yield node
+    for child in node.get('nodes',[]): yield from windows(child)
+
+items=list(windows(workspace))
+if not any(n['id']==focused['id'] for n in items): raise SystemExit(0)
+r=focused['rect'];cx=r['x']+r['width']/2;cy=r['y']+r['height']/2
+candidates=[]
+for n in items:
+    if n['id']==focused['id']: continue
+    q=n['rect'];dx=q['x']+q['width']/2-cx;dy=q['y']+q['height']/2-cy
+    axis={'left':-dx,'right':dx,'up':-dy,'down':dy}[direction]
+    if axis<=0: continue
+    if direction in ('left','right'):
+        aligned=q['y']<r['y']+r['height'] and r['y']<q['y']+q['height'];cross=abs(dy)
+    else:
+        aligned=q['x']<r['x']+r['width'] and r['x']<q['x']+q['width'];cross=abs(dx)
+    candidates.append(((not aligned,axis*axis+cross*cross),n))
+target=min(candidates,key=lambda item:item[0])[1] if candidates else None
+# Abas e pilhas compartilham geometria: troque os containers adjacentes.
+if target is None and parent and parent.get('layout') in ('tabbed','stacking'):
+    nodes=parent.get('nodes',[]);idx=next((i for i,n in enumerate(nodes) if n['id']==focused['id']),None)
+    if idx is not None:
+        nxt=idx+(-1 if direction in ('left','up') else 1)
+        if 0<=nxt<len(nodes): target=nodes[nxt]
+if target is not None:
+    command=f"[con_id={focused['id']}] swap container with con_id {target['id']}"
+    reply=json.loads(subprocess.check_output(['swaymsg','-r',command]))
+    if not all(x.get('success') for x in reply): raise SystemExit(1)

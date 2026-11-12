@@ -1,0 +1,5 @@
+super+v rofi clipboard
+super+f10 rofi wallpaper
+super+d rofi launcher
+super+f1 rofi hotkeys
+super+x rofi powermenu

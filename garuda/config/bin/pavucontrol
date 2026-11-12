@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec env GSK_RENDERER=cairo GDK_DISABLE=dmabuf /usr/bin/pavucontrol "$@"
