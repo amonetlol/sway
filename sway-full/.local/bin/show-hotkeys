@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-THEME_FILE="$HOME/.config/rofi/hotkeys.rasi"
+THEME_FILE="$HOME/.config/rofi/hotkeys/hotkeys.rasi"
 # Toggle apenas deste menu; nao interfere na Waybar ou em outros launchers.
 if pgrep -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi' >/dev/null; then
     pkill -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi'
