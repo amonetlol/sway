@@ -15,8 +15,10 @@ local_theme="$here/../bsol"
 
 efi=/boot/efi
 [[ -d $efi ]] || efi=/boot
-if [[ ! -f $efi/EFI/ubuntu/grubx64.efi ]]; then
-  sudo grub-install --target=x86_64-efi --efi-directory="$efi" --bootloader-id=ubuntu
+# /boot/efi/EFI é só de root: o teste precisa de sudo.
+# --no-nvram evita mudar a BootOrder (o Aarambh deve continuar primeiro).
+if ! sudo test -f "$efi/EFI/ubuntu/grubx64.efi"; then
+  sudo grub-install --target=x86_64-efi --efi-directory="$efi" --bootloader-id=ubuntu --no-nvram
 fi
 
 ts="$(date +%Y%m%d-%H%M%S)"
