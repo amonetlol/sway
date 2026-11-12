@@ -1,0 +1,11 @@
+# ~/.aliases-chimera
+# Aliases para Chimera Linux (apk). Mesmos nomes do .aliases-arch; so os comandos mudam.
+alias up2='doas apk update && doas apk upgrade'
+alias yin='doas apk add'
+alias yse='apk search'
+alias ysel='apk list -I | grep'
+alias yre='doas apk del'
+alias yinfo='apk info -a'
+alias cls='doas apk cache clean'
+# sem equivalente no Chimera (pacman/yay/reflector):
+# alias yay, rpac (reflector), orf (orfaos) -> nao aplicavel
