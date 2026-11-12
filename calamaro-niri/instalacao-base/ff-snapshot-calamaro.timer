@@ -1,0 +1,7 @@
+[Unit]
+Description=Agendamento di?rio de snapshots do CalamaroOS
+[Timer]
+OnCalendar=daily
+Persistent=true
+[Install]
+WantedBy=timers.target

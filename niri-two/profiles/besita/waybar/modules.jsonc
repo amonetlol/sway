@@ -1,0 +1,38 @@
+{
+  "clock#date": {
+    "format": "<span color='#c3d9ac' font='Terminess Nerd Font Mono'> </span>{:%a %b %d}",
+    "interval": 1
+  },
+  "clock#time": {
+    "format": "{:%H:%M}",
+    "interval": 1
+  },
+  "pulseaudio": {
+    "format": "<span color='#c3d9ac' font='Terminess Nerd Font Mono'>{icon} </span> {volume}%",
+    "format-muted": " ",
+    "format-icons": [
+      "",
+      "",
+      ""
+    ],
+    "on-click": "pavucontrol",
+    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+  },
+  "cpu": {
+    "format": "<span color='#c3d9ac'></span> {usage}%",
+    "interval": 3
+  },
+  "memory": {
+    "format": "<span color='#c3d9ac'></span> {used:0.1f} GiB",
+    "interval": 3
+  },
+  "disk": {
+    "format": "<span color='#c3d9ac' font='Terminess Nerd Font Mono'> </span> {used}/{total}"
+  },
+  "mpd": {
+    "format": "<span color='#c3d9ac' font='Terminess Nerd Font Mono'>󰎇 </span> {artist} - {title}",
+    "format-disconnected": "disconnected",
+    "format-stopped": "empty queue"
+  }
+}

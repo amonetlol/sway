@@ -1,0 +1,99 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 22,
+  "margin-top": 5,
+  "margin-left": 5,
+  "margin-right": 5,
+  "modules-left": [
+    "memory",
+    "cpu",
+    "temperature"
+  ],
+  "modules-center": [
+    "niri/workspaces"
+  ],
+  "modules-right": [
+    "custom/recording",
+    "battery",
+    "pulseaudio",
+    "network",
+    "clock",
+  ],
+  "niri/workspaces": {
+    "format": "{value}",
+  },
+  "clock": {
+      "format": "{:%d.%m | %H:%M}"
+  },
+  "cpu": {
+    "interval": 1,
+    "format": "cpu | {usage}%",
+    "tooltip-format": "{usage}%",
+    "states": {
+      "warning": 71,
+      "critical": 93
+    },
+  },
+  "load": {
+    "interval": 5,
+    "format": "load | {load1}",
+    "max-length": 20
+  },
+  "temperature": {
+    "interval": 5,
+    "format": "temp | {temperatureC}°C",
+    "max-length": 20,
+    "warning-threshold": 41,
+    "critical-threshold": 63,
+  },
+  "memory": {
+    "interval": 1,
+    "format": "mem | {percentage}%",
+    "tooltip-format": "{used}/{total} GiB",
+    "states": {
+      "warning": 91,
+      "critical": 97
+    },
+  },
+  "network": {
+    "format-wifi": "wifi | {essid}",
+    "format-ethernet": "eth | {essid}",
+    "format-disconnected": "wifi | disc",
+    "interval": 5,
+    "tooltip-format-wifi": " {bandwidthDownBytes} |  {bandwidthUpBytes}",
+  },
+  "network#speed": {
+    "format-wifi": " {bandwidthDownBytes} |  {bandwidthUpBytes}",
+    "tooltip": false
+  },
+  "pulseaudio": {
+    "format": "vol | {volume}%",
+    "format-muted": "vol | M",
+    "tooltip-format": "{desc}"
+  },
+  "battery": {
+    "interval": 30,
+    "states": {
+      "good": 80,
+      "warning": 15,
+      "critical": 10
+    },
+    "format": "bat | {capacity}",
+    "format-charging": "bat | {capacity}",
+    "format-discharging": "bat | {capacity}",
+    "format-critical": "bat | {capacity}",
+    "format-charging-warning": "bat | {capacity}",
+    "format-charging-critical": "bat | {capacity}",
+    "format-discharging-critical": "bat | {capacity}",
+    "tooltip-format": "{time} remaining",
+    "tooltip-format-charging": "{time} until full",
+    "tooltip-format-discharging": "{time} remaining",
+  },
+  "custom/recording": {
+	  "exec": "$HOME/.config/waybar/scripts/recording-status.sh",
+	  "return-type": "json",
+	  "interval": "once",
+	  "signal": 8
+  }
+}

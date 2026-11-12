@@ -1,0 +1,23 @@
+* {
+    bg: #282828;
+    fg: #ebdbb2;
+    muted: #928374;
+    accent: #fabd2f;
+    background-color: @bg;
+    text-color: @fg;
+    border-color: @accent;
+    spacing: 6px;
+}
+window { width: 640px; border: 2px; padding: 12px; }
+mainbox { spacing: 10px; }
+inputbar { children: [prompt, entry]; padding: 8px; }
+prompt { text-color: @accent; }
+entry { placeholder: "Buscar..."; placeholder-color: @muted; }
+listview { lines: 10; columns: 1; scrollbar: false; }
+element { padding: 8px; }
+element selected.normal { background-color: @accent; text-color: @bg; }
+element-icon { size: 24px; background-color: inherit; }
+element-text { background-color: inherit; text-color: inherit; }
+mode-switcher { spacing: 6px; }
+button { padding: 6px; }
+button selected { background-color: @accent; text-color: @bg; }

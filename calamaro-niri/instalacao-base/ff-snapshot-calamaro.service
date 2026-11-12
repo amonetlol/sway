@@ -1,0 +1,5 @@
+[Unit]
+Description=Snapshot di?rio do CalamaroOS (?ltimos quatro)
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/ff-snapshot-calamaro

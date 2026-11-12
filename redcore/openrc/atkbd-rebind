@@ -1,0 +1,20 @@
+#!/sbin/openrc-run
+# Recarrega o driver atkbd (teclado PS/2 emulado) para evitar Spurious ACK no VMware
+description="Recarrega o driver do teclado PS/2 (atkbd)"
+
+depend() {
+	need localmount
+	after udev
+	before display-manager
+}
+
+start() {
+	ebegin "Recarregando driver atkbd"
+	if [ -e /sys/bus/serio/drivers/atkbd/serio0 ]; then
+		echo serio0 > /sys/bus/serio/drivers/atkbd/unbind 2>/dev/null
+		sleep 2
+	fi
+	echo serio0 > /sys/bus/serio/drivers/atkbd/bind 2>/dev/null
+	eend 0
+}
+# fim

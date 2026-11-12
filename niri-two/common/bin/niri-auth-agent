@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+for agent in /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 /usr/libexec/polkit-gnome-authentication-agent-1 /usr/lib/polkit-mate-authentication-agent-1 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 /usr/libexec/polkit-mate-authentication-agent-1 /usr/libexec/polkit-kde-authentication-agent-1; do
+  if [ -x "$agent" ]; then exec "$agent"; fi
+done
+exit 0

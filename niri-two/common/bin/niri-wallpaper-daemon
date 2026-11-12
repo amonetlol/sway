@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -u
+command -v awww-daemon >/dev/null || exit 1
+awww-daemon >/tmp/ff-wallpaper-daemon.log 2>&1 &
+for i in {1..20}; do awww query >/dev/null 2>&1 && break; sleep 0.5; done
+while :; do
+ image=$(find -L "$HOME/Imagens/wallpapers" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -print 2>/dev/null | shuf -n1)
+ [ -n "$image" ] && awww img "$image" --transition-type fade >/dev/null 2>&1 || true
+ sleep 90
+done

@@ -1,0 +1,1 @@
+15 3 * * * root /usr/local/sbin/ff-snapshot-calculate >> /tmp/ff-calculate.log 2>&1

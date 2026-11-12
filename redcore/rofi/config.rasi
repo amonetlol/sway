@@ -1,0 +1,10 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    display-drun: "Apps";
+    display-run: "Executar";
+    display-window: "Janelas";
+    font: "JetBrainsMono Nerd Font 11";
+    terminal: "kitty";
+}
+@theme "/home/pio/.config/rofi/gruvbox.rasi"
