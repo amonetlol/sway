@@ -1,0 +1,5 @@
+configuration {
+    show-icons: true;
+    font: "JetBrainsMono Nerd Font 11";
+}
+@theme "/home/pio/.config/rofi/wallpaper/wallpaper.rasi"

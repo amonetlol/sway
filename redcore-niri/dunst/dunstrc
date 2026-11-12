@@ -1,0 +1,38 @@
+[global]
+    monitor = 0
+    follow = mouse
+    width = 360
+    origin = top-right
+    offset = 16x48
+    frame_width = 2
+    frame_color = "#fabd2f"
+    separator_color = frame
+    corner_radius = 0
+    font = JetBrains Mono 10
+    padding = 12
+    horizontal_padding = 14
+    icon_theme = Gruvbox-Plus-Dark
+    enable_recursive_icon_lookup = true
+    icon_position = left
+    max_icon_size = 48
+    background = "#282828"
+    foreground = "#ebdbb2"
+    timeout = 8
+
+[urgency_low]
+    background = "#282828"
+    foreground = "#a89984"
+    frame_color = "#928374"
+    timeout = 5
+
+[urgency_normal]
+    background = "#282828"
+    foreground = "#ebdbb2"
+    frame_color = "#fabd2f"
+    timeout = 8
+
+[urgency_critical]
+    background = "#282828"
+    foreground = "#fb4934"
+    frame_color = "#fb4934"
+    timeout = 0

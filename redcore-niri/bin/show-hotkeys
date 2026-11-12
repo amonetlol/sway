@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Guia de atalhos do niri (binds do config.kdl). Toggle pelo proprio menu.
+set -euo pipefail
+THEME="$HOME/.config/rofi/hotkeys/hotkeys.rasi"
+if pgrep -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi' >/dev/null; then
+    pkill -u "$(id -u)" -f '^rofi -dmenu.*hotkeys.rasi'
+    exit 0
+fi
+DATA=$(cat <<'KEYS'
+Mod+Return                   │ Terminal (kitty)                   │ Aplicativos
+Mod+W                        │ Firefox                            │ Aplicativos
+Mod+E                        │ Nautilus                           │ Aplicativos
+Mod+D                        │ Launcher de apps (rofi)            │ Aplicativos
+Mod+X                        │ Menu de energia                    │ Sessão
+Mod+V                        │ Clipboard                          │ Clipboard
+Mod+F10                      │ Seletor de wallpapers              │ Wallpaper
+Mod+M                        │ Alternar resolução do monitor      │ Monitor
+Mod+F12                      │ Recarregar Waybar                  │ Sistema
+Mod+Q                        │ Fechar janela                      │ Janelas
+Mod+F                        │ Maximizar coluna                   │ Janelas
+Mod+Shift+F                  │ Tela cheia                         │ Janelas
+Mod+T                        │ Alternar janela flutuante          │ Janelas
+Mod+Shift+V                  │ Alternar foco flutuante/tiling     │ Janelas
+Mod+C                        │ Centralizar coluna                 │ Janelas
+Mod+Minus / Mod+Equal        │ Largura da coluna -10% / +10%      │ Janelas
+Mod+Shift+Minus / Equal      │ Altura da janela -10% / +10%       │ Janelas
+Mod+Ctrl+W                   │ Alternar exibição em abas          │ Janelas
+Mod+Left / Mod+Right         │ Focar coluna anterior / próxima    │ Navegação
+Mod+Up / Mod+Down            │ Focar janela acima / abaixo        │ Navegação
+Mod+Home / Mod+End           │ Primeira / última coluna           │ Navegação
+Mod+TAB                      │ Visão geral                        │ Navegação
+Mod+1 … Mod+9 / Mod+0        │ Área de trabalho 1 … 10            │ Áreas
+Mod+Shift+1 … 9 / 0          │ Mover coluna para área 1 … 10      │ Áreas
+Mod+Shift+P                  │ Desligar monitores                 │ Sessão
+Print / Ctrl+Print           │ Captura de tela / da tela          │ Captura
+Alt+Print                    │ Captura da janela                  │ Captura
+Mod+Wheel                    │ Trocar de área com a roda          │ Mouse
+Mod+F2                       │ Overlay de atalhos do niri         │ Ajuda
+KEYS
+)
+selected=$(printf '%s\n' "$DATA" | rofi -dmenu -i -no-custom -p 'Atalhos' -theme "$THEME") || exit 0
+key=$(printf '%s' "$selected" | awk -F'│' '{gsub(/^ +| +$/, "", $1); print $1}')
+case "$key" in
+  Mod+Return) exec kitty ;;
+  Mod+W) exec flatpak run org.mozilla.firefox ;;
+  Mod+E) exec nautilus ;;
+  Mod+D) exec rofi -show drun ;;
+  Mod+X) exec "$HOME/.local/bin/power-menu.sh" ;;
+  Mod+V) exec "$HOME/.config/rofi/clipboard/launch.sh" ;;
+  Mod+F10) exec "$HOME/.config/rofi/wallpaper/launch.sh" ;;
+  Mod+M) exec "$HOME/.local/bin/mon" --niri ;;
+  Mod+F12) exec "$HOME/.local/bin/waybar-reload.sh" ;;
+esac

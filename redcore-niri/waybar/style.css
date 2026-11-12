@@ -40,7 +40,7 @@ window#waybar {
   padding: 2px;
   margin: 0;
   margin-right: 0px;
-  border: 2px solid @foreground;
+  border: 2px solid @accent;
 }
 
 #workspaces button,
@@ -149,4 +149,11 @@ window#waybar {
 
 #custom-recording {
 	color: @critical;
+}
+
+/* workspace ativo: numero na cor de destaque do tema */
+#workspaces button.focused,
+#workspaces button.focused.visible,
+#workspaces button.active {
+  color: @accent;
 }

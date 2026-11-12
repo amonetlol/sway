@@ -1,0 +1,9 @@
+/* Grade de wallpapers: paleta Gruvbox da maquina, cantos retos */
+@import "/home/pio/.config/rofi/gruvbox.rasi"
+window { width: 1120px; border-radius: 0px; }
+mainbox { children: [ inputbar, listview ]; }
+listview { columns: 4; lines: 3; spacing: 12px; fixed-height: true; fixed-columns: true; flow: horizontal; scrollbar: true; cycle: false; }
+element { orientation: vertical; spacing: 8px; padding: 10px; border-radius: 0px; }
+element-icon { size: 220px; horizontal-align: 0.5; }
+element-text { horizontal-align: 0.5; }
+entry { placeholder: "Pesquisar wallpaper..."; }

@@ -111,6 +111,15 @@ input {
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://niri-wm.github.io/niri/Configuration:-Layout
+output "Virtual-1" {
+    mode "1600x900@60.000"
+}
+
+cursor {
+    xcursor-theme "Vimix-cursors"
+    xcursor-size 24
+}
+
 layout {
     // Set gaps around windows in logical pixels.
     gaps 16
@@ -169,13 +178,13 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        active-color "#7fc8ff"
+        active-color "#fabd2f"
 
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
         // where you can see its inactive-color is on other monitors.
-        inactive-color "#505050"
+        inactive-color "#504945"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -271,6 +280,7 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
+spawn-at-startup "sh" "-c" "wl-paste --watch cliphist store"
 spawn-at-startup "/home/pio/.local/bin/random-wallpaper-loop.sh"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -278,7 +288,7 @@ spawn-at-startup "/home/pio/.local/bin/random-wallpaper-loop.sh"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
-    // skip-at-startup
+    skip-at-startup
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
@@ -332,6 +342,12 @@ window-rule {
 
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
+// Terminal Super+T abre flutuante.
+window-rule {
+    match app-id="^kitty-float$"
+    open-floating true
+}
+
 /-window-rule {
     match app-id=r#"^org\.keepassxc\.KeePassXC$"#
     match app-id=r#"^org\.gnome\.World\.Secrets$"#
@@ -356,12 +372,15 @@ binds {
     // --- Apps ---
     Mod+Return hotkey-overlay-title="Terminal: kitty" { spawn "kitty"; }
     Alt+Return hotkey-overlay-title="Terminal: kitty" { spawn "kitty"; }
-    Mod+T hotkey-overlay-title="Terminal: alacritty" { spawn "alacritty"; }
-    Mod+W hotkey-overlay-title="Firefox" { spawn "firefox"; }
-    Alt+W hotkey-overlay-title="Firefox" { spawn "firefox"; }
+    Mod+T hotkey-overlay-title="Alternar flutuante" { toggle-window-floating; }
+    Mod+W hotkey-overlay-title="Firefox" { spawn "flatpak" "run" "org.mozilla.firefox"; }
+    Alt+W hotkey-overlay-title="Firefox" { spawn "flatpak" "run" "org.mozilla.firefox"; }
     Mod+D hotkey-overlay-title="Application Launcher: rofi" { spawn "rofi" "-show" "drun"; }
     Mod+M hotkey-overlay-title="Monitor: alterna resolucao" { spawn "/home/pio/.local/bin/mon" "--niri"; }
     Mod+X hotkey-overlay-title="Power Menu: rofi" { spawn "/home/pio/.local/bin/power-menu.sh"; }
+    Mod+F1 hotkey-overlay-title="Atalhos de teclado" { spawn "bash" "-c" "$HOME/.local/bin/show-hotkeys"; }
+    Mod+V hotkey-overlay-title="Clipboard: rofi" { spawn "bash" "-c" "$HOME/.config/rofi/clipboard/launch.sh"; }
+    Mod+F10 hotkey-overlay-title="Wallpaper: rofi" { spawn "bash" "-c" "$HOME/.config/rofi/wallpaper/launch.sh"; }
     Mod+F12 hotkey-overlay-title="Reload Waybar" { spawn "/home/pio/.local/bin/waybar-reload.sh"; }
     Alt+D hotkey-overlay-title="Application Launcher: rofi" { spawn "rofi" "-show" "drun"; }
     Mod+CTRL+Return hotkey-overlay-title="Application Launcher: rofi" { spawn "rofi" "-show" "drun"; }

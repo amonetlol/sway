@@ -1,0 +1,31 @@
+/* Atalhos: paleta Gruvbox da maquina (gruvbox.rasi), cantos retos */
+* {
+    bg: #282828;
+    fg: #ebdbb2;
+    muted: #928374;
+    accent: #fabd2f;
+    font: "JetBrains Mono 11";
+    background-color: transparent;
+    text-color: @fg;
+}
+window {
+    location: center;
+    anchor: center;
+    width: 1080px;
+    height: 620px;
+    border: 2px solid;
+    border-radius: 0px;
+    border-color: @accent;
+    background-color: @bg;
+}
+mainbox { spacing: 12px; padding: 16px; children: [ inputbar, listview ]; }
+inputbar { spacing: 10px; padding: 8px; children: [ prompt, entry ]; }
+prompt { text-color: @accent; }
+entry { placeholder: "Pesquisar atalho ou acao..."; placeholder-color: @muted; }
+listview { columns: 1; lines: 13; cycle: true; dynamic: true; scrollbar: true; spacing: 4px; }
+scrollbar { width: 4px; border: 0; handle-width: 6px; handle-color: @accent; }
+element { padding: 8px 12px; border-radius: 0px; }
+element normal.normal { background-color: transparent; text-color: @fg; }
+element alternate.normal { background-color: transparent; text-color: @fg; }
+element selected.normal { background-color: @accent; text-color: @bg; }
+element-text { background-color: transparent; text-color: inherit; }

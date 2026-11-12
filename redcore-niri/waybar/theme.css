@@ -1,10 +1,11 @@
 /* Gruvbox theme */
+@define-color accent             #fabd2f;
 @define-color background           #ebdbb2;
 @define-color background-alt       #282828;
 @define-color foreground           #504945;
 @define-color foreground-alt       #ebdbb2;
 
-@define-color mainfg               #504945;
+@define-color mainfg               #fabd2f;
 @define-color warning              #fabd2f;
 @define-color critical             #fb4934;
 @define-color good                 #b8bb26;
