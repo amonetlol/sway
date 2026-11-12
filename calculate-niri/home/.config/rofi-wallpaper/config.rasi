@@ -1,0 +1,24 @@
+/* ~/.config/hypr-vora/rofi/config.rasi */
+@theme "catppuccin-mocha.rasi"
+
+configuration {
+  /* Setas navegam pela grade; Ctrl+B/F movem o cursor da pesquisa. */
+  cycle: false;
+  scroll-method: 1;
+  kb-row-left: "Left";
+  kb-row-right: "Right";
+  kb-row-up: "Up,Control+p";
+  kb-row-down: "Down,Control+n";
+  kb-move-char-back: "Control+b";
+  kb-move-char-forward: "Control+f";
+
+  modi: "drun,run";
+  show-icons: true;
+  icon-theme: "McMuse-circle-dark";
+  font: "CodeNewRoman Nerd Font 12";
+  terminal: "kitty";
+  display-drun: "  Apps";
+  display-run: "  Run";
+  display-window: "  Windows";
+  drun-display-format: "{name}";
+}

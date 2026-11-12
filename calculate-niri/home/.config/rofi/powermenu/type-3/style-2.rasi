@@ -1,0 +1,120 @@
+﻿/* Power menu em overlay (estilo wlogout): sem fundo, sobre o desktop */
+
+configuration {
+    show-icons: false;
+}
+
+@import "shared/colors.rasi"
+@import "shared/fonts.rasi"
+
+* {
+    box-spacing:     30px;
+    list-spacing:    30px;
+    general-padding: 14px;
+    element-padding: 30px 10px;
+    element-radius:  100%;
+    general-radius:  100%;
+    element-font:    "feather 40";
+}
+
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    fullscreen:       false;
+    width:            760px;
+    x-offset:         0px;
+    y-offset:         0px;
+    enabled:          true;
+    margin:           0px;
+    padding:          0px;
+    border:           0px;
+    border-radius:    0px;
+    cursor:           "default";
+    background-color: transparent;
+}
+
+mainbox {
+    enabled:          true;
+    spacing:          var(box-spacing);
+    margin:           0px;
+    padding:          0px;
+    border:           0px;
+    background-color: transparent;
+    children:         [ "inputbar", "listview" ];
+}
+
+inputbar {
+    enabled:          true;
+    spacing:          0px;
+    margin:           0px;
+    padding:          0px;
+    border:           0px;
+    background-color: transparent;
+    text-color:       @foreground;
+    children:         [ "textbox-prompt-colon", "prompt" ];
+}
+
+textbox-prompt-colon {
+    enabled:          true;
+    expand:           false;
+    str:              "SYSTEM";
+    padding:          var(general-padding);
+    border-radius:    100% 0px 0px 100%;
+    background-color: @urgent;
+    text-color:       @background;
+}
+
+prompt {
+    enabled:          true;
+    padding:          var(general-padding);
+    border-radius:    0px 100% 100% 0px;
+    background-color: @active;
+    text-color:       @background;
+}
+
+listview {
+    enabled:          true;
+    columns:          5;
+    lines:            1;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        false;
+    layout:           vertical;
+    reverse:          false;
+    fixed-height:     false;
+    fixed-columns:    true;
+    spacing:          var(list-spacing);
+    margin:           0px;
+    padding:          0px;
+    border:           0px;
+    background-color: transparent;
+    text-color:       @foreground;
+    cursor:           "default";
+}
+
+element {
+    enabled:          true;
+    spacing:          0px;
+    margin:           0px;
+    padding:          var(element-padding);
+    border:           0px;
+    border-radius:    var(element-radius);
+    background-color: @background-alt;
+    text-color:       @foreground;
+    cursor:           pointer;
+}
+
+element-text {
+    font:             var(element-font);
+    background-color: transparent;
+    text-color:       inherit;
+    cursor:           inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.5;
+}
+
+element selected.normal {
+    background-color: @selected;
+    text-color:       @background;
+}

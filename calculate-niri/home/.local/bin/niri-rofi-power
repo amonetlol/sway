@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec "$HOME/.config/rofi/powermenu/type-3/powermenu.sh" "$@"

@@ -1,0 +1,9 @@
+/* theme-orange: cores do powermenu (substitui o onedark azul) */
+* {
+    background:     #111111FF;
+    background-alt: #1a1a1aFF;
+    foreground:     #e6e6e6FF;
+    selected:       #ff6600FF;
+    active:         #df6124FF;
+    urgent:         #f53c3cFF;
+}

@@ -1,0 +1,64 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "margin-top": 8,
+  "margin-left": 20,
+  "margin-right": 20,
+  "spacing": 0,
+  "modules-left": ["niri/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["memory", "cpu", "pulseaudio", "custom/power"],
+  "custom/day": {
+    "exec": "date +'%a'",
+    "interval": 60,
+    "tooltip": false,
+  },
+  "custom/date": {
+    "exec": "date +'%-m/%-d'",
+    "interval": 60,
+    "tooltip-format": "Click for calendar",
+  },
+  "niri/workspaces": {
+    "format": "{value}",
+  },
+  "clock": {
+    "format": "{:%H:%M}",
+    "interval": 1,
+    "tooltip-format": "<big>{:%A %d %B %Y}</big>",
+  },
+  "memory": {
+    "interval": 5,
+    "format": "󰍛 {used:0.1f}GB",
+    "tooltip-format": "Memória: {used:0.1f}GB / {total:0.1f}GB ({percentage}%)",
+    "on-click": "foot -e btop",
+  },
+  "cpu": {
+    "interval": 5,
+    "format": "󰻠 {usage}%",
+    "tooltip-format": "CPU: {usage}%",
+    "on-click": "foot -e btop",
+  },
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "󰝟",
+    "format-icons": {
+      "default": ["󰕿", "󰖀", "󰕾"],
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "pavucontrol",
+  },
+  "bluetooth": {
+    "format-on": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "",
+    "format-connected": "󰂱",
+    "on-click": "rfkill toggle bluetooth",
+    "on-click-right": "blueman-manager",
+  },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip-format": "Power Menu",
+    "on-click": "niri-rofi-power",
+  },
+}

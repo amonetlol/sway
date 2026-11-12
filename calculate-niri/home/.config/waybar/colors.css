@@ -1,0 +1,10 @@
+/* theme-orange */
+
+@define-color bg #111111;
+@define-color bg-alt #1a1a1a;
+@define-color fg #e6e6e6;
+@define-color fg-dim #888888;
+@define-color accent #ff6600;
+@define-color accent-soft #df6124;
+@define-color warning #c95d0f;
+@define-color critical #f53c3c;

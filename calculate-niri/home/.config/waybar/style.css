@@ -1,0 +1,145 @@
+@import "colors.css";
+
+* {
+  font-family: "Agave Nerd Font", "Symbols Nerd Font Propo", sans-serif;
+  font-size: 14px;
+  font-feature-settings: "tnum";
+  border: none;
+  min-height: 0;
+}
+
+window#waybar {
+  background: transparent;
+  margin-bottom: 0px;
+}
+
+tooltip {
+  background: alpha(@bg, 0.95);
+  border: 1px solid alpha(@fg, 0.12);
+  border-radius: 8px;
+  color: @fg;
+}
+
+.modules-right {
+  margin: 2px 2px 0 0;
+}
+.modules-center {
+  margin: 2px 0 0 0;
+}
+.modules-left {
+  margin: 2px 0 0 2px;
+}
+
+#workspaces,
+#clock,
+#pulseaudio,
+#memory,
+#cpu,
+#custom-day,
+#custom-date,
+#custom-power,
+#bluetooth {
+  background: alpha(@bg, 0.75);
+  border-radius: 100px;
+  padding: 3px 12px;
+  margin: 8px 6px;
+  border: 1px solid alpha(@fg, 0.12);
+}
+
+#custom-day,
+#custom-date {
+  margin: 12px 6px;
+  padding: 0px 10px;
+  font-family: monospace;
+}
+
+#workspaces button.active {
+  background: @accent;
+  color: @bg;
+  padding: 4px 12px;
+}
+
+#workspaces {
+  border-radius: 50px;
+  padding: 3px 3px;
+}
+
+#workspaces button {
+  border-radius: 50px;
+  color: @fg-dim;
+}
+
+#workspaces button.empty {
+  color: alpha(@fg, 0.3);
+}
+
+#workspaces button:hover:not(.active) {
+  background: alpha(@accent, 0.12);
+  color: @accent;
+}
+
+#clock {
+  font-weight: 600;
+  color: @accent;
+}
+
+#pulseaudio {
+  padding: 6px 10px;
+}
+
+#custom-power {
+  font-size: 25px;
+  padding: 0px 10px;
+  border-radius: 100%;
+  color: @accent;
+}
+
+#bluetooth {
+  font-size: 15px;
+  padding: 0px 11px;
+  border-radius: 100%;
+}
+
+#bluetooth.connected {
+  border: 1px solid @accent;
+}
+
+#bluetooth.off,
+#bluetooth.disabled {
+  color: @fg-dim;
+  border: 1px solid alpha(@fg, 0.12);
+}
+
+#custom-power,
+#bluetooth {
+  padding: unset;
+  border-radius: 50%;
+  min-width: 35px;
+  min-height: 35px;
+}
+
+#memory,
+#cpu {
+  color: @accent;
+}
+
+#custom-power {
+  margin: 8px 14px;
+}
+
+#pulseaudio {
+  color: @accent;
+}
+
+#custom-power {
+  padding: 0 10px;
+}
+
+/* power: mesma forma em pílula dos demais módulos */
+#custom-power {
+  font-size: 18px;
+  padding: 3px 14px;
+  border-radius: 100px;
+  min-width: 0;
+  min-height: 0;
+}
