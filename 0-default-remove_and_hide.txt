@@ -1,0 +1,269 @@
+DEFAULT: REMOVER (fazer dry-run antes), OCULTAR, NÃO_MEXER, PERGUNTAR
+
+Este arquivo deve ser enviado junto com os pedidos de remocao/ocultacao/não_mexer/perguntar
+
+=====================================================================
+1. SEMPRE OCULTAR (NoDisplay=true) (SE TIVER INSTALADO)
+=====================================================================
+Overrides criados em ~/.local/share/applications/ (copia do .desktop
+de /usr/share/applications com NoDisplay=true). Some do rofi (Super+D).
+
+avahi-discover                 Avahi Zeroconf Browser
+assistant                      Qt Assistant
+qdbusviewer                    Qt D-Bus Viewer
+linguist                       Qt Linguist
+qv4l2                          Qt V4L2 test Utility
+qvidcap                        Qt V4L2 video capture utility
+designer                       Qt Widgets Designer
+rofi                           Rofi
+rofi-theme-selector            Rofi Theme Selector
+vim                            Vim
+xcalib                         xcalib
+btop
+Print Settings
+FontForge
+PIM Data Exporter
+Xwayland Video Bridge
+micro, rofi, rofi-theme-selector, vim, nvim, htop, qv4l2,
+  qvidcap, qt5ct, qt6ct, designer, linguist, qdbusviewer, assistant,
+  bssh, bvnc, avahi-discover, cups, lstopo, xgps, xgpsspeed,
+  CMake, Btrfs Assistant, CachyOS Hello
+yad-icon-browser.desktop        Icon Browser
+yad-settings.desktop            YAD settings
+garuda-system-maintenance-settings.desktop  Garuda System Maintenance Settings
+garuda-toolbox.desktop          Garuda Toolbox
+reboot-to-uefi.desktop          Reboot To UEFI
+setup-assistant.desktop         Setup Assistant
+snapper-tools.desktop           Snapper Tools
+suspend-then-hibernate.desktop  Suspend/Hibernate
+org.gnome.Vte.App.Gtk3.desktop  VTE Terminal for GTK3   (nao remover: qemu depende do vte)
+org.gnome.Vte.App.Gtk4.desktop  VTE Terminal for GTK4   (nao remover: qemu depende do vte)
+org.gtk.gtk4.NodeEditor.desktop Node Editor             (nao remover: gtk4 e lib base)
+org.gtk.PrintEditor4.desktop    Print Editor            (nao remover: gtk4 e lib base)
+vulkanCapsViewer.desktop        Vulkan Caps Viewer      (nao remover: vulkan-sdk usado pelo mpv e outros)
+ca.desrt.dconf-editor.desktop   dconf Editor
+gpa.desktop                     gpa
+org.freedesktop.IBus.Setup.desktop IBus Preferences
+org.gtk.Demo4.desktop           GTK Demo
+org.gtk.WidgetFactory4.desktop  Widget Factory
+wpa_gui.desktop                 wpa_gui
+fcitx5-configtool.desktop       Fcitx 5 Configuration
+org.manjaro.pamac.manager.desktop Add/Remove Software   (pamac-gtk usado por outros: so ocultar)
+application-utility.desktop     Application Utility
+manjaro-settings-manager.desktop Settings Manager
+msm_notifier_settings.desktop   Notifier Settings
+stoken-gui.desktop              Software Token
+stoken-gui-small.desktop        Software Token (small)
+
+
+=====================================================================
+2. REMOVER - FAÇA DRY-RUN ANTES PARA VER SENÃO QUEBRA O SISTEMA (SE TIVER INSTALADO)
+=====================================================================
+kaddressbook
+kontact
+ktorrent
+okular
+kleopatra
+kwrite
+filelight
+partitionmanager
+gimp
+strawberry
+kcalc
+konsole
+LibreOffice (Start Center, Base, Calc, Draw, Impress, Math, Writer)
+KAddressBook
+KMail
+KMail Import Wizard
+Kontact
+KOrganizer
+KTnef (libktnef)
+KTorrent
+Krfb
+audacious (app + plugins)
+simplescreenrecorder
+ddd
+distcc (distccmon-gnome)
+easytag
+gnuchess (eboard, xboard)
+cdrdao (gcdmaster)
+gftp
+gkrellm
+gparted
+gucharmap
+vim-gvim (gvim)
+hexchat
+qalculate-qt
+qalculate-gtk
+joe (joe, jmacs, jpico, jstar)
+lftp
+geeqie
+glade
+pan
+pidgin
+rxvt-unicode (urxvt, rxvt-unicode-256color)
+seamonkey (SeaMonkey, SeaMonkey Mail)
+soma
+thunderbird
+xterm (xterm, uxterm)
+xaos
+xine-ui
+xmms
+xpaint
+xpdf
+xsane
+xscreensaver (xscreensaver, xscreensaver-settings)
+xsnow
+xinput_calibrator
+nmap (zenmap, zenmap-root)
+hplip (HP Device Manager, hp-uiscan)
+zint (zint-qt, zint CLI e libzint; usada pelo ZXing e pelo plugin gstzxing)
+Konversation 
+
+=====================================================================
+3. NÃO_MEXER
+=====================================================================
+kitty
+blueman-adapters
+blueman-manager
+mplayer
+mpv
+org.pulseaudio.pavucontrol.desktop (Volume Control)
+nm-connection-editor
+nautilus
+
+
+=====================================================================
+4. RENOMEAR (Se existir)
+=====================================================================
+Thunar -> Thunar
+Firefox -> Firefox
+Files (nautilus) -> Nautilus
+
+=====================================================================
+5. IGNORE (EXCEÇÃO - OCASIONAL - NADA A FAZER) (SE TIVER INSTALADO)
+=====================================================================
+
+
+=====================================================================
+6. PERGUNTAR
+=====================================================================
+Todos os itens exibidos no rofi/menu do kde (se estiver no kde),menu do gnome (se estiver no gnome),menu do niri (se usar o launcher do niri)
+
+E não estiverem nas regras anteriores, perguntar o que fazer? gere um arquivo txt chamado 0-ask-remove_or_hide_or_untouched.txt
+
+O que for atualizado neste arquivo 0-ask-remove_or_hide_or_untouched.txt, pergunte se deseja acrescentar aqui para ficar cada vez mais ele ficar completo.
+
+OBS: Não fazer referência a distro neste arquivo, ou seja, ele é para ser universal.
+
+=====================================================================
+ASK - REMOVER, OCULTAR OU NÃO_MEXER
+=====================================================================
+
+Responda em cada linha com uma opção:
+  H = ocultar (NoDisplay=true)
+  R = remover (dry-run antes)
+  N = não mexer
+  ? = ainda não sei (deixa como está)
+
+=====================================================================
+INSTRUÇÃO PARA OS PRÓXIMOS RICES
+=====================================================================
+
+1. Ao configurar uma máquina, aplique as seções 1 (ocultar) e 4 (renomear)
+   sem perguntar, desde que o item esteja instalado.
+2. Remoções (seção 2) só depois de dry-run e confirmação explícita do usuário.
+   Se houver dependência bloqueando, não force: registre no ask.
+3. Seção 3 (NÃO_MEXER) não se toca.
+4. Itens visíveis no launcher que não estão em nenhuma regra vão para o
+   0-ask-remove_or_hide_or_untouched.txt, no mesmo formato desta legenda
+   (seções A, B e C), com opções H / R / N / ?.
+5. Depois que o usuário responder o ask, aplique as decisões e acrescente-as
+   neste arquivo (default).
+6. Não cite distro nem nome de máquina no default nem no ask: ambos são universais.
+7. Ao gerar o ask, sobrescrever o 0-ask-remove_or_hide_or_untouched.txt existente.
+   Nunca manter o antigo nem criar outro arquivo com nome diferente.
+
+=====================================================================
+DECISÕES DO ASK (aplicadas)
+=====================================================================
+
+H (ocultar):  org.gnome.Firmware, gnome-printers-panel, zint (sem atalho de launcher)
+R (remover):  manjaro-hello (dry-run limpo, removido)
+              org.manjaro.pamac.manager -> H (ocultado e incluído na seção 1)
+                pacote pamac-gtk é dependência de application-utility e pamac-gnome-integration; por isso não foi removido
+N (manter):   org.gnome.FileRoller, org.gnome.tweaks
+?  (manter):  application-utility, manjaro-settings-manager, msm_notifier_settings,
+              kvantummanager
+
+=====================================================================
+DECISÕES APLICADAS - MÁQUINA NOVA (EndeavourOS)
+=====================================================================
+
+H (seção 1, ocultar, aplicado): btop, micro, rofi, rofi-theme-selector, vim,
+  nvim, qv4l2, qvidcap, xgps, xgpsspeed
+R (seção 2, removido): xterm (inclui uxterm). Removido com pacman -R (sem -s);
+  libxaw ficou como dependência órfã.
+Seção 4 (renomear, aplicado): org.gnome.Nautilus "Files" -> "Nautilus"
+Seção 3 (não mexer): kitty, firefox, org.pulseaudio.pavucontrol, nautilus
+zint: continua H (sem atalho de launcher), remoção bloqueada por zxing-cpp/gst-plugins-bad
+
+ASK respondido (aplicado):
+  N (manter): nwg-look (GTK Settings)
+  H (ocultar): stoken-gui (Software Token), stoken-gui-small (Software Token small)
+  Incluir na seção 1 (sempre ocultar): stoken-gui.desktop, stoken-gui-small.desktop
+
+=====================================================================
+DECISÕES APLICADAS - MÁQUINA NOVA (2)
+=====================================================================
+
+R (seção 2, removido): Plasma sem o display manager. Removidos 31 pacotes
+  (apps e addons do KDE: kde-cli-tools, kdepim-runtime, kdeplasma-addons,
+  kdesu, ksshaskpass, plasma-browser-integration, plasma-disks,
+  plasma-firewall, plasma-keyboard, plasma-thunderbolt,
+  plasma-vault-gocryptfs, kde-gtk-config, kdenetwork-filesharing,
+  kdegraphics-thumbnailers, kde-inotify-survey e seus locales/man).
+  Dry-run feito antes. Mantidos (exigidos pelo display manager, não
+  removíveis sem quebrar o login): sddm, sddm-dinit, sddm-default-cage,
+  breeze, breeze-icons, bluedevil, kded, kdecoration, kdeclarative,
+  oxygen, plasmashell e kwin.
+  Pendência: decidir se o display manager será trocado depois para
+  remover essas dependências.
+Seção 1 (ocultar, aplicado só nos itens instalados): rofi, rofi-theme-selector,
+  btop, micro, nvim. Os demais da seção 1 não estavam instalados.
+Seção 4 (renomear, aplicado): org.gnome.Nautilus "Files" -> "Nautilus".
+Seção 3 (não mexer): nada tocado.
+Sem ASK nesta máquina: a seção 1 cobriu o que estava visível.
+
+=====================================================================
+DECISÕES APLICADAS - MÁQUINA NOVA (3)
+=====================================================================
+
+H (seção 1, ocultar, aplicado só nos instalados): avahi-discover, assistant,
+  qdbusviewer, linguist, qv4l2, qvidcap, designer, rofi, rofi-theme-selector,
+  htop, vim, qt5ct, qt6ct, bssh, bvnc, cups, org.gnome.Vte.App.Gtk3.
+Seção 4 (renomear, aplicado): org.gnome.Nautilus "Files" -> "Nautilus".
+Seção 2 (remover): nenhum item da lista está instalado nesta máquina.
+Seção 3 (não mexer): nada tocado.
+
+=====================================================================
+DECISÕES APLICADAS - MÁQUINA NOVA (4)
+=====================================================================
+
+H (seção 1, ocultar, aplicado só nos instalados): btop, micro, nvim, htop,
+  rofi, rofi-theme-selector, org.freedesktop.IBus.Setup.
+Seção 4 (renomear, aplicado): org.gnome.Nautilus "Files" -> "Nautilus".
+Seção 2 (remover, pedido explícito): foot (pacote removido; sem dependentes
+  de app instalado).
+Seção 3 (não mexer): nada tocado.
+
+ASK respondido (aplicado):
+  H (ocultar): display-im7.q16 (ImageMagick), gnome-language-selector
+    (Language Support), slicksddm-customize (A CONFIRMAR, ocultado).
+  N (manter): org.gnome.Loupe (Image Viewer), org.gnome.Papers (Document Viewer).
+
+=====================================================================
+DECISÕES APLICADAS - ATUALIZAÇÃO (vim)
+=====================================================================
+
+H (seção 1, ocultar, aplicado): vim (vim.desktop). Incluído na lista da seção 1.
