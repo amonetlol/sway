@@ -16,4 +16,5 @@ Aplicado na maquina Manjaro (12/11, 12:45):
 - yay-bin instalado via makepkg (AUR: aur.archlinux.org/yay-bin.git), yay v13.1.0. base-devel e git instalados antes.
 - setup-nvim.sh (amonetlol/sh) executado: config em ~/.config/nvim e /root/.config/nvim (amonetlol/nvim), pacotes via yay. Binario neovim instalado via pacman (v0.12.5), que o script nao instala.
 - Aliases: em ~/.aliases (backup ~/.aliases.bak-*), micro trocado por nvim (nv, v, tx, al, al2, aln, alw, ewb, j-edit, fv). ~/.functions: fallback do editor em edit_aliases_distro (al2) e vf passaram a nvim (backup ~/.functions.bak-*). O alias aln segue apontando para ~/.config/micro/settings.json.
+- Super+F1 (show-hotkeys): lista ajustada com os atalhos do niri que faltavam (Home/End, Page Up/Down, Ctrl+Home/End, colchetes, Shift+R, Ctrl+F, Backspace, Ctrl+W, Escape). Copia versionada em config/niri/show-hotkeys.
 - Dependencias orfas deixadas de proposito (audio, Bluetooth, flatpak, ibus, etc.). Sao 35 orfaos; limpeza com pacman -Qdtq fica pendente para decidir depois.
