@@ -1,0 +1,4 @@
+/* Seletor de wallpapers com o estilo do Rofi-02. */
+@import "themes/retro/launcher.rasi"
+element-icon { size: 48px; }
+prompt { font: "CodeNewRoman Nerd Font Bold 12"; }

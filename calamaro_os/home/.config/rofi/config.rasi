@@ -1,0 +1,10 @@
+configuration {
+    modi: "drun,run";
+    show-icons: true;
+    icon-theme: "Rice-Colloid-Gruvbox";
+    display-drun: "Apps";
+    display-run: "Executar";
+    drun-display-format: "{name}";
+    font: "CodeNewRoman Nerd Font 12";
+}
+@theme "themes/retro/launcher.rasi"

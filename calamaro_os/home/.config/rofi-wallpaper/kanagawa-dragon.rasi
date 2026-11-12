@@ -1,0 +1,144 @@
+/* Tema Kanagawa Dragon (derivado do catppuccin-mocha.rasi, sem azul). */
+/* ~/.config/rofi/catppuccin-mocha.rasi */
+
+* {
+  base:     #181616;
+  mantle:   #0D0C0C;
+  crust:    #0D0C0C;
+  text:     #C5C9C5;
+  subtext:  #A6A69C;
+  surface0: #282727;
+  surface1: #393836;
+  mauve:    #C4B28A;
+  pink:     #C8C093;
+  red:      #C4746E;
+  green:    #87A987;
+
+  background-color: transparent;
+  text-color: @text;
+  margin: 0;
+  padding: 0;
+  spacing: 0;
+}
+
+window {
+  location: center;
+  anchor: center;
+  width: 620px;
+  background-color: @base;
+  border: 2px solid;
+  border-color: @mauve;
+  border-radius: 18px;
+}
+
+mainbox {
+  padding: 18px;
+  spacing: 14px;
+  children: [ inputbar, listview, mode-switcher ];
+}
+
+/* ---------- Search bar ---------- */
+inputbar {
+  background-color: @surface0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  spacing: 12px;
+  children: [ prompt, entry ];
+}
+
+prompt {
+  text-color: @mauve;
+  vertical-align: 0.5;
+}
+
+entry {
+  placeholder: "  Search...";
+  placeholder-color: @subtext;
+  text-color: @text;
+  cursor-color: @mauve;
+  vertical-align: 0.5;
+}
+
+/* ---------- List ---------- */
+listview {
+  lines: 8;
+  columns: 1;
+  fixed-height: true;
+  scrollbar: false;
+  spacing: 4px;
+}
+
+element {
+  padding: 10px 14px;
+  spacing: 14px;
+  border-radius: 12px;
+  orientation: horizontal;
+}
+
+element normal.normal,
+element alternate.normal {
+  background-color: transparent;
+  text-color: @text;
+}
+
+element normal.urgent,
+element alternate.urgent {
+  text-color: @red;
+}
+
+element normal.active,
+element alternate.active {
+  text-color: @green;
+}
+
+element selected.normal,
+element selected.active,
+element selected.urgent {
+  background-color: @mauve;
+  text-color: @crust;
+}
+
+element-icon {
+  size: 32px;
+  vertical-align: 0.5;
+  background-color: transparent;
+}
+
+element-text {
+  vertical-align: 0.5;
+  background-color: transparent;
+  text-color: inherit;
+  highlight: bold #C8C093;
+}
+
+element selected element-text {
+  highlight: bold #0D0C0C;
+}
+
+/* ---------- Mode switcher ---------- */
+mode-switcher {
+  spacing: 8px;
+}
+
+button {
+  padding: 10px;
+  border-radius: 12px;
+  background-color: @surface0;
+  text-color: @subtext;
+  horizontal-align: 0.5;
+}
+
+button selected {
+  background-color: @mauve;
+  text-color: @crust;
+}
+
+message {
+  background-color: @surface0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+textbox {
+  text-color: @text;
+}

@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+# Lista os atalhos do Niri (binds.kdl) num rofi com o tema do rice.
+import re, subprocess, pathlib
+home = pathlib.Path.home()
+rows = []
+for line in (home/".config/niri/binds.kdl").read_text(encoding="utf-8").splitlines():
+    s = line.strip()
+    if not s or s.startswith("//"):
+        continue
+    m = re.match(r'^([A-Za-z0-9_+]+)\s+(.*)$', s)
+    if not m or "{" not in m.group(2):
+        continue
+    key, rest = m.group(1).replace("Mod+", "Super+"), m.group(2)
+    title = re.search(r'hotkey-overlay-title="([^"]*)"', rest)
+    action = re.search(r'\{\s*([^;}]+)', rest)
+    label = title.group(1) if title else (action.group(1).strip() if action else "")
+    if label:
+        rows.append(f"{key:<26} {label}")
+subprocess.run(["rofi", "-dmenu", "-i", "-p", "Atalhos", "-theme", str(home/".config/rofi/hotkeys.rasi")],
+               input="\n".join(rows), text=True, stdout=subprocess.DEVNULL)

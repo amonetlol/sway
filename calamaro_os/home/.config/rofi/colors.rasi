@@ -1,0 +1,9 @@
+configuration { icon-theme: "Rice-Colloid-Gruvbox"; }
+* {
+ background: #181616ee;
+ background-alt: #282727ff;
+ foreground: #c5c9c5ff;
+ selected: #c8c093ff;
+ active: #c8c093ff;
+ urgent: #c4746eff;
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+choice=$(printf '%s\n' 'Bloquear' 'Sair' 'Suspender' 'Reiniciar' 'Desligar' | rofi -dmenu -i -p Energia -theme "$HOME/.config/rofi/power.rasi") || exit 0
+case "$choice" in
+ Bloquear) exec swaylock ;;
+ Sair) exec niri msg action quit --skip-confirmation ;;
+ Suspender) exec gdbus call --system --dest org.freedesktop.login1 --object-path /org/freedesktop/login1 --method org.freedesktop.login1.Manager.Suspend true ;;
+ Reiniciar) exec gdbus call --system --dest org.freedesktop.login1 --object-path /org/freedesktop/login1 --method org.freedesktop.login1.Manager.Reboot true ;;
+ Desligar) exec gdbus call --system --dest org.freedesktop.login1 --object-path /org/freedesktop/login1 --method org.freedesktop.login1.Manager.PowerOff true ;;
+esac

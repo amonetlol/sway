@@ -1,0 +1,16 @@
+@import "kanagawa-dragon.rasi"
+window { width: 1120px; }
+mainbox { children: [ inputbar, listview ]; }
+listview {
+  columns: 4;
+  lines: 3;
+  spacing: 12px;
+  fixed-height: true;
+  fixed-columns: true;
+  layout: vertical;
+  flow: horizontal;
+}
+element { orientation: vertical; spacing: 8px; padding: 10px; }
+element-icon { size: 220px; horizontal-align: 0.5; }
+element-text { horizontal-align: 0.5; }
+entry { placeholder: "Pesquisar wallpaper..."; }

@@ -1,0 +1,5 @@
+[Icon Theme]
+Name=Rice-Colloid-Gruvbox
+Comment=Colloid-Yellow-Nord-Dark, fallback Papirus-Dark, depois Gruvbox Plus Dark
+Inherits=Colloid-Yellow-Nord-Dark,Papirus-Dark,Gruvbox-Plus-Dark,hicolor
+Directories=
