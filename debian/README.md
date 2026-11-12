@@ -33,6 +33,14 @@ install-session.sh mantem o barramento do usuario disponivel durante o fluxo
 por SSH e restaura o estado anterior de linger ao terminar.
 install-themes.sh permite reaplicar apenas os temas GTK, icones e cursor.
 
+## Fixes v3
+
+fixes-v3.sh instala as dependências do term-hub, cria as pastas padrão em pt-BR
+e atualiza o term-hub. O GRUB com o tema bsol fica em install-grub.sh, que usa a
+cópia `sway/bsol` e não altera a EFI quando ela já existe:
+
+    bash debian/fixes-v3.sh
+
 ## Modulos
 
 Bash, bin, btop, fastfetch, fonts, starship, Neovim, VMware, random-wallpapers,
