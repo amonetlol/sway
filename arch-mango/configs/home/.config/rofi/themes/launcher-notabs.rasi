@@ -1,0 +1,6 @@
+/* Super+D: launcher sem a barra de abas. Super+Shift+D usa line.rasi com abas. */
+@import "/home/pio/.config/rofi/themes/line.rasi"
+
+content-area {
+    children: [ listview ];
+}

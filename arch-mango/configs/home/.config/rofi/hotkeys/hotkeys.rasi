@@ -1,0 +1,76 @@
+/* Menu de atalhos (Super+F): cores iguais ao rofi-wallpaper (catppuccin-mocha) */
+
+* {
+    base:     #1e1e2e;
+    surface0: #313244;
+    mauve:    #74c7ec;
+    text:     #cdd6f4;
+    subtext:  #a6adc8;
+    crust:    #11111b;
+    font:     "CodeNewRoman Nerd Font 11";
+    background-color: transparent;
+    text-color:       @text;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    location:         center;
+    anchor:           center;
+    width:            70%;
+    height:           70%;
+    background-color: @base;
+    border:           2px solid;
+    border-color:     @mauve;
+    border-radius:    18px;
+    padding:          18px;
+}
+
+mainbox {
+    spacing:          14px;
+    children:         [ inputbar, listview ];
+}
+
+inputbar {
+    background-color: @surface0;
+    border-radius:    12px;
+    padding:          12px 16px;
+    spacing:          12px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color:       @mauve;
+    vertical-align:   0.5;
+}
+
+entry {
+    placeholder:       "Pesquisar atalho...";
+    placeholder-color: @subtext;
+    text-color:        @text;
+    cursor-color:      @mauve;
+    vertical-align:    0.5;
+}
+
+listview {
+    lines:            18;
+    scrollbar:        false;
+    dynamic:          true;
+    spacing:          4px;
+}
+
+element {
+    padding:          6px 10px;
+    border-radius:    8px;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color:       @text;
+}
+
+element selected.normal {
+    background-color: @mauve;
+    text-color:       @crust;
+}

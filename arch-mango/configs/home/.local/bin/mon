@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Alterna a resolucao do monitor entre 1920x1080 e 1600x900 (mangowm / wlroots, via wlr-randr).
+set -euo pipefail
+
+RES_A="1920x1080"
+RES_B="1600x900"
+
+command -v wlr-randr >/dev/null || { echo "wlr-randr nao encontrado" >&2; exit 1; }
+
+output=$(wlr-randr | awk '/^[^ ]/ { print $1; exit }')
+[[ -n "$output" ]] || { echo "nenhuma saida encontrada" >&2; exit 1; }
+
+current=$(wlr-randr | awk '/^ / && /current/ { print $1; exit }')
+
+if [[ "$current" == "$RES_A" ]]; then
+    target="$RES_B"
+else
+    target="$RES_A"
+fi
+
+wlr-randr --output "$output" --custom-mode "${target}@60"
+printf 'Monitor %s: %s\n' "$output" "$target"

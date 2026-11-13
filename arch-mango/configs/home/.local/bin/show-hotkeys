@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Mostra os atalhos do mango lendo ~/.config/mango/bind.conf (somente exibe; nao executa).
+set -euo pipefail
+conf="$HOME/.config/mango/bind.conf"
+theme="$HOME/.config/rofi/hotkeys/hotkeys.rasi"
+# Toggle: se o menu ja esta aberto, fecha.
+if pgrep -u "$(id -u)" -f '^rofi -no-config -dmenu.*hotkeys.rasi' >/dev/null; then
+    pkill -u "$(id -u)" -f '^rofi -no-config -dmenu.*hotkeys.rasi'
+    exit 0
+fi
+list=$(grep -E '^bind=' "$conf" | sed -E 's/^bind=//' | awk -F, '
+{
+    mods = $1; key = $2; act = $3; args = ""
+    for (i = 4; i <= NF; i++) args = args (i > 4 ? "," : "") $i
+    if (mods == "none" || mods == "") mods = ""
+    gsub(/\+/, " + ", mods)
+    combo = (mods == "" ? key : mods " + " key)
+    printf "%-34s | %-16s | %s\n", combo, act, args
+}')
+printf '%s\n' "$list" | rofi -no-config -dmenu -i -no-custom -p 'Atalhos Mango' -theme "$theme" >/dev/null || true
